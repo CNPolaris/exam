@@ -1,0 +1,92 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://localhost:3306/k12exam?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123
+      filters: config
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: com.polaris.exam.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.polaris: debug
+jwt:
+  tokenHeader: Authorization
+  secret: exam-secret
+  expiration: 604800
+  tokenHead: 'Bearer '
+
+redis:
+  key:
+    user: 'exam:user'
+    userList: 'exam:userList'
+    permissionList: 'exam:permissionList'
+    allPermission: 'exam:allPermission'
+    dashInfo: 'exam:dashInfo'
+    token: 'exam:token'
+    analyze: 'exam:analyze'
+    system: 'exam:systemInfo'
+  expire:
+    common: 600 # 24小时
+
+type:
+  user:
+    student: 'student'
+    teacher: 'teacher'
+    admin: 'admin'
+
+video:
+  path: 'E:\upload\'
+  url: 'http://localhost:8080/api/video/preview'
+
+imgBed:
+  accessToken: 578149f20476d1060e584762f6f88e69
+  owner: cnpolaris-tian
+  repo: giteePagesImages
+  path: image_path/
+  message: add image_path
+  url: https://gitee.com/api/v5/repos/%s/%s/contents/%s
+
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+      - /swagger-ui
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**
+      - /api/login
+      - /api/register
+      - /api/info
+      - /api/logout
+      - /api/video/preview
+      - /api/video/preview/**
+      - /minio/upload

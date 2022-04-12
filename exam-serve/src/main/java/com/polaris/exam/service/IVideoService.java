@@ -5,6 +5,8 @@ import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.pojo.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -27,4 +29,11 @@ public interface IVideoService extends IService<Video> {
      * @return Video
      */
     Video uploadVideo(VideoEditRequest model);
+
+    /**
+     * 获取指定年级的视频
+     * @param level Integer
+     * @return List<Video>
+     */
+    List<Video> getLevelVideo(Integer level);
 }

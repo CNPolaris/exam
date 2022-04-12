@@ -189,15 +189,8 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     }
 
     @Override
-    public List<ExamPaper> getUserPaper(Integer userId,ExamPaperEditRequest model) {
-        List<ExamPaper> paperList = examPaperMapper.getUserPaper(userId);
-        List<ExamPaper> list = new ArrayList<>(10);
-        paperList.forEach(examPaper -> {
-            if(examPaper.getPaperType().equals(model.getPaperType()) || examPaper.getSubjectId().equals(model.getSubjectId())){
-                list.add(examPaper);
-            }
-        });
-        return list;
+    public List<ExamPaper> getUserPaper(Integer userId) {
+        return examPaperMapper.getUserPaper(userId);
     }
 
     private List<ExamPaperTitleItemObject> frameTextContentFromModel(List<ExamPaperTitleItem> titleItems){

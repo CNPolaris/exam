@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -75,5 +76,10 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
             save(video);
         }
         return video;
+    }
+
+    @Override
+    public List<Video> getLevelVideo(Integer level) {
+        return videoMapper.getLevelVideo(level);
     }
 }

@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoResponse;
 import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.pojo.Video;
+import com.polaris.exam.service.IUserService;
 import com.polaris.exam.service.IVideoService;
 import com.polaris.exam.utils.CreateUuid;
 import com.polaris.exam.utils.NonStaticResourceHttpRequestHandler;
@@ -31,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,9 +67,11 @@ public class VideoController {
     private String BED_MESSAGE;
     @Value("${imgBed.url}")
     private String BED_URL;
+    private final IUserService userService;
     private final IVideoService videoService;
     private final NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
-    public VideoController(IVideoService videoService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
+    public VideoController(IUserService userService, IVideoService videoService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
+        this.userService = userService;
         this.videoService = videoService;
         this.nonStaticResourceHttpRequestHandler = nonStaticResourceHttpRequestHandler;
     }
@@ -200,12 +204,17 @@ public class VideoController {
         return RespBean.success("成功",videoUploadParam);
     }
 
+    @ApiOperation("获取指定年级的视频")
+    @GetMapping("/level")
+    public RespBean getVideoLevel(Principal principal){
+        Integer userLevel = userService.getUserByUsername(principal.getName()).getUserLevel();
+        return RespBean.success(userLevel+"年级课程视频", videoService.getLevelVideo(userLevel));
+    }
+
     private boolean validVideoUploadParam(VideoEditRequest model){
         if(!StrUtil.isBlank(model.getName())){
             if(!StrUtil.isBlank(model.getPath())){
-                if(!StrUtil.isBlank(model.getUrl())){
-                    return true;
-                }
+                return !StrUtil.isBlank(model.getUrl());
             }
         }
         return false;

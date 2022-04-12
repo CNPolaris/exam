@@ -208,9 +208,9 @@ public class ExamPaperController {
 
     @ApiOperation("获取用户所属的试卷")
     @PostMapping("/paper/own")
-    public RespBean getUserPaper(Principal principal, @RequestBody ExamPaperEditRequest model){
+    public RespBean getUserPaper(Principal principal){
         User user = userService.getUserByUsername(principal.getName());
-        List<ExamPaper> userPaper = examPaperService.getUserPaper(user.getId(),model);
+        List<ExamPaper> userPaper = examPaperService.getUserPaper(user.getId());
         return RespBean.success("获取成功",userPaper);
     }
 }

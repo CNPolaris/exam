@@ -91,8 +91,7 @@ public interface IExamPaperService extends IService<ExamPaper> {
     /**
      * 根据用户Id获取所属的试卷
      * @param userId Integer
-     * @param  model  ExamPaperEditRequest
      * @return List<ExamPaper>
      */
-    List<ExamPaper> getUserPaper(Integer userId, ExamPaperEditRequest model);
+    List<ExamPaper> getUserPaper(Integer userId);
 }

@@ -21,10 +21,7 @@ import com.polaris.exam.utils.ExamUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -189,6 +186,18 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         examPaper.setStatus(status);
         updateById(examPaper);
         return examPaper;
+    }
+
+    @Override
+    public List<ExamPaper> getUserPaper(Integer userId,ExamPaperEditRequest model) {
+        List<ExamPaper> paperList = examPaperMapper.getUserPaper(userId);
+        List<ExamPaper> list = new ArrayList<>(10);
+        paperList.forEach(examPaper -> {
+            if(examPaper.getPaperType().equals(model.getPaperType()) || examPaper.getSubjectId().equals(model.getSubjectId())){
+                list.add(examPaper);
+            }
+        });
+        return list;
     }
 
     private List<ExamPaperTitleItemObject> frameTextContentFromModel(List<ExamPaperTitleItem> titleItems){

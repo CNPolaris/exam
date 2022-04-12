@@ -8,6 +8,7 @@ import com.polaris.exam.dto.paper.ExamResponse;
 import com.polaris.exam.enums.LevelEnum;
 import com.polaris.exam.pojo.ExamPaper;
 import com.polaris.exam.pojo.ExamPaperAnswer;
+import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.*;
 import com.polaris.exam.utils.AnalyzeUtil;
 import com.polaris.exam.utils.RespBean;
@@ -203,5 +204,13 @@ public class ExamPaperController {
     public RespBean updatePaperStatus(@PathVariable Integer id, @RequestParam Integer status) {
         ExamPaper examPaper = examPaperService.updateStatus(id, status);
         return RespBean.success("更新试卷有效状态成功", examPaper);
+    }
+
+    @ApiOperation("获取用户所属的试卷")
+    @PostMapping("/paper/own")
+    public RespBean getUserPaper(Principal principal, @RequestBody ExamPaperEditRequest model){
+        User user = userService.getUserByUsername(principal.getName());
+        List<ExamPaper> userPaper = examPaperService.getUserPaper(user.getId(),model);
+        return RespBean.success("获取成功",userPaper);
     }
 }

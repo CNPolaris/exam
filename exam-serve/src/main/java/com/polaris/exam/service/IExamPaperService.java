@@ -7,6 +7,8 @@ import com.polaris.exam.pojo.ExamPaper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.polaris.exam.pojo.User;
 
+import java.util.List;
+
 /**
  * <p>
  * 试卷表 服务类
@@ -86,4 +88,11 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * @return ExamPaper
      */
     ExamPaper updateStatus(Integer id, Integer status);
+    /**
+     * 根据用户Id获取所属的试卷
+     * @param userId Integer
+     * @param  model  ExamPaperEditRequest
+     * @return List<ExamPaper>
+     */
+    List<ExamPaper> getUserPaper(Integer userId, ExamPaperEditRequest model);
 }

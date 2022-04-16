@@ -174,7 +174,7 @@ public class UserController {
                 return RespBean.success("更新密码成功");
             }
         }
-        return RespBean.success("两次输入不相同");
+        return RespBean.error("两次输入不相同");
     }
 
     @ApiOperation(value = "更新用户信息")

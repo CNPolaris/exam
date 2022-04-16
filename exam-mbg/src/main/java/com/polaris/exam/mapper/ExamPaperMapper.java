@@ -24,4 +24,17 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
             "FROM exam_class " +
             "WHERE class_id = (SELECT class_id FROM class_user WHERE user_id = #{userId})) AND `status` = 1 LIMIT 10")
     List<ExamPaper> getUserPaper(Integer userId);
+
+    /**
+     * 查询用户所属的任务试卷
+     * @param userId Integer
+     * @param type Integer
+     * @return List<ExamPaper>
+     */
+    @Select("SELECT * FROM exam_paper WHERE id IN(SELECT exam_id " +
+            "FROM exam_class " +
+            "WHERE class_id = (SELECT class_id " +
+            "FROM class_user " +
+            "WHERE user_id = #{userId})) AND `status` =1 AND `paper_type` = #{type} LIMIT 10")
+    List<ExamPaper> getTaskPaper(Integer userId, Integer type);
 }

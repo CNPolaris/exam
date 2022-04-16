@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPagerParam;
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
 import com.polaris.exam.dto.paper.ExamResponse;
+import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.enums.LevelEnum;
 import com.polaris.exam.pojo.ExamPaper;
 import com.polaris.exam.pojo.ExamPaperAnswer;
@@ -212,5 +213,13 @@ public class ExamPaperController {
         User user = userService.getUserByUsername(principal.getName());
         List<ExamPaper> userPaper = examPaperService.getUserPaper(user.getId());
         return RespBean.success("获取成功",userPaper);
+    }
+
+    @ApiOperation("获取任务试卷")
+    @PostMapping("/paper/task")
+    public RespBean getTaskPaper(Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        List<ExamPaper> taskPaper = examPaperService.getTaskPaper(user.getId(), ExamPaperTypeEnum.Task.getCode());
+        return RespBean.success("获取任务试卷成功",taskPaper);
     }
 }

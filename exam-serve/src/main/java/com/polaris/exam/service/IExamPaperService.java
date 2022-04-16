@@ -94,4 +94,12 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * @return List<ExamPaper>
      */
     List<ExamPaper> getUserPaper(Integer userId);
+
+    /**
+     * 获取任务试卷
+     * @param userId Integer
+     * @param type Integer
+     * @return List<ExamPaper>
+     */
+    List<ExamPaper> getTaskPaper(Integer userId, Integer type);
 }

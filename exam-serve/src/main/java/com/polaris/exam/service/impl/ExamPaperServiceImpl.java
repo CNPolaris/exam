@@ -193,6 +193,11 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         return examPaperMapper.getUserPaper(userId);
     }
 
+    @Override
+    public List<ExamPaper> getTaskPaper(Integer userId, Integer type) {
+        return examPaperMapper.getTaskPaper(userId, type);
+    }
+
     private List<ExamPaperTitleItemObject> frameTextContentFromModel(List<ExamPaperTitleItem> titleItems){
         AtomicInteger index = new AtomicInteger(1);
         return titleItems.stream().map(t -> {

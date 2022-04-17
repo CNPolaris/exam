@@ -1,5 +1,6 @@
 package com.polaris.exam.service;
 
+import com.polaris.exam.dto.paper.ExamPaperEditRequest;
 import com.polaris.exam.dto.question.QuestionResponse;
 import com.polaris.exam.pojo.Permission;
 import com.polaris.exam.pojo.User;
@@ -209,4 +210,27 @@ public interface AdminCacheService {
      * @return Boolean
      */
     Boolean hasUserTotal(String type);
+
+    /**
+     * 缓存学生考试试卷
+     * @param username String
+     * @param paperId Integer
+     * @param expire Integer
+     */
+    void setDoingPaper(String username, Integer paperId, Integer expire, ExamPaperEditRequest paper);
+
+    /**
+     * 获取学生考试试卷
+     * @param username String
+     * @param paperId Integer
+     * @return ExamPaperEditRequest
+     */
+    ExamPaperEditRequest getDoingPaper(String username,Integer paperId);
+    /**
+     * 判断学生考试试卷
+     * @param username String
+     * @param paperId Integer
+     * @return Boolean
+     */
+    Boolean hasDoingPaper(String username,Integer paperId);
 }

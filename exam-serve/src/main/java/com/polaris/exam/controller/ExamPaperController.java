@@ -126,6 +126,17 @@ public class ExamPaperController {
         return RespBean.success("成功", examPaperEditRequest);
     }
 
+    @ApiOperation(value = "考试")
+    @GetMapping("/do/{id}")
+    public RespBean doExamPaper(@PathVariable Integer id,Principal principal){
+        if(cacheService.hasDoingPaper(principal.getName(), id)){
+            return RespBean.success("成功",cacheService.getDoingPaper(principal.getName(), id));
+        } else {
+            ExamPaperEditRequest examPaperEditRequest = examPaperService.examPaperToModel(id);
+            cacheService.setDoingPaper(principal.getName(), id,examPaperEditRequest.getSuggestTime(),examPaperEditRequest);
+            return RespBean.success("成功",examPaperEditRequest);
+        }
+    }
     @ApiOperation(value = "更新试卷")
     @PostMapping("/update")
     public RespBean updateExamPaper(@RequestBody ExamPaperEditRequest model) {

@@ -42,6 +42,8 @@
         <ip2region.version>1.7.2</ip2region.version>
         <yauaa.version>5.23</yauaa.version>
         <commons-maths.version>3.6.1</commons-maths.version>
+        <gson.version>2.9.0</gson.version>
+        <qiniu.version>7.9.5</qiniu.version>
     </properties>
 
     <dependencies>
@@ -190,6 +192,17 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
+            </dependency>
+            <!--     七牛云对象存储       -->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

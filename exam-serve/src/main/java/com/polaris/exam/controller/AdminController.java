@@ -6,11 +6,17 @@ import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.IRolePermissionService;
 import com.polaris.exam.service.IUserService;
 import com.polaris.exam.service.MonitorService;
+import com.polaris.exam.service.OssAdminService;
 import com.polaris.exam.utils.RespBean;
+import com.polaris.exam.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * @author CNPolaris
@@ -23,11 +29,13 @@ public class AdminController {
     private final IUserService userService;
     private final MonitorService monitorService;
     private final IRolePermissionService rolePermissionService;
+    private final OssAdminService ossAdminService;
     @Autowired
-    public AdminController(IUserService userService, MonitorService monitorService, IRolePermissionService rolePermissionService) {
+    public AdminController(IUserService userService, MonitorService monitorService, IRolePermissionService rolePermissionService, OssAdminService ossAdminService) {
         this.userService = userService;
         this.monitorService = monitorService;
         this.rolePermissionService = rolePermissionService;
+        this.ossAdminService = ossAdminService;
     }
     @ApiOperation(value = "禁用帐户")
     @GetMapping("/user/status/disable/{id}")
@@ -112,5 +120,24 @@ public class AdminController {
     @GetMapping("/monitor/server")
     public RespBean systemInfo(){
         return RespBean.success("查询系统信息",monitorService.getServeInfo());
+    }
+
+    @ApiOperation(value = "上传图片")
+    @PostMapping("/image/upload")
+    public RespBean uploadImage(@RequestBody MultipartFile file) throws IOException {
+        try {
+            if(file.isEmpty()){
+                return RespBean.error("图片不能为空");
+            }
+            String imgName = StringUtils.getRandomImgName(file.getOriginalFilename());
+            String image = ossAdminService.uploadImage(file.getInputStream(), imgName);
+            if(image.isEmpty()){
+                return RespBean.error("上传图片失败");
+            }
+            return RespBean.success("上传图片成功",image);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        return RespBean.error("上传失败");
     }
 }

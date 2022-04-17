@@ -21,6 +21,12 @@ spring:
     port: 6379
     password:
 
+oss:
+  qiniu:
+    domain: http://cnpolaris.top
+    accessKey: 86RZV7vDKQ4XMj2hO2Ngbs36c_4KjVi5_2PU6WKf
+    secretKey: IwPsM9nN6t86dBG-TsMBYSV5reETZOH44-9x_vRD
+    bucket: out-polaris
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
@@ -59,14 +65,6 @@ type:
 video:
   path: 'E:\upload\'
   url: 'http://localhost:8080/api/video/preview'
-
-imgBed:
-  accessToken: 578149f20476d1060e584762f6f88e69
-  owner: cnpolaris-tian
-  repo: giteePagesImages
-  path: image_path/
-  message: add image_path
-  url: https://gitee.com/api/v5/repos/%s/%s/contents/%s
 
 secure:
   ignored:

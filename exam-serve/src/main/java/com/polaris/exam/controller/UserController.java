@@ -111,52 +111,18 @@ public class UserController {
             return RespBean.success("成功",userResponse);
         }
     }
-    @ApiOperation(value = "上传头像")
-    @PostMapping("/uploadImg")
-    public RespBean uploadImg(Principal principal, @RequestBody MultipartFile file) throws Exception{
-        Date now = new Date();
-        String originalFilename = file.getOriginalFilename();
-        if(originalFilename==null){
-            return RespBean.error("文件不存在");
-        }
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-        String fileName = now.getTime()+ CreateUuid.createUuid()+suffix;
-        String encode = Base64.encode(file.getBytes());
-
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("access_token", BED_ACCESS_TOKEN);
-        paramMap.put("message",BED_MESSAGE);
-        paramMap.put("content",encode);
-
-        String targetDir = BED_PATH+fileName;
-        String requestUrl = String.format(BED_URL,BED_OWNER,BED_REPO,targetDir);
-        String resultJson = HttpUtil.post(requestUrl, paramMap);
-        JSONObject jsonObject = JSONUtil.parseObj(resultJson);
-        if(jsonObject==null || jsonObject.getObj("commit")==null){
-            return RespBean.error("上传失败");
-        }
-        JSONObject content = JSONUtil.parseObj(jsonObject.getObj("content"));
-        String avatar  = content.getObj("download_url").toString();
-//        User user = userService.getUserByUsername(principal.getName());
-//        user.setAvatar(avatar);
-//        userService.updateById(user);
-//        cacheService.setUser(user);
-        return RespBean.success("上传成功",avatar);
-    }
-
-    @PostMapping("/uploadAvatar")
+    @PostMapping("/avatar/save")
     public RespBean uploadAvatar(Principal principal, @RequestBody String url){
         User user = userService.getUserByUsername(principal.getName());
 
         if(url.isEmpty()){
-            return RespBean.error("上传失败", user.getAvatar());
+            return RespBean.error("保存头像失败", user.getAvatar());
         }
 
         user.setAvatar(url);
         userService.updateById(user);
         cacheService.setUser(user);
-        return RespBean.success("上传成功",url);
+        return RespBean.success("更新头像成功",url);
     }
 
     @ApiOperation(value = "更新密码")

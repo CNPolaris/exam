@@ -136,35 +136,6 @@ public class VideoController {
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         }
     }
-    @ApiOperation(value = "上传封面")
-    @PostMapping("/upload/cover")
-    public RespBean uploadCover(@RequestBody MultipartFile file) throws Exception{
-        Date now = new Date();
-        String originalFilename = file.getOriginalFilename();
-        if(originalFilename==null){
-            return RespBean.error("文件不存在");
-        }
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-
-        String fileName = now.getTime()+ CreateUuid.createUuid()+suffix;
-        String encode = Base64.encode(file.getBytes());
-
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("access_token", BED_ACCESS_TOKEN);
-        paramMap.put("message",BED_MESSAGE);
-        paramMap.put("content",encode);
-
-        String targetDir = BED_PATH+fileName;
-        String requestUrl = String.format(BED_URL,BED_OWNER,BED_REPO,targetDir);
-        String resultJson = HttpUtil.post(requestUrl, paramMap);
-        JSONObject jsonObject = JSONUtil.parseObj(resultJson);
-        if(jsonObject==null || jsonObject.getObj("commit")==null){
-            return RespBean.error("上传失败");
-        }
-        JSONObject content = JSONUtil.parseObj(jsonObject.getObj("content"));
-        String cover  = content.getObj("download_url").toString();
-        return RespBean.success("上传成功",cover);
-    }
 
     @ApiOperation(value = "保存视频")
     @PostMapping("/save")

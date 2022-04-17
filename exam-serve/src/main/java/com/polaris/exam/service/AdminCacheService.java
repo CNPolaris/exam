@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
+import com.polaris.exam.dto.paper.ExamPaperSubmit;
 import com.polaris.exam.dto.question.QuestionResponse;
 import com.polaris.exam.pojo.Permission;
 import com.polaris.exam.pojo.User;
@@ -233,4 +234,28 @@ public interface AdminCacheService {
      * @return Boolean
      */
     Boolean hasDoingPaper(String username,Integer paperId);
+
+    /**
+     * 缓存学生的答案
+     * @param username String
+     * @param paperId Integer
+     * @param submit ExamPaperSubmit
+     */
+    void setAnswer(String username, Integer paperId, ExamPaperSubmit submit);
+
+    /**
+     * 获取学生的缓存答案
+     * @param username String
+     * @param paperId Integer
+     * @return ExamPaperSubmit
+     */
+    ExamPaperSubmit getAnswer(String username,Integer paperId);
+
+    /**
+     * 判断是否有answer
+     * @param username String
+     * @param paperId Integer
+     * @return Boolean
+     */
+    Boolean hasAnswer(String username,Integer paperId);
 }

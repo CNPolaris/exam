@@ -1,6 +1,7 @@
 package com.polaris.exam.service.impl;
 
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
+import com.polaris.exam.dto.paper.ExamPaperSubmit;
 import com.polaris.exam.dto.question.QuestionResponse;
 import com.polaris.exam.pojo.Permission;
 import com.polaris.exam.pojo.User;
@@ -339,5 +340,20 @@ public class AdminCacheServiceImpl implements AdminCacheService {
     @Override
     public Boolean hasDoingPaper(String username, Integer paperId) {
         return redisService.hasKey("exam:doing:"+paperId+":"+username);
+    }
+
+    @Override
+    public void setAnswer(String username, Integer paperId, ExamPaperSubmit submit) {
+        redisService.set("exam:answer:"+paperId+":"+username,submit);
+    }
+
+    @Override
+    public ExamPaperSubmit getAnswer(String username, Integer paperId) {
+        return (ExamPaperSubmit) redisService.get("exam:answer:"+paperId+":"+username);
+    }
+
+    @Override
+    public Boolean hasAnswer(String username, Integer paperId) {
+        return redisService.hasKey("exam:answer:"+paperId+":"+username);
     }
 }

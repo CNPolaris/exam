@@ -11,10 +11,7 @@ import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.polaris.exam.pojo.Subject;
 import com.polaris.exam.pojo.User;
 import com.polaris.exam.pojo.UserEventLog;
-import com.polaris.exam.service.IExamPaperAnswerService;
-import com.polaris.exam.service.IExamPaperService;
-import com.polaris.exam.service.ISubjectService;
-import com.polaris.exam.service.IUserService;
+import com.polaris.exam.service.*;
 import com.polaris.exam.utils.ExamUtil;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
@@ -43,12 +40,14 @@ public class ExamPaperAnswerController {
     private final ApplicationEventPublisher eventPublisher;
     private final IExamPaperService examPaperService;
     private final ISubjectService subjectService;
-    public ExamPaperAnswerController(IExamPaperAnswerService examPaperAnswerService, IUserService userService, ApplicationEventPublisher eventPublisher, IExamPaperService examPaperService, ISubjectService subjectService) {
+    private final AdminCacheService cacheService;
+    public ExamPaperAnswerController(IExamPaperAnswerService examPaperAnswerService, IUserService userService, ApplicationEventPublisher eventPublisher, IExamPaperService examPaperService, ISubjectService subjectService, AdminCacheService cacheService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.userService = userService;
         this.eventPublisher = eventPublisher;
         this.examPaperService = examPaperService;
         this.subjectService = subjectService;
+        this.cacheService = cacheService;
     }
 
     @ApiOperation(value = "提交答案")
@@ -81,6 +80,17 @@ public class ExamPaperAnswerController {
         return RespBean.success("成功",scoreToVM);
     }
 
+    @ApiOperation(value = "设置答案缓存")
+    @PostMapping("/set")
+    public RespBean setAnswer(Principal principal,@RequestBody ExamPaperSubmit submit){
+        cacheService.setAnswer(principal.getName(), submit.getId(),submit);
+        return RespBean.success("保存成功");
+    }
+    @ApiOperation(value = "获取答案缓存")
+    @GetMapping("/get/{id}")
+    public RespBean getAnswer(Principal principal,@PathVariable Integer id){
+        return RespBean.success("获取成功",cacheService.getAnswer(principal.getName(), id));
+    }
     @ApiOperation(value = "查看试卷")
     @GetMapping("/read/{id}")
     public RespBean read(@PathVariable Integer id){

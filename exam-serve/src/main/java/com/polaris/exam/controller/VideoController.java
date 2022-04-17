@@ -55,18 +55,6 @@ public class VideoController {
     private String rootPath;
     @Value("${video.url}")
     private String rootUrl;
-    @Value("${imgBed.accessToken}")
-    private String BED_ACCESS_TOKEN;
-    @Value("${imgBed.owner}")
-    private String BED_OWNER;
-    @Value("${imgBed.repo}")
-    private String BED_REPO;
-    @Value("${imgBed.path}")
-    private String BED_PATH;
-    @Value("${imgBed.message}")
-    private String BED_MESSAGE;
-    @Value("${imgBed.url}")
-    private String BED_URL;
     private final IUserService userService;
     private final IVideoService videoService;
     private final NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;

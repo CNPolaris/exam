@@ -45,18 +45,6 @@ public class UserController {
     private  final IUserService userService;
     private final AdminCacheService cacheService;
     private final PasswordEncoder passwordEncoder;
-    @Value("${imgBed.accessToken}")
-    private String BED_ACCESS_TOKEN;
-    @Value("${imgBed.owner}")
-    private String BED_OWNER;
-    @Value("${imgBed.repo}")
-    private String BED_REPO;
-    @Value("${imgBed.path}")
-    private String BED_PATH;
-    @Value("${imgBed.message}")
-    private String BED_MESSAGE;
-    @Value("${imgBed.url}")
-    private String BED_URL;
     @Value("${type.user.student}")
     private String TYPE_STUDENT;
     @Value("${type.user.teacher}")

@@ -25,6 +25,8 @@ public class ExamPaperAnswerPageResponse {
 
     private Integer paperType;
 
+    private String paperTypeStr;
+
     private String systemScore;
 
     private Integer status;
@@ -111,6 +113,14 @@ public class ExamPaperAnswerPageResponse {
 
     public void setPaperType(Integer paperType) {
         this.paperType = paperType;
+    }
+
+    public String getPaperTypeStr() {
+        return paperTypeStr;
+    }
+
+    public void setPaperTypeStr(String paperTypeStr) {
+        this.paperTypeStr = paperTypeStr;
     }
 
     public String getSystemScore() {

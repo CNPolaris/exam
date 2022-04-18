@@ -8,6 +8,15 @@ public class ExamPaperAnswerPage {
     private Integer page;
     private Integer limit;
     private Integer subjectId;
+    private Integer createUser;
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
 
     public Integer getSubjectId() {
         return subjectId;

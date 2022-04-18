@@ -5,6 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
+import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.event.CalculateExamPaperAnswerCompleteEvent;
 import com.polaris.exam.event.UserEvent;
 import com.polaris.exam.pojo.ExamPaperAnswer;
@@ -130,17 +131,20 @@ public class ExamPaperAnswerController {
         return RespBean.success("成功",judgeScore);
     }
 
-    @ApiOperation(value = "批改列表")
-    @PostMapping("/judge/list")
+    @ApiOperation(value = "考试记录")
+    @PostMapping("/record/list")
     public RespBean studentPage(Principal principal, @RequestBody ExamPaperAnswerPage model){
         Page<ExamPaperAnswer> objectPage = new Page<>(model.getPage(), model.getLimit());
-        Page<ExamPaperAnswer> examPaperAnswerPage = examPaperAnswerService.paperList(objectPage, model.getSubjectId());
+        model.setCreateUser(userService.getUserByUsername(principal.getName()).getId());
+        //Page<ExamPaperAnswer> examPaperAnswerPage = examPaperAnswerService.paperList(objectPage, model.getSubjectId());
+        Page<ExamPaperAnswer> examPaperAnswerPage = examPaperAnswerService.studentPage(objectPage, model);
         Map<String, Object> response = new HashMap<>();
         List<ExamPaperAnswerPageResponse> examPaperAnswerPageResponseList = new ArrayList<>();
         examPaperAnswerPage.getRecords().forEach(e->{
             ExamPaperAnswerPageResponse ep = new ExamPaperAnswerPageResponse();
             Subject subject = subjectService.getById(e.getSubjectId());
             BeanUtil.copyProperties(e,ep);
+            ep.setPaperTypeStr(ExamPaperTypeEnum.fromCode(e.getPaperType()).getName());
             ep.setUserName(userService.getUsernameById(e.getCreateUser()));
             ep.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
             ep.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));

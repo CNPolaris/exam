@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public enum ExamPaperAnswerStatusEnum {
     //待批改
-    WaitJudge(1, "待批改"),
+    WaitJudge(0, "待批改"),
     //批改完成
-    Complete(2, "完成");
+    Complete(1, "完成");
 
     int code;
     String name;

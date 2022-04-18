@@ -1,7 +1,9 @@
 package com.polaris.exam.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPaperAnswerUpdate;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
+import com.polaris.exam.dto.question.QuestionPageStudentRequest;
 import com.polaris.exam.pojo.ExamPaperQuestionCustomerAnswer;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -80,4 +82,11 @@ public interface IExamPaperQuestionCustomerAnswerService extends IService<ExamPa
      * @return List<Integer>
      */
     List<Integer> selectFalseQuestionIds(Integer paperId,Integer userId);
+
+    /**
+     * 获取学生的试卷错题
+     * @param model QuestionPageStudentRequest
+     * @return Page<ExamPaperQuestionCustomerAnswer>
+     */
+    Page<ExamPaperQuestionCustomerAnswer> studentPage(QuestionPageStudentRequest model, Page<ExamPaperQuestionCustomerAnswer> epage);
 }

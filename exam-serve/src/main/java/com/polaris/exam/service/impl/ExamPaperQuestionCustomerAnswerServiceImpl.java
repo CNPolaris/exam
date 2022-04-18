@@ -4,8 +4,10 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPaperAnswerUpdate;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
+import com.polaris.exam.dto.question.QuestionPageStudentRequest;
 import com.polaris.exam.enums.QuestionTypeEnum;
 import com.polaris.exam.pojo.ExamPaperQuestionCustomerAnswer;
 import com.polaris.exam.mapper.ExamPaperQuestionCustomerAnswerMapper;
@@ -178,5 +180,15 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends ServiceImpl<Exam
             questionIds.add(e.getQuestionId());
         });
         return questionIds;
+    }
+
+    @Override
+    public Page<ExamPaperQuestionCustomerAnswer> studentPage(QuestionPageStudentRequest model,Page<ExamPaperQuestionCustomerAnswer> epage) {
+        QueryWrapper<ExamPaperQuestionCustomerAnswer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("create_user", model.getCreateUser()).eq("do_right",0);
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id",model.getSubjectId());
+        }
+        return examPaperQuestionCustomerAnswerMapper.selectPage(epage,queryWrapper);
     }
 }

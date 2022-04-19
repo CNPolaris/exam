@@ -137,7 +137,9 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     public ExamPaper deleteExamPaper(Integer id) {
         ExamPaper examPaper = examPaperMapper.selectById(id);
         examPaper.setStatus(StatusEnum.NO.getCode());
-        examPaperMapper.updateById(examPaper);
+//        examPaperMapper.updateById(examPaper);
+        textContentService.removeById(examPaper.getFrameTextContentId());
+        removeById(id);
         return examPaper;
     }
 

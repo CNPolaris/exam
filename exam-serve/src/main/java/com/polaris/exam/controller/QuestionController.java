@@ -9,7 +9,6 @@ import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
 import com.polaris.exam.dto.question.*;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.enums.QuestionTypeEnum;
-import com.polaris.exam.mapper.QuestionMapper;
 import com.polaris.exam.pojo.*;
 import com.polaris.exam.service.*;
 import com.polaris.exam.utils.ExamUtil;
@@ -42,16 +41,14 @@ public class QuestionController {
     private final IUserService userService;
     private final IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final ITextContentService textContentService;
-    private final QuestionMapper questionMapper;
     private final AdminCacheService cacheService;
     private final ISubjectService subjectService;
     @Autowired
-    public QuestionController(IQuestionService questionService, IUserService userService, IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, ITextContentService textContentService, QuestionMapper questionMapper, AdminCacheService cacheService, ISubjectService subjectService) {
+    public QuestionController(IQuestionService questionService, IUserService userService, IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, ITextContentService textContentService, AdminCacheService cacheService, ISubjectService subjectService) {
         this.questionService = questionService;
         this.userService = userService;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.textContentService = textContentService;
-        this.questionMapper = questionMapper;
         this.cacheService = cacheService;
         this.subjectService = subjectService;
     }
@@ -59,14 +56,6 @@ public class QuestionController {
     @PostMapping("/list")
     public RespBean list(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit, @RequestBody(required = false) QuestionPageParam param){
         HashMap<String, Object> data = new HashMap<>();
-        /*
-        判断redis是否有对应题库缓存
-         */
-        if(cacheService.hasQuestionList(page)){
-            data.put("data", cacheService.getQuestionList(page));
-            data.put("total",cacheService.getQuestionTotal());
-            return RespBean.success("成功",data);
-        }
 
         Page<Question> qPage = new Page<>(page, limit);
         Page<Question> questionPage = questionService.questionPage(qPage, param);
@@ -116,9 +105,9 @@ public class QuestionController {
     @ApiOperation(value = "编辑题目")
     @PostMapping("/edit")
     public RespBean edit(Principal principal,@RequestBody QuestionEditRequest model){
-        if(!validQuestionEditRequest(model)){
-            return RespBean.error("参数不能为空");
-        }
+//        if(!validQuestionEditRequest(model)){
+//            return RespBean.error("参数不能为空");
+//        }
         if(model.getId()==null){
             questionService.create(model,userService.getUserByUsername(principal.getName()).getId());
         } else {
@@ -139,7 +128,9 @@ public class QuestionController {
         Question question = questionService.selectById(id);
         if(question!=null){
             question.setStatus(StatusEnum.NO.getCode());
-            questionMapper.updateById(question);
+//            questionMapper.updateById(question);
+            textContentService.removeById(question.getInfoTextContentId());
+            questionService.removeById(question);
             return RespBean.success("删除成功");
         }
         return RespBean.error("删除失败");

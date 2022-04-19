@@ -86,7 +86,9 @@ public class LoginController {
         UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
         userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
         userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
-        userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+        if(user.getRoleId()!=UserTypeEnum.Admin.getCode()){
+            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+        }
         Class aClass = classService.getClassByUserId(user.getId());
         if(aClass!=null){
             userInfoResponse.setClassName(aClass.getClassName());

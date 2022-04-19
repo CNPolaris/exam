@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,9 +31,9 @@ import java.util.*;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "试卷管理模块", tags = "ExamPaperController")
-@RestController
-@RequestMapping("/api/exam")
+@Api(value = "试卷管理模块", tags = "管理员端")
+@RestController("AdminExamPaperController")
+@RequestMapping("/api/admin/exam")
 public class ExamPaperController {
     private final IExamPaperService examPaperService;
     private final IUserService userService;
@@ -80,63 +80,21 @@ public class ExamPaperController {
         return RespBean.success("成功", response);
     }
 
-    @ApiOperation(value = "用户自己创建的试卷列表")
-    @GetMapping("/list/my")
-    public RespBean myExamList(Principal principal, @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer limit, @RequestParam(required = false) Integer subjectId) {
-        Page<ExamPaper> ePage = new Page<>(page, limit);
-        Integer userId = userService.getUserByUsername(principal.getName()).getId();
-        Page<ExamPaper> examPaperPage = examPaperService.myExamPaperPage(ePage, userId, subjectId);
-
-        HashMap<String, Object> response = new HashMap<>();
-        response.put("total", examPaperPage.getTotal());
-
-        ArrayList<ExamResponse> paperList = new ArrayList<>();
-        List<ExamPaper> examPapers = examPaperPage.getRecords();
-
-        for (ExamPaper paper : examPapers) {
-            ExamResponse examResponse = BeanUtil.toBean(paper, ExamResponse.class);
-            examResponse.setCreateUser(userService.getUsernameById(paper.getCreateUser()));
-            paperList.add(examResponse);
-        }
-        response.put("data", paperList);
-        return RespBean.success("成功", response);
-    }
-
-    @ApiOperation(value = "创建试卷")
+    @ApiOperation(value = "管理员创建试卷")
     @PostMapping("/create")
     public RespBean createExamPaper(Principal principal, @RequestBody @Valid ExamPaperEditRequest model) {
         ExamPaper examPaper = examPaperService.saveExamPaper(model, userService.getUserByUsername(principal.getName()));
         ExamPaperEditRequest paper = examPaperService.examPaperToModel(examPaper.getId());
-        // examClassService.createExamClassRelation(examPaper.getId(),model.getClasses());
-        // paper.setClasses(model.getClasses());
         return RespBean.success("成功", paper);
     }
 
-    @ApiOperation(value = "选择试卷")
+    @ApiOperation(value = "选择查看试卷")
     @GetMapping("/select/{id}")
     public RespBean selectExamPaper(@PathVariable Integer id) {
-        // ExamPaper examPaper = examPaperService.selectExamPaper(id);
-        // if(examPaper==null){
-        // return RespBean.error("该试卷不存在");
-        // }
-        // ExamResponse examResponse = BeanUtil.toBean(examPaper, ExamResponse.class);
-        // examResponse.setCreateUser(userService.getUsernameById(examPaper.getCreateUser()));
         ExamPaperEditRequest examPaperEditRequest = examPaperService.examPaperToModel(id);
         return RespBean.success("成功", examPaperEditRequest);
     }
 
-    @ApiOperation(value = "考试")
-    @GetMapping("/do/{id}")
-    public RespBean doExamPaper(@PathVariable Integer id,Principal principal){
-        if(cacheService.hasDoingPaper(principal.getName(), id)){
-            return RespBean.success("成功",cacheService.getDoingPaper(principal.getName(), id));
-        } else {
-            ExamPaperEditRequest examPaperEditRequest = examPaperService.examPaperToModel(id);
-            cacheService.setDoingPaper(principal.getName(), id,examPaperEditRequest.getSuggestTime(),examPaperEditRequest);
-            return RespBean.success("成功",examPaperEditRequest);
-        }
-    }
     @ApiOperation(value = "更新试卷")
     @PostMapping("/update")
     public RespBean updateExamPaper(@RequestBody ExamPaperEditRequest model) {
@@ -156,7 +114,6 @@ public class ExamPaperController {
         if (examPaper == null) {
             return RespBean.error("该试卷不存在");
         }
-
         return RespBean.success("成功");
     }
 

@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
@@ -33,9 +33,9 @@ import java.util.List;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "题目管理模块",tags = "QuestionController")
-@RestController
-@RequestMapping("/api/question")
+@Api(value = "题目管理模块",tags = "管理员、教师通用")
+@RestController("AdminQuestionController")
+@RequestMapping("/api/admin/question")
 public class QuestionController {
     private final IQuestionService questionService;
     private final IUserService userService;
@@ -105,9 +105,6 @@ public class QuestionController {
     @ApiOperation(value = "编辑题目")
     @PostMapping("/edit")
     public RespBean edit(Principal principal,@RequestBody QuestionEditRequest model){
-//        if(!validQuestionEditRequest(model)){
-//            return RespBean.error("参数不能为空");
-//        }
         if(model.getId()==null){
             questionService.create(model,userService.getUserByUsername(principal.getName()).getId());
         } else {
@@ -128,7 +125,6 @@ public class QuestionController {
         Question question = questionService.selectById(id);
         if(question!=null){
             question.setStatus(StatusEnum.NO.getCode());
-//            questionMapper.updateById(question);
             textContentService.removeById(question.getInfoTextContentId());
             questionService.removeById(question);
             return RespBean.success("删除成功");

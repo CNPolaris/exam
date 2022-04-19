@@ -4,6 +4,8 @@ import com.polaris.exam.pojo.Class;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * <p>
  * 班级表 Mapper 接口
@@ -21,4 +23,12 @@ public interface ClassMapper extends BaseMapper<Class> {
     @Select("SELECT * FROM class WHERE " +
             "id = ( SELECT class_id FROM class_user WHERE user_id = #{userId})")
     Class getClassByUserId(Integer userId);
+
+    /**
+     * 根据教师Id获取所属班级信息
+     * @param tId Integer
+     * @return List<Class>
+     */
+    @Select("SELECT * FROM class WHERE id IN(SELECT class_id FROM class_teacher WHERE teacher_id =#{tId})")
+    List<Class> getClassByTeacherId(Integer tId);
 }

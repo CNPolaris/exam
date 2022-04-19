@@ -65,24 +65,12 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
             // 更新security登陆对象
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            //从redis获取token
-            //token存在
-            if(adminCacheService.hasToken(username)){
-                //更新最后登录时间
-                User user = userService.getUserByUsername(username);
-                user.setLastActiveTime(new Date());
-                userService.updateById(user);
-                token = adminCacheService.getToken(username);
-            } else {
-                // 生成Token
-                token = jwtTokenUtil.generatorToken(userDetails);
-                //更新最后登录时间
-                User user = userService.getUserByUsername(username);
-                user.setLastActiveTime(new Date());
-                userService.updateById(user);
-                //设置后台缓存
-                adminCacheService.setToken(username,token);
-            }
+            // 生成Token
+            token = jwtTokenUtil.generatorToken(userDetails);
+            //更新最后登录时间
+            User user = userService.getUserByUsername(username);
+            user.setLastActiveTime(new Date());
+            userService.updateById(user);
             loginLogService.insertLoginLog(username);
         } catch (Exception e){
             log.warn(e.getMessage());

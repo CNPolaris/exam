@@ -14,7 +14,9 @@ public enum ExamPaperTypeEnum {
     //时段试卷
     TimeLimit(2, "时段试卷"),
     //任务试卷
-    Task(3, "任务试卷");
+    Task(3, "任务试卷"),
+
+    Classes(4, "班级试卷");
 
     int code;
     String name;

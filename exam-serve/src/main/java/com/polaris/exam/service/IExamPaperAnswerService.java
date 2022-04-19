@@ -3,9 +3,11 @@ package com.polaris.exam.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPaperAnswerInfo;
 import com.polaris.exam.dto.paper.ExamPaperAnswerPage;
+import com.polaris.exam.dto.paper.ExamPaperAnswerTeacherPageRequest;
 import com.polaris.exam.dto.paper.ExamPaperSubmit;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.polaris.exam.pojo.ExamPaperQuestionCustomerAnswer;
 import com.polaris.exam.pojo.User;
 
 import java.util.List;
@@ -42,12 +44,19 @@ public interface IExamPaperAnswerService extends IService<ExamPaperAnswer> {
     ExamPaperSubmit examPaperAnswerToModel(Integer id);
 
     /**
-     * 获取学生答卷
+     * 获取学生个人考试记录
      * @param page Page<ExamPaperAnswer>
      * @param model ExamPaperAnswerPage
      * @return Page<ExamPaperAnswer>
      */
     Page<ExamPaperAnswer> studentPage(Page<ExamPaperAnswer>page,ExamPaperAnswerPage model);
+    /**
+     * 获取全部考试记录
+     * @param page Page<ExamPaperAnswer>
+     * @param model ExamPaperAnswerPage
+     * @return Page<ExamPaperAnswer>
+     */
+    Page<ExamPaperAnswer> allStudentPage(Page<ExamPaperAnswer>page,ExamPaperAnswerPage model);
 
     /**
      * 批改试卷
@@ -86,4 +95,12 @@ public interface IExamPaperAnswerService extends IService<ExamPaperAnswer> {
      * @return ExamPaperAnswer
      */
     ExamPaperAnswer lowExamPaperAnswer(Integer paperId,List<Integer> userIds);
+    /**
+     * 教师根据班级和试卷id查询考试记录
+     * @param model ExamPaperAnswerTeacherPageRequest
+     * @param page Page<ExamPaperAnswer>
+     * @return Page<ExamPaperAnswer>
+     */
+    Page<ExamPaperAnswer> getAnswerByClassAndPaper(ExamPaperAnswerTeacherPageRequest model, Page<ExamPaperAnswer> page);
+
 }

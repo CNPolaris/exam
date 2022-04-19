@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
@@ -48,8 +48,8 @@ import java.util.List;
  * @since 2022-02-15
  */
 @Api(tags = "视频管理")
-@RestController
-@RequestMapping("/api/video")
+@RestController("AdminVideoController")
+@RequestMapping("/api/admin/video")
 public class VideoController {
     @Value("${video.path}")
     private String rootPath;

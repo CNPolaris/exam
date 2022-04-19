@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,8 +26,8 @@ import java.util.Map;
  * @since 2022-02-05
  */
 @Api(tags = "登录日志")
-@RestController
-@RequestMapping("/api/log")
+@RestController("AdminLogController")
+@RequestMapping("/api/admin/log")
 public class LoginLogController {
     private final ILoginLogService loginLogService;
 

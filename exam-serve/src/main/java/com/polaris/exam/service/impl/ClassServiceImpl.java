@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -128,5 +129,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     @Override
     public Class getClassByUserId(Integer userId) {
         return classMapper.getClassByUserId(userId);
+    }
+
+    @Override
+    public List<Class> getClassByTeacherId(Integer tId) {
+        return classMapper.getClassByTeacherId(tId);
     }
 }

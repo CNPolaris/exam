@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.json.JSONObject;
@@ -24,8 +24,8 @@ import java.util.List;
  * @since 2022-01-07
  */
 @Api(value = "权限管理模块",tags = "PermissionController")
-@RestController
-@RequestMapping("/api/permission")
+@RestController("AdminPermissionController")
+@RequestMapping("/api/admin/permission")
 public class PermissionController {
     private final IPermissionService permissionService;
     private final IRolePermissionService rolePermissionService;

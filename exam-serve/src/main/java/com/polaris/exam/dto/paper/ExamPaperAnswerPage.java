@@ -9,6 +9,15 @@ public class ExamPaperAnswerPage {
     private Integer limit;
     private Integer subjectId;
     private Integer createUser;
+    private Integer paperId;
+
+    public Integer getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Integer paperId) {
+        this.paperId = paperId;
+    }
 
     public Integer getCreateUser() {
         return createUser;

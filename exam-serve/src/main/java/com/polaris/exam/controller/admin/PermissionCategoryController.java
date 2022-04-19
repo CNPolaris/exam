@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import com.polaris.exam.pojo.PermissionCategory;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
  * @author polaris
  * @since 2022-01-26
  */
-@RestController
-@RequestMapping("/api/category")
+@RestController("AdminCategoryController")
+@RequestMapping("/api/admin/category")
 public class PermissionCategoryController {
     private final IPermissionCategoryService permissionCategoryService;
 

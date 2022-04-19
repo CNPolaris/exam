@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
  * @author polaris
  * @since 2022-01-17
  */
-@Api(value = "班级管理模块", tags = "班级管理模块")
-@RestController
-@RequestMapping("/api/class")
+@Api(value = "班级管理模块", tags = "管理员端")
+@RestController("AdminClassController")
+@RequestMapping("/api/admin/class")
 public class ClassController {
     private final IClassService classService;
     private final IClassUserService classUserService;
@@ -54,7 +54,7 @@ public class ClassController {
     }
 
     @ApiOperation(value = "查询班级学生列表")
-    @GetMapping("/list/student/{id}")
+    @GetMapping("/student/{id}")
     public RespBean classStudentList(@PathVariable Integer id){
         List<Integer> userIds = classUserService.selectStudentIdByClassId(id);
         List<User> users = userService.selectByIds(userIds);
@@ -62,8 +62,6 @@ public class ClassController {
         List<UserResponse> userResponseList = users.stream()
                 .map(user -> BeanUtil.toBean(user, UserResponse.class))
                 .collect(Collectors.toList());
-
-
         return RespBean.success("成功", userResponseList);
     }
 

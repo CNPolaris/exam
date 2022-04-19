@@ -107,13 +107,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public User getUserByUsername(String username) {
-//        User user = cacheService.getUser(username);
-//        if(user==null){
-//            user = userMapper.selectOne(new QueryWrapper<User>().eq("user_name", username));
-//            if(user!=null){
-//                cacheService.setUser(user);
-//            }
-//        }
         return userMapper.selectOne(new QueryWrapper<User>().eq("user_name",username));
     }
 

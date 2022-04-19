@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.json.JSONObject;
@@ -22,7 +22,7 @@ import java.security.Principal;
  * @since 2022-01-07
  */
 @Api(value = "角色管理模块",tags="RoleController")
-@RestController
+@RestController("AdminRoleController")
 @RequestMapping("/api/admin/role")
 public class RoleController {
     private final IRoleService roleService;

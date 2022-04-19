@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.paper.ExamPaperAnswerTeacherPageRequest;
 import com.polaris.exam.dto.paper.ExamPaperAnswerUpdate;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
 import com.polaris.exam.dto.question.QuestionPageStudentRequest;
@@ -89,4 +90,12 @@ public interface IExamPaperQuestionCustomerAnswerService extends IService<ExamPa
      * @return Page<ExamPaperQuestionCustomerAnswer>
      */
     Page<ExamPaperQuestionCustomerAnswer> studentPage(QuestionPageStudentRequest model, Page<ExamPaperQuestionCustomerAnswer> epage);
+
+    /**
+     * 教师根据班级和试卷id查询考试记录
+     * @param model ExamPaperAnswerTeacherPageRequest
+     * @param page Page<ExamPaperQuestionCustomerAnswer>
+     * @return Page<ExamPaperQuestionCustomerAnswer>
+     */
+    Page<ExamPaperQuestionCustomerAnswer> getAnswerByClassAndPaper(ExamPaperAnswerTeacherPageRequest model, Page<ExamPaperQuestionCustomerAnswer> page);
 }

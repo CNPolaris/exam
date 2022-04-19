@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- * 试卷题目答案表 前端控制器
+ * 任务表 前端控制器
  * </p>
  *
  * @author polaris
  * @since 2022-01-08
  */
 @RestController
-@RequestMapping("/exam-paper-question-customer-answer")
-public class ExamPaperQuestionCustomerAnswerController {
+@RequestMapping("/task-exam")
+public class TaskExamController {
 
 }

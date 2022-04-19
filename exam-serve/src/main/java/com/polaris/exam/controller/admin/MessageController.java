@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
  * @since 2022-01-08
  */
 @Api(value = "消息管理模块")
-@RestController
-@RequestMapping("/api/message")
+@RestController("AdminMessageController")
+@RequestMapping("/api/admin/message")
 public class MessageController {
     private final IMessageService messageService;
     private final IUserService userService;

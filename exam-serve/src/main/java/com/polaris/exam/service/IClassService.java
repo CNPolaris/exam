@@ -5,6 +5,8 @@ import com.polaris.exam.dto.classes.ClassRequest;
 import com.polaris.exam.pojo.Class;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 班级表 服务类
@@ -65,4 +67,10 @@ public interface IClassService extends IService<Class> {
      * @return Class
      */
     Class getClassByUserId(Integer userId);
+    /**
+     * 根据教师Id获取所属班级信息
+     * @param tId Integer
+     * @return List<Class>
+     */
+    List<Class> getClassByTeacherId(Integer tId);
 }

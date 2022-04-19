@@ -13,11 +13,8 @@ import com.polaris.exam.mapper.QuestionMapper;
 import com.polaris.exam.mapper.TaskExamCustomerAnswerMapper;
 import com.polaris.exam.pojo.*;
 import com.polaris.exam.mapper.ExamPaperAnswerMapper;
-import com.polaris.exam.service.IExamPaperAnswerService;
+import com.polaris.exam.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.polaris.exam.service.IExamPaperQuestionCustomerAnswerService;
-import com.polaris.exam.service.ITextContentService;
-import com.polaris.exam.service.IUserService;
 import com.polaris.exam.utils.ExamUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +42,8 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
     private final ITextContentService textContentService;
     private final IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final IUserService userService;
-
-    public ExamPaperAnswerServiceImpl(ExamPaperMapper examPaperMapper, ExamPaperAnswerMapper examPaperAnswerMapper, QuestionMapper questionMapper, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper, ITextContentService textContentService, IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, IUserService userService) {
+    private final IClassUserService classUserService;
+    public ExamPaperAnswerServiceImpl(ExamPaperMapper examPaperMapper, ExamPaperAnswerMapper examPaperAnswerMapper, QuestionMapper questionMapper, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper, ITextContentService textContentService, IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, IUserService userService, IClassUserService classUserService) {
         this.examPaperMapper = examPaperMapper;
         this.examPaperAnswerMapper = examPaperAnswerMapper;
         this.questionMapper = questionMapper;
@@ -54,6 +51,7 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         this.textContentService = textContentService;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.userService = userService;
+        this.classUserService = classUserService;
     }
 
     @Override
@@ -169,6 +167,21 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
     }
 
     @Override
+    public Page<ExamPaperAnswer> allStudentPage(Page<ExamPaperAnswer> page, ExamPaperAnswerPage model) {
+        QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id", model.getSubjectId());
+        }
+        if(model.getPaperId()!=null){
+            queryWrapper.eq("exam_paper_id", model.getPaperId());
+        }
+        if(model.getCreateUser()!=null){
+            queryWrapper.eq("create_user",model.getCreateUser());
+        }
+        return examPaperAnswerMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
     public Page<ExamPaperAnswer> paperList(Page<ExamPaperAnswer> page, Integer subjectId) {
         QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status",ExamPaperAnswerStatusEnum.WaitJudge.getCode());
@@ -231,6 +244,17 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("exam_paper_id",paperId).in("create_user",userIds).orderByDesc("user_score");
         return examPaperAnswerMapper.selectList(queryWrapper).stream().findFirst().get();
+    }
+
+    @Override
+    public Page<ExamPaperAnswer> getAnswerByClassAndPaper(ExamPaperAnswerTeacherPageRequest model, Page<ExamPaperAnswer> page) {
+        QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
+        List<Integer> userIds = classUserService.selectStudentIdByClassId(model.getClassId());
+        queryWrapper.eq("subject_id",model.getSubjectId());
+        queryWrapper.eq("exam_paper_id", model.getPaperId());
+        queryWrapper.eq("status", model.getStatus());
+        queryWrapper.in("create_user", userIds);
+        return examPaperAnswerMapper.selectPage(page,queryWrapper);
     }
 
     /**

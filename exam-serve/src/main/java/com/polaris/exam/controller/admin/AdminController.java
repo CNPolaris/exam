@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 import com.polaris.exam.dto.user.AllocPermissionParam;
 import com.polaris.exam.enums.UserTypeEnum;
@@ -23,8 +23,8 @@ import java.io.IOException;
  * @version 1.0
  */
 @Api(value = "系统管理员模块",tags = "系统管理员模块")
-@RestController
-@RequestMapping("/api")
+@RestController("AdminController")
+@RequestMapping("/api/admin")
 public class AdminController {
     private final IUserService userService;
     private final MonitorService monitorService;
@@ -122,22 +122,4 @@ public class AdminController {
         return RespBean.success("查询系统信息",monitorService.getServeInfo());
     }
 
-    @ApiOperation(value = "上传图片")
-    @PostMapping("/image/upload")
-    public RespBean uploadImage(@RequestBody MultipartFile file) throws IOException {
-        try {
-            if(file.isEmpty()){
-                return RespBean.error("图片不能为空");
-            }
-            String imgName = StringUtils.getRandomImgName(file.getOriginalFilename());
-            String image = ossAdminService.uploadImage(file.getInputStream(), imgName);
-            if(image.isEmpty()){
-                return RespBean.error("上传图片失败");
-            }
-            return RespBean.success("上传图片成功",image);
-        }catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
-        return RespBean.error("上传失败");
-    }
 }

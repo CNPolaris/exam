@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
@@ -39,8 +39,8 @@ import java.util.List;
  * @since 2022-01-07
  */
 @Api(value = "用户管理模块",tags="UserController")
-@RestController
-@RequestMapping("/api/user")
+@RestController("AdminUserController")
+@RequestMapping("/api/admin/user")
 public class UserController {
     private  final IUserService userService;
     private final AdminCacheService cacheService;
@@ -151,21 +151,10 @@ public class UserController {
     @PostMapping("/student/list")
     public RespBean getStudentList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit, @RequestParam(required = false) String username){
         HashMap<String, Object> response = new HashMap<>();
-//        if(cacheService.hasUserList(TYPE_STUDENT,page)&& cacheService.hasUserTotal(TYPE_STUDENT)){
-//            response.put("data",cacheService.getUserList(TYPE_STUDENT, page));
-//            response.put("total",cacheService.getUserTotal(TYPE_STUDENT));
-//            return RespBean.success("成功", response);
-//        }
         Page<User> objectPage = new Page<>(page, limit);
         Page<User> studentList = userService.getStudentList(objectPage, username);
-
         response.put("total", studentList.getTotal());
         response.put("data",studentList.getRecords());
-//        cacheService.setUserList(studentList.getRecords(),TYPE_STUDENT,page);
-//        if(!cacheService.hasUserTotal(TYPE_STUDENT)){
-//            cacheService.setUserTotal(TYPE_STUDENT,studentList.getTotal());
-//        }
-
         return RespBean.success("成功", response);
     }
 
@@ -173,21 +162,11 @@ public class UserController {
     @PostMapping("/teacher/list")
     public RespBean getTeacherList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit, @RequestParam(required = false) String username){
         HashMap<String, Object> response = new HashMap<>();
-//        if(cacheService.hasUserList(TYPE_TEACHER,page)&& cacheService.hasUserTotal(TYPE_TEACHER)){
-//            response.put("data",cacheService.getUserList(TYPE_TEACHER, page));
-//            response.put("total",cacheService.getUserTotal(TYPE_TEACHER));
-//            return RespBean.success("成功", response);
-//        }
         Page<User> objectPage = new Page<>(page, limit);
         Page<User> teacherList = userService.getTeacherList(objectPage, username);
 
         response.put("total", teacherList.getTotal());
         response.put("data",teacherList.getRecords());
-
-//        cacheService.setUserList(teacherList.getRecords(),TYPE_TEACHER,page);
-//        if(!cacheService.hasUserTotal(TYPE_TEACHER)){
-//            cacheService.setUserTotal(TYPE_TEACHER,teacherList.getTotal());
-//        }
         return RespBean.success("成功", response);
     }
 
@@ -195,21 +174,10 @@ public class UserController {
     @PostMapping("/admin/list")
     public RespBean getAdminList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit, @RequestParam(required = false) String username){
         HashMap<String, Object> response = new HashMap<>();
-//        if(cacheService.hasUserList(TYPE_ADMIN,page)&& cacheService.hasUserTotal(TYPE_ADMIN)){
-//            response.put("data",cacheService.getUserList(TYPE_ADMIN, page));
-//            response.put("total",cacheService.getUserTotal(TYPE_ADMIN));
-//            return RespBean.success("成功", response);
-//        }
         Page<User> objectPage = new Page<>(page, limit);
         Page<User> adminList = userService.getAdminList(objectPage, username);
         response.put("total", adminList.getTotal());
         response.put("data",adminList.getRecords());
-
-//        cacheService.setUserList(adminList.getRecords(),TYPE_ADMIN,page);
-//        if(!cacheService.hasUserTotal(TYPE_ADMIN)){
-//            cacheService.setUserTotal(TYPE_ADMIN,adminList.getTotal());
-//        }
-
         return RespBean.success("成功", response);
     }
 

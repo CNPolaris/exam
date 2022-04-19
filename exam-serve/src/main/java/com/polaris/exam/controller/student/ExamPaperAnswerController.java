@@ -1,5 +1,4 @@
-package com.polaris.exam.controller;
-
+package com.polaris.exam.controller.student;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -25,16 +24,12 @@ import java.security.Principal;
 import java.util.*;
 
 /**
- * <p>
- * 试卷答案表 前端控制器
- * </p>
- *
- * @author polaris
- * @since 2022-01-08
+ * @author CNPolaris
+ * @version 1.0
  */
-@Api(value = "试卷答案管理模块",tags = "ExamPaperAnswerController")
-@RestController
-@RequestMapping("/api/exam/answer")
+@Api(value = "试卷答案管理模块",tags = "学生端")
+@RestController("StudentAnswerController")
+@RequestMapping("/api/student/exam/answer")
 public class ExamPaperAnswerController {
     private final IExamPaperAnswerService examPaperAnswerService;
     private final IUserService userService;
@@ -51,7 +46,7 @@ public class ExamPaperAnswerController {
         this.cacheService = cacheService;
     }
 
-    @ApiOperation(value = "提交答案")
+    @ApiOperation(value = "学生提交考试答案")
     @PostMapping("/submit")
     public RespBean answerSubmit(Principal principal, @RequestBody @Valid ExamPaperSubmit examPaperSubmit){
         User user = userService.getUserByUsername(principal.getName());
@@ -81,18 +76,18 @@ public class ExamPaperAnswerController {
         return RespBean.success("成功",scoreToVM);
     }
 
-    @ApiOperation(value = "设置答案缓存")
+    @ApiOperation(value = "考试期间设置答案缓存")
     @PostMapping("/set")
     public RespBean setAnswer(Principal principal,@RequestBody ExamPaperSubmit submit){
         cacheService.setAnswer(principal.getName(), submit.getId(),submit);
         return RespBean.success("保存成功");
     }
-    @ApiOperation(value = "获取答案缓存")
+    @ApiOperation(value = "考试期间获取答案缓存")
     @GetMapping("/get/{id}")
     public RespBean getAnswer(Principal principal,@PathVariable Integer id){
         return RespBean.success("获取成功",cacheService.getAnswer(principal.getName(), id));
     }
-    @ApiOperation(value = "查看试卷")
+    @ApiOperation(value = "学生查看试卷详情")
     @GetMapping("/read/{id}")
     public RespBean read(@PathVariable Integer id){
         ExamPaperAnswer examPaperAnswer = examPaperAnswerService.getById(id);
@@ -104,7 +99,7 @@ public class ExamPaperAnswerController {
         return RespBean.success("成功",read);
     }
 
-    @ApiOperation(value = "阅卷功能")
+    @ApiOperation(value = "自主阅卷")
     @PostMapping("/edit")
     public RespBean edit(Principal principal,@RequestBody @Valid ExamPaperSubmit examPaperSubmit){
         boolean notJudge = examPaperSubmit.getAnswerItems().stream().anyMatch(i -> i.getDoRight() == null && i.getScore() == null);
@@ -131,7 +126,7 @@ public class ExamPaperAnswerController {
         return RespBean.success("成功",judgeScore);
     }
 
-    @ApiOperation(value = "考试记录")
+    @ApiOperation(value = "个人考试记录")
     @PostMapping("/record/list")
     public RespBean studentPage(Principal principal, @RequestBody ExamPaperAnswerPage model){
         Page<ExamPaperAnswer> objectPage = new Page<>(model.getPage(), model.getLimit());

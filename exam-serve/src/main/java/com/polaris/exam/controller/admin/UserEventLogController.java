@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,8 +24,8 @@ import java.util.HashMap;
  * @since 2022-01-08
  */
 @Api(tags = "用户操作日志")
-@RestController
-@RequestMapping("/api/user/event/log")
+@RestController("AdminEventLogController")
+@RequestMapping("/api/admin/user/event/log")
 public class UserEventLogController {
     private final IUserEventLogService userEventLogService;
 

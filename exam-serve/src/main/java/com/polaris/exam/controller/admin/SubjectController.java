@@ -1,4 +1,4 @@
-package com.polaris.exam.controller;
+package com.polaris.exam.controller.admin;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,8 +21,8 @@ import java.security.Principal;
  * @since 2022-01-08
  */
 @Api(value = "学科管理模块",tags = "SubjectController")
-@RestController
-@RequestMapping("/api/subject")
+@RestController("AdminSubjectController")
+@RequestMapping("/api/admin/subject")
 public class SubjectController {
     private final ISubjectService subjectService;
 

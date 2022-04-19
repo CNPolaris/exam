@@ -4,8 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.polaris.exam.dto.user.LoginParam;
 import com.polaris.exam.dto.user.RegisterParam;
+import com.polaris.exam.dto.user.UserInfoResponse;
+import com.polaris.exam.enums.LevelEnum;
+import com.polaris.exam.enums.SexTypeEnum;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.enums.UserTypeEnum;
+import com.polaris.exam.pojo.Class;
 import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.*;
 import com.polaris.exam.utils.CreateUuid;
@@ -79,21 +83,16 @@ public class LoginController {
         }
         String username = principal.getName();
         User user = userService.getUserByUsername(username);
-        Map<String, Object> userInfo=new HashMap<>();
-        userInfo.put("username",user.getUserName());
-        userInfo.put("uuid",user.getUserUuid());
-        userInfo.put("real_name",user.getRealName());
-        userInfo.put("age",user.getAge());
-        userInfo.put("sex",user.getSex());
-        userInfo.put("birth_day",user.getBirthDay());
-        userInfo.put("user_level",user.getUserLevel());
-        userInfo.put("phone",user.getPhone());
-        userInfo.put("roles",roleService.getRoleNameById(user.getRoleId()));
-        userInfo.put("roleId",user.getRoleId());
-        userInfo.put("avatar",user.getAvatar());
-        userInfo.put("create_time",user.getCreateTime());
-        userInfo.put("last_time",user.getLastActiveTime());
-        return RespBean.success("获取消息成功",userInfo);
+        UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
+        userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
+        userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
+        userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+        Class aClass = classService.getClassByUserId(user.getId());
+        if(aClass!=null){
+            userInfoResponse.setClassName(aClass.getClassName());
+            userInfoResponse.setClassId(aClass.getId());
+        }
+        return RespBean.success("获取用户信息成功", userInfoResponse);
     }
 
     @ApiOperation(value = "面板数据")

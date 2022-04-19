@@ -2,6 +2,7 @@ package com.polaris.exam.mapper;
 
 import com.polaris.exam.pojo.Class;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -12,5 +13,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2022-01-17
  */
 public interface ClassMapper extends BaseMapper<Class> {
-
+    /**
+     * 根据用户id获取所属班级信息
+     * @param userId Integer
+     * @return Class
+     */
+    @Select("SELECT * FROM class WHERE " +
+            "id = ( SELECT class_id FROM class_user WHERE user_id = #{userId})")
+    Class getClassByUserId(Integer userId);
 }

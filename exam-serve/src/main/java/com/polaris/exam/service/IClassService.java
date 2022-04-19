@@ -58,4 +58,11 @@ public interface IClassService extends IService<Class> {
      * @return Class
      */
     Class editClass(ClassRequest model);
+
+    /**
+     * 根据用户id查询所属班级信息
+     * @param userId Integer
+     * @return Class
+     */
+    Class getClassByUserId(Integer userId);
 }

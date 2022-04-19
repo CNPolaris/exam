@@ -124,4 +124,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
         save(aClass);
         return aClass;
     }
+
+    @Override
+    public Class getClassByUserId(Integer userId) {
+        return classMapper.getClassByUserId(userId);
+    }
 }

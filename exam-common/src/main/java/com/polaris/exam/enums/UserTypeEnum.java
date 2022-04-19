@@ -9,9 +9,9 @@ import java.util.Map;
  * @version 1.0
  */
 public enum UserTypeEnum {
-    Admin(1,"系统管理员"),
-    Teacher(2,"教师"),
-    Student(3,"学生");
+    Admin(1,"admin"),
+    Teacher(2,"teacher"),
+    Student(3,"student");
 
     int code;
     String name;

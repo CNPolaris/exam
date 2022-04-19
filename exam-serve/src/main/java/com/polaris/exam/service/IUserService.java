@@ -124,6 +124,13 @@ public interface IUserService extends IService<User> {
     List<User> selectByIds(List<Integer>ids);
 
     /**
+     * 分页查询班级学生
+     * @param page Page<User>
+     * @param ids List<Integer>
+     * @return Page<User>
+     */
+    Page<User> selectByIds(Page<User> page, List<Integer>ids);
+    /**
      * 更新用户信息
      * @param username String
      * @param info UpdateUserInfo

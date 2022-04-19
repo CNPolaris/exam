@@ -3,6 +3,8 @@ package com.polaris.exam.service;
 import com.polaris.exam.pojo.ClassTeacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 班级-教师关联表 服务类

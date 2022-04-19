@@ -31,4 +31,20 @@ public interface ClassMapper extends BaseMapper<Class> {
      */
     @Select("SELECT * FROM class WHERE id IN(SELECT class_id FROM class_teacher WHERE teacher_id =#{tId})")
     List<Class> getClassByTeacherId(Integer tId);
+
+    /**
+     * 获取某个教师所属的班级ids
+     * @param tId Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT  class_id FROM class_teacher WHERE teacher_id =#{tId}")
+    List<Integer> getClassIds(Integer tId);
+
+    /**
+     * 根据试卷id获取所属的班级ids
+     * @param paperId Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT class_id FROM exam_class WHERE exam_id = #{paperId}")
+    List<Integer> getClassIdsByExamId(Integer paperId);
 }

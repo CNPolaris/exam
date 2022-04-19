@@ -7,6 +7,8 @@ import com.polaris.exam.dto.paper.ExamPaperEditRequest;
 import com.polaris.exam.dto.paper.ExamResponse;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.enums.LevelEnum;
+import com.polaris.exam.enums.StatusEnum;
+import com.polaris.exam.pojo.ExamClass;
 import com.polaris.exam.pojo.ExamPaper;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.polaris.exam.pojo.User;
@@ -38,18 +40,20 @@ public class ExamPaperController {
     private final IExamPaperService examPaperService;
     private final IUserService userService;
     private final IExamPaperAnswerService examPaperAnswerService;
+    private final IExamClassService examClassService;
     private final IClassUserService classUserService;
     private final ISubjectService subjectService;
     private final AdminCacheService cacheService;
     private final IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
 
     public ExamPaperController(IExamPaperService examPaperService, IUserService userService,
-            IExamPaperAnswerService examPaperAnswerService, IClassUserService classUserService,
-            ISubjectService subjectService, AdminCacheService cacheService,
-            IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService) {
+                               IExamPaperAnswerService examPaperAnswerService, IExamClassService examClassService, IClassUserService classUserService,
+                               ISubjectService subjectService, AdminCacheService cacheService,
+                               IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService) {
         this.examPaperService = examPaperService;
         this.userService = userService;
         this.examPaperAnswerService = examPaperAnswerService;
+        this.examClassService = examClassService;
         this.classUserService = classUserService;
         this.subjectService = subjectService;
         this.cacheService = cacheService;

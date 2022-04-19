@@ -1,6 +1,7 @@
 package com.polaris.exam.controller.teacher;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.classes.ClassRequest;
 import com.polaris.exam.dto.user.UserResponse;
 import com.polaris.exam.enums.UserTypeEnum;
@@ -15,7 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -36,22 +39,39 @@ public class ClassController {
     }
     @ApiOperation(value = "班级列表")
     @PostMapping("/list")
-    public RespBean classPage(Principal principal){
+    public RespBean classList(Principal principal){
         User user = userService.getUserByUsername(principal.getName());
         if(UserTypeEnum.Teacher.getCode()!=user.getRoleId()){
             return RespBean.error("无权访问");
         }
         return RespBean.success("获取教师管理班级信息成功",classService.getClassByTeacherId(user.getId()));
     }
+
+    @ApiOperation("分页获取班级列表")
+    @PostMapping("/page")
+    public RespBean classPage(Principal principal, @RequestBody ClassRequest model){
+        User user = userService.getUserByUsername(principal.getName());
+        Page<Class> objectPage = new Page<>(model.getPage(), model.getLimit());
+        Page<Class> classPage = classService.getClassByTeacherId(objectPage, user.getId());
+        HashMap<String, Object> re = new HashMap<>(2);
+        re.put("total",classPage.getTotal());
+        re.put("list", classPage.getRecords());
+        return RespBean.success("成功",re);
+    }
+
     @ApiOperation(value = "查询班级学生列表")
-    @GetMapping("/student/{id}")
-    public RespBean classStudentList(@PathVariable Integer id){
+    @PostMapping("/student/{id}")
+    public RespBean classStudentList(@PathVariable Integer id,@RequestBody ClassRequest model){
         List<Integer> userIds = classUserService.selectStudentIdByClassId(id);
-        List<User> users = userService.selectByIds(userIds);
-        List<UserResponse> userResponseList = users.stream()
+        Page<User> objectPage = new Page<>(model.getPage(), model.getLimit());
+        Page<User> userPage = userService.selectByIds(objectPage, userIds);
+        List<UserResponse> userResponseList = userPage.getRecords().stream()
                 .map(user -> BeanUtil.toBean(user, UserResponse.class))
                 .collect(Collectors.toList());
-        return RespBean.success("成功", userResponseList);
+        Map<String, Object> re = new HashMap<>(2);
+        re.put("total", userPage.getTotal());
+        re.put("list", userPage.getRecords());
+        return RespBean.success("成功", re);
     }
     @ApiOperation(value = "添加或编辑班级")
     @PostMapping("/edit")

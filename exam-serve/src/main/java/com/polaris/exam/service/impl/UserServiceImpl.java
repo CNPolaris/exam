@@ -214,6 +214,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
+    public Page<User> selectByIds(Page<User> page, List<Integer> ids) {
+        return userMapper.selectPage(page,new QueryWrapper<User>().in("id",ids));
+    }
+
+    @Override
     public User updateUserInfo(String username, UpdateUserInfo info) {
         User user = getUserByUsername(username);
         user.setUserLevel(info.getUserLevel());

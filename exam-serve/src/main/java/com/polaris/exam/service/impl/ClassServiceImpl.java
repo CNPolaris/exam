@@ -135,4 +135,17 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     public List<Class> getClassByTeacherId(Integer tId) {
         return classMapper.getClassByTeacherId(tId);
     }
+
+    @Override
+    public Page<Class> getClassByTeacherId(Page<Class> page, Integer tId) {
+        List<Integer> classIds = classMapper.getClassIds(tId);
+        QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id",classIds);
+        return classMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public List<Integer> getClassIdsByExamId(Integer paperId) {
+        return classMapper.getClassIdsByExamId(paperId);
+    }
 }

@@ -73,4 +73,18 @@ public interface IClassService extends IService<Class> {
      * @return List<Class>
      */
     List<Class> getClassByTeacherId(Integer tId);
+
+    /**
+     * 根据教师Id获取所属班级信息
+     * @param tId Integer
+     * @return Page<Class>
+     */
+    Page<Class> getClassByTeacherId(Page<Class> page, Integer tId);
+
+    /**
+     * 根据试卷id获取班级ids
+     * @param paperId Integer
+     * @return List<Integer>
+     */
+    List<Integer> getClassIdsByExamId(Integer paperId);
 }

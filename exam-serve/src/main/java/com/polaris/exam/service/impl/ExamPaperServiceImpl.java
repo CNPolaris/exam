@@ -10,11 +10,8 @@ import com.polaris.exam.dto.question.QuestionEditRequest;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.mapper.QuestionMapper;
-import com.polaris.exam.pojo.ExamPaper;
+import com.polaris.exam.pojo.*;
 import com.polaris.exam.mapper.ExamPaperMapper;
-import com.polaris.exam.pojo.Question;
-import com.polaris.exam.pojo.TextContent;
-import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.polaris.exam.utils.ExamUtil;
@@ -41,12 +38,16 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     private final ExamPaperMapper examPaperMapper;
     private final QuestionMapper questionMapper;
     private final IQuestionService questionService;
-    public ExamPaperServiceImpl(ITextContentService textContentService, ISubjectService subjectService, ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, IQuestionService questionService) {
+    private final IClassService classService;
+    private final IExamClassService examClassService;
+    public ExamPaperServiceImpl(ITextContentService textContentService, ISubjectService subjectService, ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, IQuestionService questionService, IClassService classService, IExamClassService examClassService) {
         this.textContentService = textContentService;
         this.subjectService = subjectService;
         this.examPaperMapper = examPaperMapper;
         this.questionMapper = questionMapper;
         this.questionService = questionService;
+        this.classService = classService;
+        this.examClassService = examClassService;
     }
 
     @Override
@@ -114,6 +115,18 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         examPaper.setStatus(StatusEnum.OK.getCode());
         examPaperFromModel(examPaperEditRequest,examPaper,titleItems);
         examPaperMapper.insert(examPaper);
+
+        // 如果是班级试卷
+        if(examPaperEditRequest.getPaperType()==ExamPaperTypeEnum.Classes.getCode() && !examPaperEditRequest.getClasses().isEmpty()){
+            examPaperEditRequest.getClasses().forEach(c -> {
+                ExamClass examClass = new ExamClass();
+                examClass.setExamId(examPaper.getId());
+                examClass.setClassId(c);
+                examClass.setStatus(StatusEnum.OK.getCode());
+                examClassService.save(examClass);
+            });
+        }
+
         return examPaper;
     }
 
@@ -130,6 +143,16 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         BeanUtil.copyProperties(examPaperEditRequest,examPaper);
         examPaperFromModel(examPaperEditRequest, examPaper, titleItems);
         examPaperMapper.updateById(examPaper);
+        // 如果是班级试卷
+        if(examPaperEditRequest.getPaperType()==ExamPaperTypeEnum.Classes.getCode() && !examPaperEditRequest.getClasses().isEmpty()){
+            examPaperEditRequest.getClasses().forEach(c -> {
+                ExamClass examClass = new ExamClass();
+                examClass.setExamId(examPaper.getId());
+                examClass.setClassId(c);
+                examClass.setStatus(StatusEnum.OK.getCode());
+                examClassService.saveOrUpdate(examClass);
+            });
+        }
         return examPaper;
     }
 
@@ -171,6 +194,9 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         if (ExamPaperTypeEnum.TimeLimit == ExamPaperTypeEnum.fromCode(examPaper.getPaperType())) {
             List<String> limitDateTime = Arrays.asList(DateUtil.formatDateTime(examPaper.getLimitStartTime()), DateUtil.formatDateTime(examPaper.getLimitEndTime()));
             examPaperEditRequest.setLimitDateTime(limitDateTime);
+        }
+        if(examPaper.getPaperType()==ExamPaperTypeEnum.Classes.getCode()){
+            examPaperEditRequest.setClasses(classService.getClassIdsByExamId(examPaper.getId()));
         }
         return examPaperEditRequest;
     }

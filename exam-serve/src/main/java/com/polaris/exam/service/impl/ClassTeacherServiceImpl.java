@@ -7,6 +7,8 @@ import com.polaris.exam.service.IClassTeacherService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 班级-教师关联表 服务实现类
@@ -16,8 +18,7 @@ import org.springframework.stereotype.Service;
  * @since 2022-01-17
  */
 @Service
-public class
-ClassTeacherServiceImpl extends ServiceImpl<ClassTeacherMapper, ClassTeacher> implements IClassTeacherService {
+public class ClassTeacherServiceImpl extends ServiceImpl<ClassTeacherMapper, ClassTeacher> implements IClassTeacherService {
 
     private final ClassTeacherMapper classTeacherMapper;
 

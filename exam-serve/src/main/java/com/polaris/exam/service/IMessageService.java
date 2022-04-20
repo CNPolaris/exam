@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.message.MessagePageRequest;
 import com.polaris.exam.pojo.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.polaris.exam.pojo.MessageUser;
@@ -64,4 +65,12 @@ public interface IMessageService extends IService<Message> {
      * @return List<MessageUser>
      */
     List<MessageUser> selectByMessageIds(List<Integer> ids);
+
+    /**
+     * 根据用户id获取收到的所有消息
+     * @param userId Integer
+     * @param model MessagePageRequest
+     * @return List<Message>
+     */
+    Page<Message> getReceiveMessagesByUserId(Integer userId, MessagePageRequest model);
 }

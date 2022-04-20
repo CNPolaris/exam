@@ -37,4 +37,12 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
             "FROM class_user " +
             "WHERE user_id = #{userId})) AND `status` =1 AND `paper_type` = #{type} LIMIT 10")
     List<ExamPaper> getTaskPaper(Integer userId, Integer type);
+
+    /**
+     * 根据班级id统计试卷数量
+     * @param classId Integer
+     * @return Integer
+     */
+    @Select("SELECT COUNT(exam_id) FROM exam_class WHERE class_id = #{classId}")
+    Integer getExamPaperCount(Integer classId);
 }

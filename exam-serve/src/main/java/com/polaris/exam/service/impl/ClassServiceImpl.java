@@ -4,16 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.classes.ClassRequest;
 import com.polaris.exam.enums.StatusEnum;
+import com.polaris.exam.mapper.ClassUserMapper;
+import com.polaris.exam.mapper.ExamPaperMapper;
 import com.polaris.exam.pojo.Class;
 import com.polaris.exam.mapper.ClassMapper;
+import com.polaris.exam.pojo.ClassUser;
 import com.polaris.exam.service.IClassService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.polaris.exam.utils.CreateUuid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -28,9 +30,13 @@ import java.util.List;
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements IClassService {
 
     private final ClassMapper classMapper;
+    private final ClassUserMapper classUserMapper;
+    private final ExamPaperMapper examPaperMapper;
     @Autowired
-    public ClassServiceImpl(ClassMapper classMapper) {
+    public ClassServiceImpl(ClassMapper classMapper, ClassUserMapper classUserMapper, ExamPaperMapper examPaperMapper) {
         this.classMapper = classMapper;
+        this.classUserMapper = classUserMapper;
+        this.examPaperMapper = examPaperMapper;
     }
 
     /**
@@ -137,8 +143,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     }
 
     @Override
+    public List<Integer> getClassIdsByTeacherId(Integer tId) {
+        return classMapper.getClassIdsByTeacherId(tId);
+    }
+
+    @Override
     public Page<Class> getClassByTeacherId(Page<Class> page, Integer tId) {
-        List<Integer> classIds = classMapper.getClassIds(tId);
+        List<Integer> classIds = classMapper.getClassIdsByTeacherId(tId);
         QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("id",classIds);
         return classMapper.selectPage(page, queryWrapper);
@@ -147,5 +158,36 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     @Override
     public List<Integer> getClassIdsByExamId(Integer paperId) {
         return classMapper.getClassIdsByExamId(paperId);
+    }
+
+    @Override
+    public Integer getStudentCountByClassIds(List<Integer> classIds) {
+        QueryWrapper<ClassUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("class_id",classIds);
+        return classUserMapper.selectCount(queryWrapper);
+    }
+
+    @Override
+    public List<Map<String, Object>> getClassUserPie(List<Integer> classIds) {
+        List<Map<String, Object>> classList = new ArrayList<>(classIds.size());
+        classIds.forEach(c->{
+            HashMap<String, Object> map = new HashMap<>(2);
+            map.put("name", getById(c).getClassName());
+            map.put("value",classMapper.getStudentCountByClassId(c));
+            classList.add(map);
+        });
+        return classList;
+    }
+
+    @Override
+    public List<Map<String, Object>> getClassPaperPie(List<Integer> classIds) {
+        List<Map<String, Object>> classList = new ArrayList<>(classIds.size());
+        classIds.forEach(c->{
+            HashMap<String, Object> map = new HashMap<>(2);
+            map.put("name", getById(c).getClassName());
+            map.put("value",examPaperMapper.getExamPaperCount(c));
+            classList.add(map);
+        });
+        return classList;
     }
 }

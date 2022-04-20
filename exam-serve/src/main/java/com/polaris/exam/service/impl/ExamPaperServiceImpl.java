@@ -68,6 +68,11 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         return examPaperMapper.selectCount(new QueryWrapper<ExamPaper>());
     }
 
+    @Override
+    public Integer getExamPaperCountByTeacherId(Integer userId) {
+        return examPaperMapper.selectCount(new QueryWrapper<ExamPaper>().eq("create_user", userId));
+    }
+
     /**
      * 获取创建者所属的试卷数量
      *

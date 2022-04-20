@@ -70,7 +70,7 @@ public interface IQuestionService extends IService<Question> {
      * @param userId Integer
      * @return  int
      */
-    int selectQuestionCountByUser(Integer userId);
+    int getQuestionCountByUser(Integer userId);
 
     /**
      * 获取题目列表

@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.polaris.exam.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,6 +33,12 @@ public interface IExamPaperService extends IService<ExamPaper> {
      */
     int selectCount();
 
+    /**
+     * 统计教师创建的试卷数量
+     * @param userId Integer
+     * @return Integer
+     */
+    Integer getExamPaperCountByTeacherId(Integer userId);
     /**
      * 获取创建者所属的试卷数量
      * @param userId Integer

@@ -168,7 +168,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
      * @return int
      */
     @Override
-    public int selectQuestionCountByUser(Integer userId) {
+    public int getQuestionCountByUser(Integer userId) {
         return questionMapper.selectCount(new QueryWrapper<Question>().eq("create_user",userId));
     }
 

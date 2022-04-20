@@ -38,7 +38,7 @@ public interface ClassMapper extends BaseMapper<Class> {
      * @return List<Integer>
      */
     @Select("SELECT  class_id FROM class_teacher WHERE teacher_id =#{tId}")
-    List<Integer> getClassIds(Integer tId);
+    List<Integer> getClassIdsByTeacherId(Integer tId);
 
     /**
      * 根据试卷id获取所属的班级ids
@@ -47,4 +47,12 @@ public interface ClassMapper extends BaseMapper<Class> {
      */
     @Select("SELECT class_id FROM exam_class WHERE exam_id = #{paperId}")
     List<Integer> getClassIdsByExamId(Integer paperId);
+
+    /**
+     * 根据班级id统计学生人数
+     * @param classId Integer
+     * @return Integer
+     */
+    @Select("SELECT COUNT(user_id) FROM class_user WHERE class_id =#{classId}")
+    Integer getStudentCountByClassId(Integer classId);
 }

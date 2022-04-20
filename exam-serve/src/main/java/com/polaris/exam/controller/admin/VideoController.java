@@ -49,7 +49,7 @@ import java.util.List;
  */
 @Api(tags = "视频管理")
 @RestController("AdminVideoController")
-@RequestMapping("/api/admin/video")
+@RequestMapping("/api/video")
 public class VideoController {
     @Value("${video.path}")
     private String rootPath;

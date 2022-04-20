@@ -73,13 +73,13 @@ public class CommonController {
         UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
         userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
         userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
-        if(user.getRoleId()!=UserTypeEnum.Admin.getCode()){
+        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
             userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
-        }
-        Class aClass = classService.getClassByUserId(user.getId());
-        if(aClass!=null){
-            userInfoResponse.setClassName(aClass.getClassName());
-            userInfoResponse.setClassId(aClass.getId());
+            Class aClass = classService.getClassByUserId(user.getId());
+            if(aClass!=null){
+                userInfoResponse.setClassName(aClass.getClassName());
+                userInfoResponse.setClassId(aClass.getId());
+            }
         }
         return RespBean.success("获取用户信息成功", userInfoResponse);
     }

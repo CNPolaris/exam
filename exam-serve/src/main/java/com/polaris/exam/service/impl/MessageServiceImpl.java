@@ -2,6 +2,7 @@ package com.polaris.exam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.message.MessagePageRequest;
 import com.polaris.exam.mapper.MessageUserMapper;
 import com.polaris.exam.pojo.Message;
 import com.polaris.exam.mapper.MessageMapper;
@@ -106,5 +107,18 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     public List<MessageUser> selectByMessageIds(List<Integer> ids) {
         return messageUserService.selectByMessageIds(ids);
     }
+
+    @Override
+    public Page<Message> getReceiveMessagesByUserId(Integer userId, MessagePageRequest model) {
+        Page<Message> objectPage = new Page<>(model.getPage(), model.getLimit());
+        List<Integer> messageIds = messageMapper.getMessageIdsByReceiveUser(userId);
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        if(!model.getSendUserName().isEmpty()){
+            queryWrapper.eq("send_user_name", model.getSendUserName());
+        }
+        queryWrapper.in("id",messageIds);
+        return messageMapper.selectPage(objectPage,queryWrapper);
+    }
+
 
 }

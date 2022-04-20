@@ -6,6 +6,7 @@ import com.polaris.exam.pojo.Class;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -75,7 +76,14 @@ public interface IClassService extends IService<Class> {
     List<Class> getClassByTeacherId(Integer tId);
 
     /**
+     * 根据教师id获取所属班级ids
+     * @param tId Integer
+     * @return List<Integer>
+     */
+    List<Integer> getClassIdsByTeacherId(Integer tId);
+    /**
      * 根据教师Id获取所属班级信息
+     * @param page Page<Class>
      * @param tId Integer
      * @return Page<Class>
      */
@@ -87,4 +95,25 @@ public interface IClassService extends IService<Class> {
      * @return List<Integer>
      */
     List<Integer> getClassIdsByExamId(Integer paperId);
+
+    /**
+     * 根据班级ids获取对应的学生人数
+     * @param classIds List<Integer>
+     * @return int
+     */
+    Integer getStudentCountByClassIds(List<Integer> classIds);
+
+    /**
+     * 统计各班级人数
+     * @param classIds List<Integer> 班级ids
+     * @return List<Map<String, Object>>
+     */
+    List<Map<String, Object>> getClassUserPie(List<Integer> classIds);
+
+    /**
+     * 统计各班级试卷分布
+     * @param classIds List<Integer>
+     * @return List<Map<String,Object>>
+     */
+    List<Map<String,Object>> getClassPaperPie(List<Integer> classIds);
 }

@@ -2,6 +2,7 @@ package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoEditRequest;
+import com.polaris.exam.dto.video.VideoPageRequest;
 import com.polaris.exam.pojo.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,6 +24,13 @@ public interface IVideoService extends IService<Video> {
      * @return Page<Video>
      */
     Page<Video> videoList(Page<Video> page, Integer subjectId);
+
+    /**
+     * 获取视频列表
+     * @param model VideoPageRequest
+     * @return Page<Video>
+     */
+    Page<Video> getVideoList(VideoPageRequest model);
     /**
      * 视频上传
      * @param model VideoUploadParam

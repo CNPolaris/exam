@@ -3,6 +3,7 @@ package com.polaris.exam.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoEditRequest;
+import com.polaris.exam.dto.video.VideoPageRequest;
 import com.polaris.exam.pojo.Video;
 import com.polaris.exam.mapper.VideoMapper;
 import com.polaris.exam.service.IVideoService;
@@ -43,6 +44,17 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
             queryWrapper.eq("subject_id", subjectId);
         }
         return videoMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
+    public Page<Video> getVideoList(VideoPageRequest model) {
+        Page<Video> page = new Page<>(model.getPage(), model.getLimit());
+        if(model.getSubjectId()!=null){
+            QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("subject_id", model.getSubjectId());
+            return videoMapper.selectPage(page, queryWrapper);
+        }
+        return videoMapper.selectPage(page,new QueryWrapper<>());
     }
 
     /**

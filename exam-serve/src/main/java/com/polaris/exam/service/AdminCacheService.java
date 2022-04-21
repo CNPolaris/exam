@@ -236,6 +236,13 @@ public interface AdminCacheService {
     Boolean hasDoingPaper(String username,Integer paperId);
 
     /**
+     * 删除考试试卷缓存
+     * @param username String
+     * @param paperId Integer
+     */
+    void delDoingPaper(String username, Integer paperId);
+
+    /**
      * 缓存学生的答案
      * @param username String
      * @param paperId Integer

@@ -227,6 +227,12 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     }
 
     @Override
+    public List<ExamPaper> getPaperByClassId(Integer classId) {
+        List<Integer> paperIds = examPaperMapper.getPaperIdsByClassId(classId);
+        return examPaperMapper.selectList(new QueryWrapper<ExamPaper>().in("id",paperIds));
+    }
+
+    @Override
     public List<ExamPaper> getTaskPaper(Integer userId, Integer type) {
         return examPaperMapper.getTaskPaper(userId, type);
     }

@@ -50,6 +50,13 @@ public interface IExamPaperAnswerService extends IService<ExamPaperAnswer> {
      * @return Page<ExamPaperAnswer>
      */
     Page<ExamPaperAnswer> studentPage(Page<ExamPaperAnswer>page,ExamPaperAnswerPage model);
+
+    /**
+     * 教师获取班级学生提交的考试记录
+     * @param model ExamPaperAnswerPage
+     * @return Page<ExamPaperAnswer>
+     */
+    Page<ExamPaperAnswer> getStudentRecordPage(ExamPaperAnswerPage model);
     /**
      * 获取全部考试记录
      * @param page Page<ExamPaperAnswer>

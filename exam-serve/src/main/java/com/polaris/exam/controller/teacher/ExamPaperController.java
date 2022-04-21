@@ -2,20 +2,25 @@ package com.polaris.exam.controller.teacher;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.paper.ExamPaperEditRequest;
-import com.polaris.exam.dto.paper.ExamResponse;
+import com.polaris.exam.dto.paper.*;
+import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
+import com.polaris.exam.enums.ExamPaperTypeEnum;
+import com.polaris.exam.event.UserEvent;
 import com.polaris.exam.pojo.ExamPaper;
+import com.polaris.exam.pojo.ExamPaperAnswer;
+import com.polaris.exam.pojo.User;
+import com.polaris.exam.pojo.UserEventLog;
 import com.polaris.exam.service.*;
+import com.polaris.exam.utils.ExamUtil;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author CNPolaris
@@ -31,18 +36,20 @@ public class ExamPaperController {
     private final IClassUserService classUserService;
     private final ISubjectService subjectService;
     private final AdminCacheService cacheService;
+    private final ApplicationEventPublisher eventPublisher;
     private final IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
 
     public ExamPaperController(IExamPaperService examPaperService, IUserService userService,
                                IExamPaperAnswerService examPaperAnswerService, IClassUserService classUserService,
                                ISubjectService subjectService, AdminCacheService cacheService,
-                               IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService) {
+                               ApplicationEventPublisher eventPublisher, IExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService) {
         this.examPaperService = examPaperService;
         this.userService = userService;
         this.examPaperAnswerService = examPaperAnswerService;
         this.classUserService = classUserService;
         this.subjectService = subjectService;
         this.cacheService = cacheService;
+        this.eventPublisher = eventPublisher;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
     }
 
@@ -101,5 +108,11 @@ public class ExamPaperController {
             return RespBean.error("该试卷不存在");
         }
         return RespBean.success("成功");
+    }
+
+    @ApiOperation("获取班级试卷")
+    @GetMapping("/paper/class/{id}")
+    public RespBean getClassPaper(@PathVariable Integer id){
+        return RespBean.success(examPaperService.getPaperByClassId(id));
     }
 }

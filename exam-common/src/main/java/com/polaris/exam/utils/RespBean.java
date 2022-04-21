@@ -41,6 +41,9 @@ public class RespBean {
     public static RespBean success(String message){
         return new RespBean(2000, message);
     }
+    public static RespBean success(Object data) {
+        return new RespBean(2000, "成功", data);
+    }
 
     /**
      * 失败返回结果
@@ -60,5 +63,7 @@ public class RespBean {
     public static RespBean error(String message){
         return new RespBean(1000, message);
     }
-
+    public static RespBean error(Object data) {
+        return new RespBean(1000,"失败",data);
+    }
 }

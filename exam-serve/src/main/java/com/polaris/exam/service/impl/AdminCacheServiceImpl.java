@@ -327,19 +327,24 @@ public class AdminCacheServiceImpl implements AdminCacheService {
 
     @Override
     public void setDoingPaper(String username, Integer paperId, Integer expire, ExamPaperEditRequest paper) {
-        redisService.set("exam:doing:"+paperId+":"+username,paper,expire*60);
+        redisService.set("exam:doing:"+paperId+":"+username,paper,expire*60*1000);
     }
 
     @Override
     public ExamPaperEditRequest getDoingPaper(String username, Integer paperId) {
-        ExamPaperEditRequest paper = (ExamPaperEditRequest) redisService.get("exam:doing:" + username + ":" + paperId);
-        paper.setSuggestTime((int) (redisService.getExpire("exam:doing:"+paperId+":"+username)/60));
+        ExamPaperEditRequest paper = (ExamPaperEditRequest) redisService.get("exam:doing:" + paperId + ":" + username);
+        paper.setSuggestTime((int) (redisService.getExpire("exam:doing:"+paperId+":"+username)/60/1000));
         return paper;
     }
 
     @Override
     public Boolean hasDoingPaper(String username, Integer paperId) {
         return redisService.hasKey("exam:doing:"+paperId+":"+username);
+    }
+
+    @Override
+    public void delDoingPaper(String username, Integer paperId) {
+        redisService.del("exam:doing:"+paperId+":"+username);
     }
 
     @Override

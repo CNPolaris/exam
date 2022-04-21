@@ -73,6 +73,9 @@ public class ExamPaperAnswerController {
         userEventLog.setContent(content);
         eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
         eventPublisher.publishEvent(new UserEvent(userEventLog));
+
+        // 清除缓存
+        cacheService.delDoingPaper(principal.getName(), examPaperSubmit.getId());
         return RespBean.success("成功",scoreToVM);
     }
 

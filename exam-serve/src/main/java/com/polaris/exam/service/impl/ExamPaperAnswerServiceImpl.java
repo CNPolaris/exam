@@ -167,6 +167,22 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
     }
 
     @Override
+    public Page<ExamPaperAnswer> getStudentRecordPage(ExamPaperAnswerPage model) {
+        Page<ExamPaperAnswer> page = new Page<>(model.getPage(), model.getLimit());
+        QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id", model.getSubjectId());
+        }
+        if(model.getPaperId() != null){
+            queryWrapper.eq("exam_paper_id",model.getPaperId());
+        }
+        if(model.getStatus() != null){
+            queryWrapper.eq("status", model.getStatus());
+        }
+        return examPaperAnswerMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
     public Page<ExamPaperAnswer> allStudentPage(Page<ExamPaperAnswer> page, ExamPaperAnswerPage model) {
         QueryWrapper<ExamPaperAnswer> queryWrapper = new QueryWrapper<>();
         if(model.getSubjectId()!=null){

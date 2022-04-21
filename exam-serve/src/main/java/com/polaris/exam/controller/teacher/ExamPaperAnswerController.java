@@ -2,9 +2,7 @@ package com.polaris.exam.controller.teacher;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.paper.ExamPaperAnswerPageResponse;
-import com.polaris.exam.dto.paper.ExamPaperAnswerTeacherPageRequest;
-import com.polaris.exam.dto.paper.ExamPaperSubmit;
+import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.event.UserEvent;
@@ -13,6 +11,7 @@ import com.polaris.exam.pojo.Subject;
 import com.polaris.exam.pojo.User;
 import com.polaris.exam.pojo.UserEventLog;
 import com.polaris.exam.service.IExamPaperAnswerService;
+import com.polaris.exam.service.IExamPaperService;
 import com.polaris.exam.service.ISubjectService;
 import com.polaris.exam.service.IUserService;
 import com.polaris.exam.utils.ExamUtil;
@@ -20,10 +19,7 @@ import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -41,12 +37,13 @@ public class ExamPaperAnswerController {
     private final ISubjectService subjectService;
     private final IUserService userService;
     private final ApplicationEventPublisher eventPublisher;
-
-    public ExamPaperAnswerController(IExamPaperAnswerService examPaperAnswerService, ISubjectService subjectService, IUserService userService, ApplicationEventPublisher eventPublisher) {
+    private final IExamPaperService examPaperService;
+    public ExamPaperAnswerController(IExamPaperAnswerService examPaperAnswerService, ISubjectService subjectService, IUserService userService, ApplicationEventPublisher eventPublisher, IExamPaperService examPaperService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.userService = userService;
         this.eventPublisher = eventPublisher;
+        this.examPaperService = examPaperService;
     }
 
     @ApiOperation(value = "获取班级某张试卷的考试记录")
@@ -99,5 +96,42 @@ public class ExamPaperAnswerController {
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 
         return RespBean.success("成功",judgeScore);
+    }
+
+
+    @ApiOperation("教师查看班级学生提交的试卷")
+    @PostMapping("/record/list")
+    public RespBean getStudentRecordList(Principal principal, @RequestBody ExamPaperAnswerPage model){
+        Page<ExamPaperAnswer> studentRecordPage = examPaperAnswerService.getStudentRecordPage(model);
+        Map<String,Object> response = new HashMap<>(model.getLimit());
+        List<ExamPaperAnswerPageResponse> answerPageResponseList = new ArrayList<>();
+
+        studentRecordPage.getRecords().forEach(e->{
+            ExamPaperAnswerPageResponse ep = BeanUtil.copyProperties(e, ExamPaperAnswerPageResponse.class);
+            ep.setPaperTypeStr(ExamPaperTypeEnum.fromCode(e.getPaperType()).getName());
+            ep.setUserName(userService.getUsernameById(e.getCreateUser()));
+            ep.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
+            ep.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
+            ep.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));
+            ep.setPaperScore(ExamUtil.scoreToVM(e.getPaperScore()));
+            ep.setSubjectName(subjectService.getById(e.getSubjectId()).getName());
+            ep.setCreateTime(e.getCreateTime().toString());
+            answerPageResponseList.add(ep);
+        });
+        response.put("list", answerPageResponseList);
+        response.put("total", studentRecordPage.getTotal());
+        return RespBean.success("成功", response);
+    }
+
+    @ApiOperation("教师阅卷")
+    @GetMapping("/read/{id}")
+    public RespBean read(@PathVariable Integer id){
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.getById(id);
+        ExamPaperRead read = new ExamPaperRead();
+        ExamPaperEditRequest paper = examPaperService.examPaperToModel(examPaperAnswer.getExamPaperId());
+        ExamPaperSubmit answer = examPaperAnswerService.examPaperAnswerToModel(examPaperAnswer.getId());
+        read.setPaper(paper);
+        read.setAnswer(answer);
+        return RespBean.success(read);
     }
 }

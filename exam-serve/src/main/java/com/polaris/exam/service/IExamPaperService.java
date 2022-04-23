@@ -1,14 +1,13 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.paper.ExamPagerParam;
+import com.polaris.exam.dto.paper.ExamPageParam;
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
 import com.polaris.exam.pojo.ExamPaper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.polaris.exam.pojo.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -25,7 +24,15 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * @param param param
      * @return Page<ExamPaper>
      */
-    Page<ExamPaper> examPaperPage(Page<ExamPaper> page, ExamPagerParam param);
+    Page<ExamPaper> examPaperPage(Page<ExamPaper> page, ExamPageParam param);
+
+    /**
+     * 获取试卷列表于成绩分析
+     * @param userId
+     * @param model
+     * @return
+     */
+    Page<ExamPaper> getResultPage(Integer userId, ExamPageParam model);
 
     /**
      * 获取试卷数量
@@ -101,6 +108,12 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * @return List<ExamPaper>
      */
     List<ExamPaper> getUserPaper(Integer userId);
+
+    /**
+     * 根据班级id获取所有的试卷列表
+     * @param classId Integer
+     * @return List<ExamPaper>
+     */
     List<ExamPaper> getPaperByClassId(Integer classId);
     /**
      * 获取任务试卷

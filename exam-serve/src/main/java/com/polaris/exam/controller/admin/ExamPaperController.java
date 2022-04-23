@@ -2,13 +2,11 @@ package com.polaris.exam.controller.admin;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.paper.ExamPagerParam;
+import com.polaris.exam.dto.paper.ExamPageParam;
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
 import com.polaris.exam.dto.paper.ExamResponse;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.enums.LevelEnum;
-import com.polaris.exam.enums.StatusEnum;
-import com.polaris.exam.pojo.ExamClass;
 import com.polaris.exam.pojo.ExamPaper;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.polaris.exam.pojo.User;
@@ -63,7 +61,7 @@ public class ExamPaperController {
     @ApiOperation(value = "试卷列表")
     @PostMapping("/list")
     public RespBean list(@RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer limit, @RequestBody(required = false) ExamPagerParam param) {
+            @RequestParam(defaultValue = "10") Integer limit, @RequestBody(required = false) ExamPageParam param) {
         Page<ExamPaper> ePage = new Page<>(page, limit);
         Page<ExamPaper> examPaperPage = examPaperService.examPaperPage(ePage, param);
 

@@ -51,10 +51,34 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     }
 
     @Override
-    public Page<ExamPaper> examPaperPage(Page<ExamPaper> page, ExamPagerParam param) {
+    public Page<ExamPaper> examPaperPage(Page<ExamPaper> page, ExamPageParam param) {
         QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
         Map<String, Object> beanToMap = BeanUtil.beanToMap(param, true, true);
         queryWrapper.allEq(beanToMap);
+        return examPaperMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
+    public Page<ExamPaper> getResultPage(Integer userId, ExamPageParam model) {
+        Page<ExamPaper> page = new Page<>(model.getPage(), model.getLimit());
+        List<Integer> classIds = classService.getClassIdsByTeacherId(userId);
+        QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
+
+        if(model.getClassId()!=null){
+            List<Integer> paperIds = examPaperMapper.getPaperIdsByClassId(model.getClassId());
+            queryWrapper.in("id",paperIds);
+            return examPaperMapper.selectPage(page,queryWrapper);
+        }
+
+        if(model.getId()!=null){
+            queryWrapper.eq("id",model.getId());
+        }
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id", model.getSubjectId());
+        }
+        if(model.getLevel()!=null){
+            queryWrapper.eq("grade_level", model.getLevel());
+        }
         return examPaperMapper.selectPage(page,queryWrapper);
     }
 

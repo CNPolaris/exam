@@ -115,4 +115,23 @@ public class ExamPaperController {
     public RespBean getClassPaper(@PathVariable Integer id){
         return RespBean.success(examPaperService.getPaperByClassId(id));
     }
+
+    @ApiOperation("教师进行成绩分析查看列表")
+    @PostMapping("/result/list")
+    public RespBean getResultPaperList(Principal principal, @RequestBody ExamPageParam model) {
+        Page<ExamPaper> resultPage = examPaperService.getResultPage(userService.getUserByUsername(principal.getName()).getId(), model);
+        HashMap<String, Object> re = new HashMap<>(2);
+        List<ExamResponse> paperList = new ArrayList<>();
+        resultPage.getRecords().forEach(paper -> {
+            ExamResponse examResponse = BeanUtil.copyProperties(paper, ExamResponse.class);
+            examResponse.setCreateUser(userService.getUsernameById(paper.getCreateUser()));
+            examResponse.setSubjectId(paper.getSubjectId());
+            examResponse.setSubjectStr(subjectService.getById(paper.getSubjectId()).getName());
+            examResponse.setLevel(paper.getGradeLevel());
+            paperList.add(examResponse);
+        });
+        re.put("total", resultPage.getTotal());
+        re.put("list", paperList);
+        return RespBean.success(re);
+    }
 }

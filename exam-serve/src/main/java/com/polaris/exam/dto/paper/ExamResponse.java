@@ -19,6 +19,8 @@ public class ExamResponse {
 
     private Integer subjectId;
 
+    private String subjectStr;
+
     private Integer level;
 
     private Integer paperType;
@@ -79,6 +81,14 @@ public class ExamResponse {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectStr() {
+        return subjectStr;
+    }
+
+    public void setSubjectStr(String subjectStr) {
+        this.subjectStr = subjectStr;
     }
 
     public Integer getLevel() {

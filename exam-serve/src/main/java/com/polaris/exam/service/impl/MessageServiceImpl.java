@@ -120,5 +120,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         return messageMapper.selectPage(objectPage,queryWrapper);
     }
 
-
+    @Override
+    public Page<Message> getSendHistoryPage(Integer userId, MessagePageRequest model) {
+        Page<Message> objectPage = new Page<>(model.getPage(), model.getLimit());
+        return messageMapper.selectPage(objectPage, new QueryWrapper<Message>().eq("send_user_id",userId));
+    }
 }

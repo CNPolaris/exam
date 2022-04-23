@@ -42,29 +42,33 @@ public class MessageController {
         this.userService = userService;
     }
 
-    @ApiOperation(value = "获取收到的所有消息")
-    @PostMapping("/receive")
+    @ApiOperation(value = "消息发送记录")
+    @PostMapping("/send/history")
     public RespBean getAllReceiveMessage(Principal principal, @RequestBody MessagePageRequest model){
         if(model==null){
             return RespBean.error("内容不能为空");
         }
-        Page<Message> messagePage = messageService.getReceiveMessagesByUserId(userService.getUserByUsername(principal.getName()).getId(), model);
+//        Page<Message> messagePage = messageService.getReceiveMessagesByUserId(userService.getUserByUsername(principal.getName()).getId(), model);
+//        HashMap<String, Object> re = new HashMap<>(2);
+//        re.put("total", messagePage.getTotal());
+//        ArrayList<MessageResponse> messageList = new ArrayList<>();
+//
+//        List<Integer> ids = messagePage.getRecords().stream().map(d -> d.getId()).collect(Collectors.toList());
+//        List<MessageUser> messageUsers = ids.size()==0?null:messageService.selectByMessageIds(ids);
+//
+//        messagePage.getRecords().forEach(m -> {
+//            MessageResponse messageResponse = BeanUtil.copyProperties(m, MessageResponse.class);
+//            String receives = messageUsers.stream().filter(d -> d.getMessageId().equals(m.getId())).map(d -> d.getReceiveUserName())
+//                    .collect(Collectors.joining(","));
+//            messageResponse.setReceives(receives);
+//            messageResponse.setCreateTime(DateUtil.formatTime(m.getCreateTime()));
+//            messageList.add(messageResponse);
+//        });
+//        re.put("list", messageList);
+        Page<Message> sendHistoryPage = messageService.getSendHistoryPage(userService.getUserByUsername(principal.getName()).getId(), model);
         HashMap<String, Object> re = new HashMap<>(2);
-        re.put("total", messagePage.getTotal());
-        ArrayList<MessageResponse> messageList = new ArrayList<>();
-
-        List<Integer> ids = messagePage.getRecords().stream().map(d -> d.getId()).collect(Collectors.toList());
-        List<MessageUser> messageUsers = ids.size()==0?null:messageService.selectByMessageIds(ids);
-
-        messagePage.getRecords().forEach(m -> {
-            MessageResponse messageResponse = BeanUtil.copyProperties(m, MessageResponse.class);
-            String receives = messageUsers.stream().filter(d -> d.getMessageId().equals(m.getId())).map(d -> d.getReceiveUserName())
-                    .collect(Collectors.joining(","));
-            messageResponse.setReceives(receives);
-            messageResponse.setCreateTime(DateUtil.formatTime(m.getCreateTime()));
-            messageList.add(messageResponse);
-        });
-        re.put("list", messageList);
+        re.put("total",sendHistoryPage.getTotal());
+        re.put("list",sendHistoryPage.getRecords());
         return RespBean.success("获取收到消息成功", re);
     }
     @ApiOperation(value = "教师发送消息")

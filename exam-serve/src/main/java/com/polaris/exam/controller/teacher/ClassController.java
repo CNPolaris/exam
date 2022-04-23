@@ -73,6 +73,13 @@ public class ClassController {
         re.put("list", userPage.getRecords());
         return RespBean.success("成功", re);
     }
+
+    @ApiOperation("获取班级学生id用户发送消息")
+    @GetMapping("/message/student/{id}")
+    public RespBean getMessageClassStudent(@PathVariable Integer id) {
+        return RespBean.success(classUserService.selectStudentIdByClassId(id));
+    }
+
     @ApiOperation(value = "添加或编辑班级")
     @PostMapping("/edit")
     public RespBean editClass( @RequestBody ClassRequest model){

@@ -73,4 +73,12 @@ public interface IMessageService extends IService<Message> {
      * @return List<Message>
      */
     Page<Message> getReceiveMessagesByUserId(Integer userId, MessagePageRequest model);
+
+    /**
+     * 消息发送记录
+     * @param userId Integer
+     * @param model MessagePageRequest
+     * @return Page<Message>
+     */
+    Page<Message> getSendHistoryPage(Integer userId, MessagePageRequest model);
 }

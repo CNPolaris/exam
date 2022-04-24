@@ -55,4 +55,12 @@ public interface ClassMapper extends BaseMapper<Class> {
      */
     @Select("SELECT COUNT(user_id) FROM class_user WHERE class_id =#{classId}")
     Integer getStudentCountByClassId(Integer classId);
+
+    /**
+     * 根据班级id获取学生id
+     * @param classId Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT user_id FROM class_user WHERE class_id = #{classId}")
+    List<Integer> getStudentIdsByClassId(Integer classId);
 }

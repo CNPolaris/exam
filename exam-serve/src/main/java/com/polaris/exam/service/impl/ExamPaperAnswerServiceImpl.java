@@ -3,6 +3,7 @@ package com.polaris.exam.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.dto.task.TaskItemAnswerObject;
 import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
@@ -195,6 +196,12 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
             queryWrapper.eq("create_user",model.getCreateUser());
         }
         return examPaperAnswerMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
+    public Page<ExamPaperAnswer> getStudentResultPage(StatisticsRequest model, List<Integer> studentIds) {
+        Page<ExamPaperAnswer> page = new Page<>(model.getPage(), model.getLimit());
+        return examPaperAnswerMapper.selectPage(page,new QueryWrapper<ExamPaperAnswer>().eq("exam_paper_id", model.getPaperId()).in("create_user", studentIds));
     }
 
     @Override

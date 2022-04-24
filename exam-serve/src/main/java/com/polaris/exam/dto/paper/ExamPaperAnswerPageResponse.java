@@ -35,6 +35,8 @@ public class ExamPaperAnswerPageResponse {
 
     private String userName;
 
+    private String userAccount;
+
     public Integer getId() {
         return id;
     }
@@ -153,5 +155,13 @@ public class ExamPaperAnswerPageResponse {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 }

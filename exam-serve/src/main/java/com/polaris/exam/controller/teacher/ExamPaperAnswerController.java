@@ -109,7 +109,7 @@ public class ExamPaperAnswerController {
         studentRecordPage.getRecords().forEach(e->{
             ExamPaperAnswerPageResponse ep = BeanUtil.copyProperties(e, ExamPaperAnswerPageResponse.class);
             ep.setPaperTypeStr(ExamPaperTypeEnum.fromCode(e.getPaperType()).getName());
-            ep.setUserName(userService.getUsernameById(e.getCreateUser()));
+            ep.setUserName(userService.getById(e.getCreateUser()).getRealName());
             ep.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
             ep.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
             ep.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));

@@ -123,4 +123,11 @@ public interface IClassService extends IService<Class> {
      * @return List<Class>
      */
     List<Class> getClassListByPaperId(Integer paperId);
+
+    /**
+     * 根据班级id获取学生ids
+     * @param classId Integer
+     * @return List<Integer>
+     */
+    List<Integer> getStudentIdsByClassId(Integer classId);
 }

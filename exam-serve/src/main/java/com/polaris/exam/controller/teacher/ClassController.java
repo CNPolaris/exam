@@ -86,4 +86,11 @@ public class ClassController {
         Class aClass = classService.editClass(model);
         return RespBean.success("成功", aClass);
     }
+
+    @ApiOperation("获取试卷id对应的班级")
+    @GetMapping("/analyse/list/{id}")
+    public RespBean getClassListByPaperId(@PathVariable Integer id){
+        List<Class> classes = classService.getClassListByPaperId(id);
+        return RespBean.success(classes);
+    }
 }

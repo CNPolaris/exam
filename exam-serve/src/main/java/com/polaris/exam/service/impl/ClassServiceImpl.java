@@ -190,4 +190,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
         });
         return classList;
     }
+
+    @Override
+    public List<Class> getClassListByPaperId(Integer paperId) {
+        List<Integer> classIds = examPaperMapper.getClassIdsByPaperId(paperId);
+        return classMapper.selectList(new QueryWrapper<Class>().in("id",classIds));
+    }
 }

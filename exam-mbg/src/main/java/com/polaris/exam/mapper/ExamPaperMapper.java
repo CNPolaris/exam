@@ -47,4 +47,12 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
     Integer getExamPaperCount(Integer classId);
     @Select("SELECT exam_id FROM exam_class WHERE class_id = #{classId}")
     List<Integer> getPaperIdsByClassId(Integer classId);
+
+    /**
+     * 根据试卷id获取班级ids
+     * @param paperId Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT class_id FROM exam_class WHERE exam_id = #{paperId}")
+    List<Integer> getClassIdsByPaperId(Integer paperId);
 }

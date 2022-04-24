@@ -116,4 +116,11 @@ public interface IClassService extends IService<Class> {
      * @return List<Map<String,Object>>
      */
     List<Map<String,Object>> getClassPaperPie(List<Integer> classIds);
+
+    /**
+     * 根据试卷id获取对应的班级列表
+     * @param paperId Integer
+     * @return List<Class>
+     */
+    List<Class> getClassListByPaperId(Integer paperId);
 }

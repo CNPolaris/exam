@@ -1,8 +1,9 @@
 package com.polaris.exam.dto.analysis;
 
+import com.polaris.exam.dto.paper.ExamPaperAnswerPageResponse;
 import lombok.Data;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author CNPolaris
@@ -10,13 +11,12 @@ import java.util.Date;
  */
 @Data
 public class StatisticsResponse {
-    private Integer userName;
-    private String realName;
-    private Date startTime;
-    private Date endTime;
-    private Integer doTime;
-    private Integer score;
-    private Integer userScore;
-    private Double correctRate;
-    private Integer status;
+    private Integer allStudentCount;
+    private List<ExamPaperAnswerPageResponse> list;
+    private Integer shouldAttend;
+    private Integer attended;
+    private Integer passCount;
+    private Integer maxScore;
+    private Integer minScore;
+    private Integer avgScore;
 }

@@ -3,7 +3,8 @@ package com.polaris.exam.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.analysis.StatisticsRequest;
+import com.polaris.exam.dto.AnalyseParam;
+import com.polaris.exam.dto.analysis.*;
 import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.dto.task.TaskItemAnswerObject;
 import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -201,7 +203,25 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
     @Override
     public Page<ExamPaperAnswer> getStudentResultPage(StatisticsRequest model, List<Integer> studentIds) {
         Page<ExamPaperAnswer> page = new Page<>(model.getPage(), model.getLimit());
-        return examPaperAnswerMapper.selectPage(page,new QueryWrapper<ExamPaperAnswer>().eq("exam_paper_id", model.getPaperId()).in("create_user", studentIds));
+        return examPaperAnswerMapper.selectPage(page, new QueryWrapper<ExamPaperAnswer>().orderByDesc("user_score").eq("exam_paper_id", model.getPaperId()).in("create_user", studentIds));
+    }
+
+    @Override
+    public StatisticsResponse getStatisticsInfo(StatisticsRequest model, List<Integer> studentIds) {
+        StatisticsResponse response = new StatisticsResponse();
+        AnalyseParam analyseParam = new AnalyseParam(model.getPaperId(), studentIds);
+        // 应参加考试人数
+        response.setShouldAttend(studentIds.size());
+        // 已参加人数
+        response.setAttended(examPaperAnswerMapper.getAttendCount(analyseParam));
+        // 及格人数
+        response.setPassCount(examPaperAnswerMapper.getPassCount(analyseParam));
+        // 最高低分
+        response.setMaxScore(examPaperAnswerMapper.getMaxScore(analyseParam));
+        response.setMinScore(examPaperAnswerMapper.getMinScore(analyseParam));
+        // 平均分
+        response.setAvgScore(examPaperAnswerMapper.getAvgCount(analyseParam));
+        return response;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.polaris.exam.controller.teacher;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.analysis.StatisticsRequest;
+import com.polaris.exam.dto.analysis.StatisticsResponse;
 import com.polaris.exam.dto.paper.ExamPaperAnswerPageResponse;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.pojo.ExamPaperAnswer;
@@ -73,9 +74,8 @@ public class ScoreAnalysisController {
     @ApiOperation("成绩分析--简单统计")
     @PostMapping("/statistics")
     public RespBean paperStatistics(@RequestBody StatisticsRequest model){
-        Map<String, Object> response = new HashMap<>(11);
-        response.put("shouldAttend",classUserService.selectStudentCount(model.getClassId()));
-
-        return RespBean.success("成功",response);
+        List<Integer> studentIds = classService.getStudentIdsByClassId(model.getClassId());
+        StatisticsResponse statisticsInfo = examPaperAnswerService.getStatisticsInfo(model, studentIds);
+        return RespBean.success("成功",statisticsInfo);
     }
 }

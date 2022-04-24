@@ -26,4 +26,56 @@
         id, exam_paper_id, paper_name, paper_type, subject_id, system_score, user_score, paper_score, question_correct, qunestion_count, do_time, status, create_user, create_time, task_exam_id
     </sql>
 
+    <select id="getPassCount" parameterType="com.polaris.exam.dto.AnalyseParam" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM exam_paper_answer
+        WHERE exam_paper_id = #{paperId} AND user_score >= paper_score*0.6
+        AND create_user IN
+            <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </select>
+
+    <select id="getAttendCount" parameterType="com.polaris.exam.dto.AnalyseParam" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM exam_paper_answer
+        WHERE exam_paper_id = #{paperId}
+        AND create_user IN
+        <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getAvgCount" parameterType="com.polaris.exam.dto.AnalyseParam" resultType="java.lang.Integer">
+        SELECT AVG (user_score) FROM exam_paper_answer
+        WHERE exam_paper_id = #{paperId}
+        AND create_user IN
+        <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getMaxScore" parameterType="com.polaris.exam.dto.AnalyseParam" resultType="java.lang.Integer">
+        SELECT user_score
+        FROM exam_paper_answer
+        <where>
+            and exam_paper_id = #{paperId}
+            and create_user IN
+                <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+        </where>
+        ORDER BY user_score desc limit 1
+    </select>
+
+    <select id="getMinScore" parameterType="com.polaris.exam.dto.AnalyseParam" resultType="java.lang.Integer">
+        SELECT user_score
+        FROM exam_paper_answer
+        <where>
+            and exam_paper_id = #{paperId}
+            and create_user IN
+            <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+        ORDER BY user_score limit 1
+    </select>
 </mapper>

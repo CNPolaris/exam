@@ -39,4 +39,10 @@ public interface IExamClassService extends IService<ExamClass> {
      */
     void clearRelationByClassId(Integer classId);
 
+    /**
+     * 通过班级id获取试卷数量
+     * @param classId Integer
+     * @return int
+     */
+    int getPaperCountByClassId(Integer classId);
 }

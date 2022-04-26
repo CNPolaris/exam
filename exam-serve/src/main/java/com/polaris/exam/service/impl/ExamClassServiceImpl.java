@@ -75,4 +75,9 @@ public class ExamClassServiceImpl extends ServiceImpl<ExamClassMapper, ExamClass
         queryWrapper.eq("class_id",classId);
         examClassMapper.delete(queryWrapper);
     }
+
+    @Override
+    public int getPaperCountByClassId(Integer classId) {
+        return examClassMapper.selectCount(new QueryWrapper<ExamClass>().eq("class_id",classId));
+    }
 }

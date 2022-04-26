@@ -1,6 +1,8 @@
 package com.polaris.exam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.classes.ClassUserParam;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.pojo.ClassUser;
@@ -88,5 +90,13 @@ public class ClassUserServiceImpl extends ServiceImpl<ClassUserMapper, ClassUser
         QueryWrapper<ClassUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("class_id", classId);
         classUserMapper.delete(queryWrapper);
+    }
+
+    @Override
+    public Page<ClassUser> getStudentIdsByClass(StatisticsRequest model) {
+        Page<ClassUser> page = new Page<>(model.getPage(), model.getLimit());
+        QueryWrapper<ClassUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("class_id", model.getClassId());
+        return classUserMapper.selectPage(page, queryWrapper);
     }
 }

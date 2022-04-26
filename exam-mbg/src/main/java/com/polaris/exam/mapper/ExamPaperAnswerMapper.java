@@ -3,6 +3,9 @@ package com.polaris.exam.mapper;
 import com.polaris.exam.dto.AnalyseParam;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>

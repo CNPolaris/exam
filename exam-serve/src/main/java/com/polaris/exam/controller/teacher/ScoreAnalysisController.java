@@ -2,10 +2,13 @@ package com.polaris.exam.controller.teacher;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.AnswerRequest;
+import com.polaris.exam.dto.analysis.AttendResponse;
 import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.analysis.StatisticsResponse;
 import com.polaris.exam.dto.paper.ExamPaperAnswerPageResponse;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
+import com.polaris.exam.pojo.ClassUser;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.polaris.exam.pojo.Subject;
 import com.polaris.exam.pojo.User;
@@ -14,15 +17,12 @@ import com.polaris.exam.utils.ExamUtil;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author CNPolaris
@@ -37,12 +37,14 @@ public class ScoreAnalysisController {
     private final IExamPaperAnswerService examPaperAnswerService;
     private final ISubjectService subjectService;
     private final IUserService userService;
-    public ScoreAnalysisController(IClassUserService classUserService, IClassService classService, IExamPaperAnswerService examPaperAnswerService, ISubjectService subjectService, IUserService userService) {
+    private final IExamClassService examClassService;
+    public ScoreAnalysisController(IClassUserService classUserService, IClassService classService, IExamPaperAnswerService examPaperAnswerService, ISubjectService subjectService, IUserService userService, IExamClassService examClassService) {
         this.classUserService = classUserService;
         this.classService = classService;
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.userService = userService;
+        this.examClassService = examClassService;
     }
 
     @ApiOperation("成绩分析-考生成绩")
@@ -77,5 +79,43 @@ public class ScoreAnalysisController {
         List<Integer> studentIds = classService.getStudentIdsByClassId(model.getClassId());
         StatisticsResponse statisticsInfo = examPaperAnswerService.getStatisticsInfo(model, studentIds);
         return RespBean.success("成功",statisticsInfo);
+    }
+
+    @ApiOperation("成绩分析-学生考试情况统计")
+    @PostMapping("/statistics/student")
+    public RespBean statisticsStudent(Principal principal, @RequestBody StatisticsRequest model){
+        if(model.getClassId()==null){
+            return RespBean.error("参数不能为空");
+        }
+        Page<ClassUser> classUserPage = classUserService.getStudentIdsByClass(model);
+        HashMap<String, Object> response = new HashMap<>(2);
+        response.put("total", classUserPage.getTotal());
+        int paperCount = examClassService.getPaperCountByClassId(model.getClassId());
+        List<AttendResponse> studentList = new ArrayList<>(model.getLimit());
+        classUserPage.getRecords().forEach(classUser->{
+            AttendResponse attendResponse = new AttendResponse();
+            User user = userService.getById(classUser.getUserId());
+            BeanUtil.copyProperties(user, attendResponse);
+            List<ExamPaperAnswer> answerList = examPaperAnswerService.getPaperAnswerByStudentId(user.getId());
+            attendResponse.setShouldAttendCount(paperCount);
+            if(answerList!=null){
+                attendResponse.setAttendCount(answerList.size());
+                attendResponse.setQuestionCount(answerList.stream().mapToInt(ExamPaperAnswer::getQuestionCount).sum());
+                attendResponse.setCorrectCount(answerList.stream().mapToInt(ExamPaperAnswer::getQuestionCorrect).sum());
+                attendResponse.setMaxScore(answerList.stream().mapToInt(ExamPaperAnswer::getUserScore).max().getAsInt());
+                attendResponse.setMinScore(answerList.stream().mapToInt(ExamPaperAnswer::getUserScore).min().getAsInt());
+                attendResponse.setAvgScore(answerList.stream().mapToLong(ExamPaperAnswer::getUserScore).average().getAsDouble());
+            } else {
+                attendResponse.setAttendCount(0);
+                attendResponse.setAvgScore(0.0);
+                attendResponse.setMinScore(0);
+                attendResponse.setMaxScore(0);
+                attendResponse.setCorrectCount(0);
+                attendResponse.setQuestionCount(0);
+            }
+            studentList.add(attendResponse);
+        });
+        response.put("list",studentList);
+        return RespBean.success(response);
     }
 }

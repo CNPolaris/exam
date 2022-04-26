@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.AnswerRequest;
 import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.analysis.StatisticsResponse;
 import com.polaris.exam.dto.paper.ExamPaperAnswerInfo;
@@ -127,5 +128,11 @@ public interface IExamPaperAnswerService extends IService<ExamPaperAnswer> {
      * @return Page<ExamPaperAnswer>
      */
     Page<ExamPaperAnswer> getAnswerByClassAndPaper(ExamPaperAnswerTeacherPageRequest model, Page<ExamPaperAnswer> page);
+    /**
+     * 根据学生id获取所有的考试记录
+     * @param id Integer
+     * @return List<ExamPaperAnswer>
+     */
+    List<ExamPaperAnswer> getPaperAnswerByStudentId(Integer id);
 
 }

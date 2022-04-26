@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.AnalyseParam;
+import com.polaris.exam.dto.AnswerRequest;
 import com.polaris.exam.dto.analysis.*;
 import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.dto.task.TaskItemAnswerObject;
@@ -298,6 +299,20 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         queryWrapper.eq("status", model.getStatus());
         queryWrapper.in("create_user", userIds);
         return examPaperAnswerMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
+    public List<ExamPaperAnswer> getPaperAnswerByStudentId(Integer id) {
+        try{
+            List<ExamPaperAnswer> answerList = examPaperAnswerMapper.selectList(new QueryWrapper<ExamPaperAnswer>().eq("create_user", id));
+            if(answerList != null && answerList.size()>0){
+                return answerList;
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     /**

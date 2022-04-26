@@ -1,5 +1,7 @@
 package com.polaris.exam.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.classes.ClassUserParam;
 import com.polaris.exam.pojo.ClassUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -47,4 +49,6 @@ public interface IClassUserService extends IService<ClassUser> {
      * @param classId Integer
      */
     void deleteClassUserByClass(Integer classId);
+
+    Page<ClassUser> getStudentIdsByClass(StatisticsRequest model);
 }

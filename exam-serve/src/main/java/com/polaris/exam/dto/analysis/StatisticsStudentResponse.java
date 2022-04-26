@@ -7,12 +7,13 @@ import lombok.Data;
  * @version 1.0
  */
 @Data
-public class AttendResponse {
+public class StatisticsStudentResponse {
     private Integer id;
     private String userName;
     private String realName;
     private Integer attendCount;
     private Integer shouldAttendCount;
+    private Integer passCount;
     private Integer correctCount;
     private Integer questionCount;
     private Integer maxScore;

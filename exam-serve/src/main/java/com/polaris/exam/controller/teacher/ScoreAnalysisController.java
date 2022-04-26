@@ -2,8 +2,7 @@ package com.polaris.exam.controller.teacher;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.AnswerRequest;
-import com.polaris.exam.dto.analysis.AttendResponse;
+import com.polaris.exam.dto.analysis.StatisticsStudentResponse;
 import com.polaris.exam.dto.analysis.StatisticsRequest;
 import com.polaris.exam.dto.analysis.StatisticsResponse;
 import com.polaris.exam.dto.paper.ExamPaperAnswerPageResponse;
@@ -23,6 +22,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author CNPolaris
@@ -91,15 +91,22 @@ public class ScoreAnalysisController {
         HashMap<String, Object> response = new HashMap<>(2);
         response.put("total", classUserPage.getTotal());
         int paperCount = examClassService.getPaperCountByClassId(model.getClassId());
-        List<AttendResponse> studentList = new ArrayList<>(model.getLimit());
+        List<StatisticsStudentResponse> studentList = new ArrayList<>(model.getLimit());
         classUserPage.getRecords().forEach(classUser->{
-            AttendResponse attendResponse = new AttendResponse();
+            StatisticsStudentResponse attendResponse = new StatisticsStudentResponse();
             User user = userService.getById(classUser.getUserId());
             BeanUtil.copyProperties(user, attendResponse);
             List<ExamPaperAnswer> answerList = examPaperAnswerService.getPaperAnswerByStudentId(user.getId());
             attendResponse.setShouldAttendCount(paperCount);
             if(answerList!=null){
                 attendResponse.setAttendCount(answerList.size());
+                AtomicInteger passCount = new AtomicInteger();
+                answerList.forEach(answer->{
+                    if(answer.getUserScore() >= answer.getPaperScore()*0.6){
+                        passCount.getAndIncrement();
+                    }
+                });
+                attendResponse.setPassCount(paperCount);
                 attendResponse.setQuestionCount(answerList.stream().mapToInt(ExamPaperAnswer::getQuestionCount).sum());
                 attendResponse.setCorrectCount(answerList.stream().mapToInt(ExamPaperAnswer::getQuestionCorrect).sum());
                 attendResponse.setMaxScore(answerList.stream().mapToInt(ExamPaperAnswer::getUserScore).max().getAsInt());
@@ -107,6 +114,7 @@ public class ScoreAnalysisController {
                 attendResponse.setAvgScore(answerList.stream().mapToLong(ExamPaperAnswer::getUserScore).average().getAsDouble());
             } else {
                 attendResponse.setAttendCount(0);
+                attendResponse.setPassCount(0);
                 attendResponse.setAvgScore(0.0);
                 attendResponse.setMinScore(0);
                 attendResponse.setMaxScore(0);

@@ -37,6 +37,8 @@ public class ExamPaperAnswerPageResponse {
 
     private String userAccount;
 
+    private Integer order;
+
     public Integer getId() {
         return id;
     }
@@ -163,5 +165,13 @@ public class ExamPaperAnswerPageResponse {
 
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

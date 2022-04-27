@@ -78,4 +78,14 @@
         </where>
         ORDER BY user_score limit 1
     </select>
+
+    <select id="getStudentScore" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM exam_paper_answer
+        <where>
+            and create_user = #{id}
+        </where>
+        ORDER BY create_time
+    </select>
 </mapper>

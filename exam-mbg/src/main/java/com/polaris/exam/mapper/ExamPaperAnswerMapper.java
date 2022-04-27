@@ -49,4 +49,11 @@ public interface ExamPaperAnswerMapper extends BaseMapper<ExamPaperAnswer> {
      * @return Integer
      */
     Integer getAvgCount(AnalyseParam model);
+
+    /**
+     * 获取学生最近的考试记录用于数据分析
+     * @param id Integer
+     * @return List<ExamPaperAnswer>
+     */
+    List<ExamPaperAnswer> getStudentScore(Integer id);
 }

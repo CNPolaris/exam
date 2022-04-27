@@ -304,7 +304,7 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
     @Override
     public List<ExamPaperAnswer> getPaperAnswerByStudentId(Integer id) {
         try{
-            List<ExamPaperAnswer> answerList = examPaperAnswerMapper.selectList(new QueryWrapper<ExamPaperAnswer>().eq("create_user", id));
+            List<ExamPaperAnswer> answerList = examPaperAnswerMapper.selectList(new QueryWrapper<ExamPaperAnswer>().eq("create_user", id).orderByAsc("create_time"));
             if(answerList != null && answerList.size()>0){
                 return answerList;
             }

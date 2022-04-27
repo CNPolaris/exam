@@ -83,6 +83,25 @@ public class CommonController {
         }
         return RespBean.success("获取用户信息成功", userInfoResponse);
     }
+
+    @ApiOperation("根据id获取用户信息")
+    @GetMapping("/user/info/{id}")
+    public RespBean getUserInfoById(@PathVariable Integer id){
+        User user = userService.getById(id);
+        UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
+        userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
+        userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
+        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
+            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+            Class aClass = classService.getClassByUserId(user.getId());
+            if(aClass!=null){
+                userInfoResponse.setClassName(aClass.getClassName());
+                userInfoResponse.setClassId(aClass.getId());
+            }
+        }
+        return RespBean.success("获取用户信息成功", userInfoResponse);
+    }
+
     @ApiOperation(value = "上传图片")
     @PostMapping("/image/upload")
     public RespBean uploadImage(@RequestBody MultipartFile file) throws IOException {

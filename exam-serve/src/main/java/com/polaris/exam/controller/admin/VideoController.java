@@ -2,18 +2,14 @@ package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoResponse;
 import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.pojo.Video;
+import com.polaris.exam.service.ISubjectService;
 import com.polaris.exam.service.IUserService;
 import com.polaris.exam.service.IVideoService;
-import com.polaris.exam.utils.CreateUuid;
 import com.polaris.exam.utils.NonStaticResourceHttpRequestHandler;
 import com.polaris.exam.utils.RespBean;
 import com.polaris.exam.utils.StringUtils;
@@ -57,10 +53,12 @@ public class VideoController {
     private String rootUrl;
     private final IUserService userService;
     private final IVideoService videoService;
+    private final ISubjectService subjectService;
     private final NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
-    public VideoController(IUserService userService, IVideoService videoService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
+    public VideoController(IUserService userService, IVideoService videoService, ISubjectService subjectService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
         this.userService = userService;
         this.videoService = videoService;
+        this.subjectService = subjectService;
         this.nonStaticResourceHttpRequestHandler = nonStaticResourceHttpRequestHandler;
     }
     @ApiOperation(value = "视频列表")
@@ -71,7 +69,9 @@ public class VideoController {
         List<Video> videoList = videoPage.getRecords();
         ArrayList<VideoResponse> videoResponse = new ArrayList<>();
         videoList.forEach(video -> {
-            videoResponse.add(BeanUtil.copyProperties(video,VideoResponse.class));
+            VideoResponse properties = BeanUtil.copyProperties(video, VideoResponse.class);
+            properties.setSubject(subjectService.getById(video.getSubjectId()).getName());
+            videoResponse.add(properties);
         });
         HashMap<String, Object> data = new HashMap<>();
         data.put("data", videoResponse);

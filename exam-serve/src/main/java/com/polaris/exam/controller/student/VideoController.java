@@ -4,8 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.dto.video.VideoPageRequest;
-import com.polaris.exam.dto.video.VideoPageResponse;
+import com.polaris.exam.dto.video.VideoResponse;
 import com.polaris.exam.pojo.Video;
+import com.polaris.exam.service.ISubjectService;
 import com.polaris.exam.service.IUserService;
 import com.polaris.exam.service.IVideoService;
 import com.polaris.exam.utils.NonStaticResourceHttpRequestHandler;
@@ -24,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author CNPolaris
@@ -39,10 +42,12 @@ public class VideoController {
     private String rootUrl;
     private final IUserService userService;
     private final IVideoService videoService;
+    private final ISubjectService subjectService;
     private final NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
-    public VideoController(IUserService userService, IVideoService videoService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
+    public VideoController(IUserService userService, IVideoService videoService, ISubjectService subjectService, NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler) {
         this.userService = userService;
         this.videoService = videoService;
+        this.subjectService = subjectService;
         this.nonStaticResourceHttpRequestHandler = nonStaticResourceHttpRequestHandler;
     }
 
@@ -50,10 +55,16 @@ public class VideoController {
     @PostMapping("/list")
     public RespBean getStudentVideoList(Principal principal, @RequestBody VideoPageRequest model){
         Page<Video> videoPage = videoService.getVideoList(model);
-        VideoPageResponse response = new VideoPageResponse();
-        response.setTotal(videoPage.getTotal());
-        response.setList(videoPage.getRecords());
-        return RespBean.success("成功",response);
+        ArrayList<VideoResponse> videoResponse = new ArrayList<>(model.getLimit());
+        videoPage.getRecords().forEach(video -> {
+            VideoResponse properties = BeanUtil.copyProperties(video, VideoResponse.class);
+            properties.setSubject(subjectService.getById(video.getSubjectId()).getName());
+            videoResponse.add(properties);
+        });
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("list", videoResponse);
+        data.put("total", videoPage.getTotal());
+        return RespBean.success("成功", data);
     }
     @ApiOperation(value = "选择视频")
     @GetMapping("/select/{id}")

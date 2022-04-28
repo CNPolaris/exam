@@ -12,6 +12,7 @@ public class VideoResponse {
     private String name;
     private Integer level;
     private Integer subjectId;
+    private String subject;
     private String cover;
     private String url;
     private String path;
@@ -56,6 +57,14 @@ public class VideoResponse {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getCover() {

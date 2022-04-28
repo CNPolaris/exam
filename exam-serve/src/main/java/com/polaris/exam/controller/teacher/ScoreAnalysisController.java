@@ -16,6 +16,7 @@ import com.polaris.exam.utils.ExamUtil;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -32,6 +33,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController("TeacherScoreAnalysisController")
 @RequestMapping("/api/exam/analysis")
 public class ScoreAnalysisController {
+    @Value("${score.passRate}")
+    private double pass;
     private final IClassUserService classUserService;
     private final IClassService classService;
     private final IExamPaperAnswerService examPaperAnswerService;
@@ -102,7 +105,7 @@ public class ScoreAnalysisController {
                 attendResponse.setAttendCount(answerList.size());
                 AtomicInteger passCount = new AtomicInteger();
                 answerList.forEach(answer->{
-                    if(answer.getUserScore() >= answer.getPaperScore()*0.6){
+                    if(answer.getUserScore() >= answer.getPaperScore()*pass){
                         passCount.getAndIncrement();
                     }
                 });

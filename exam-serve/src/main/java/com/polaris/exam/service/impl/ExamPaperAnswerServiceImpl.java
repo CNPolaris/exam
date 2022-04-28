@@ -166,6 +166,9 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         if(model.getSubjectId()!=null){
             queryWrapper.eq("subject_id",model.getSubjectId());
         }
+        if(model.getStatus()!=null){
+            queryWrapper.eq("status", model.getStatus());
+        }
         Page<ExamPaperAnswer> examPaperAnswerPage = examPaperAnswerMapper.selectPage(page, queryWrapper);
         return examPaperAnswerPage;
     }

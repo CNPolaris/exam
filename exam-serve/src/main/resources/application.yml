@@ -73,6 +73,9 @@ video:
   path: 'E:\upload\'
   url: 'http://localhost:8080/api/video/preview'
 
+score:
+  passRate: 0.6
+
 secure:
   ignored:
     urls: #安全路径白名单

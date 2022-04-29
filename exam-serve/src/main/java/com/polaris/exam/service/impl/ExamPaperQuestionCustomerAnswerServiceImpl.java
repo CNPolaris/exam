@@ -5,6 +5,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.QuestionFalseType;
 import com.polaris.exam.dto.paper.ExamPaperAnswerTeacherPageRequest;
 import com.polaris.exam.dto.paper.ExamPaperAnswerUpdate;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
@@ -20,6 +21,7 @@ import com.polaris.exam.service.ITextContentService;
 import com.polaris.exam.utils.ExamUtil;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -205,5 +207,25 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends ServiceImpl<Exam
         queryWrapper.eq("status", model.getStatus());
         queryWrapper.in("create_user", userIds);
         return examPaperQuestionCustomerAnswerMapper.selectPage(page,queryWrapper);
+    }
+
+    @Override
+    public List<QuestionFalseType> getQuestionTypeCorrectCount(Integer id) {
+        try{
+            return examPaperQuestionCustomerAnswerMapper.getQuestionTypeCorrectCount(id);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<QuestionFalseType> getQuestionTypeCount(Integer id) {
+        try{
+            return examPaperQuestionCustomerAnswerMapper.getQuestionTypeCount(id);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

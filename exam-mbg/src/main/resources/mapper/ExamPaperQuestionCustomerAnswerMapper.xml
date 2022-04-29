@@ -26,4 +26,15 @@
         id, question_id, exam_paper_id, exam_paper_answer_id, question_type, subject_id, customer_score, question_score, question_text_content_id, answer, text_content_id, do_right, create_user, create_time, item_order
     </sql>
 
+    <select id="getQuestionTypeCorrectCount" parameterType="java.lang.Integer" resultType="com.polaris.exam.dto.QuestionFalseType">
+        SELECT question_type, COUNT(*) as count FROM exam_paper_question_customer_answer
+        WHERE do_right=1 AND create_user = #{id}
+        GROUP BY question_type
+    </select>
+
+    <select id="getQuestionTypeCount" parameterType="java.lang.Integer" resultType="com.polaris.exam.dto.QuestionFalseType">
+        SELECT question_type, COUNT(*) as count FROM exam_paper_question_customer_answer
+        WHERE create_user = #{id}
+        GROUP BY question_type
+    </select>
 </mapper>

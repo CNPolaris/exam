@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.QuestionFalseType;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
 import com.polaris.exam.dto.question.*;
 import com.polaris.exam.enums.QuestionTypeEnum;
@@ -57,7 +58,8 @@ public class QuestionController {
     @ApiOperation(value = "获取学生的错题")
     @PostMapping("/false/list")
     public RespBean studentFalseQuestion(Principal principal,@RequestBody QuestionPageStudentRequest model){
-        model.setCreateUser(userService.getUserByUsername(principal.getName()).getId());
+        User user = userService.getUserByUsername(principal.getName());
+        model.setCreateUser(user.getId());
         Page<ExamPaperQuestionCustomerAnswer> ePage = new Page<>(model.getPage(), model.getLimit());
         Page<ExamPaperQuestionCustomerAnswer> studentPage = examPaperQuestionCustomerAnswerService.studentPage(model, ePage);
         HashMap<String, Object> reMap = new HashMap<>(2);
@@ -75,11 +77,13 @@ public class QuestionController {
             qFalseList.add(questionPageStudentResponse);
         });
         reMap.put("list", qFalseList);
+        reMap.put("questionCorrectCount", examPaperQuestionCustomerAnswerService.getQuestionTypeCorrectCount(user.getId()));
+        reMap.put("questionTypeCount", examPaperQuestionCustomerAnswerService.getQuestionTypeCount(user.getId()));
         return  RespBean.success("获取错题成功", reMap);
     }
     @ApiOperation(value = "选择题目答案")
     @PostMapping("/answer/select/{id}")
-    public RespBean selectAnswer(@PathVariable Integer id){
+    public RespBean selectAnswer(Principal principal, @PathVariable Integer id){
         QuestionAnswer model = new QuestionAnswer();
         ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer = examPaperQuestionCustomerAnswerService.getById(id);
         ExamPaperSubmitItem questionAnswer = examPaperQuestionCustomerAnswerService.examPaperQuestionCustomerAnswerToModel(examPaperQuestionCustomerAnswer);

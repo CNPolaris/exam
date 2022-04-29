@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.QuestionFalseType;
 import com.polaris.exam.dto.paper.ExamPaperAnswerTeacherPageRequest;
 import com.polaris.exam.dto.paper.ExamPaperAnswerUpdate;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
@@ -98,4 +99,16 @@ public interface IExamPaperQuestionCustomerAnswerService extends IService<ExamPa
      * @return Page<ExamPaperQuestionCustomerAnswer>
      */
     Page<ExamPaperQuestionCustomerAnswer> getAnswerByClassAndPaper(ExamPaperAnswerTeacherPageRequest model, Page<ExamPaperQuestionCustomerAnswer> page);
+    /**
+     * 按照不同题目类型统计错题个数
+     * @param id Integer
+     * @return List<QuestionFalseType>
+     */
+    List<QuestionFalseType> getQuestionTypeCorrectCount(Integer id);
+    /**
+     * 按照不同题目类型统计个数
+     * @param id Integer
+     * @return List<QuestionFalseType>
+     */
+    List<QuestionFalseType> getQuestionTypeCount(Integer id);
 }

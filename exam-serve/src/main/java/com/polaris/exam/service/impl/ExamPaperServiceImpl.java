@@ -261,6 +261,28 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         return examPaperMapper.getTaskPaper(userId, type);
     }
 
+    @Override
+    public Page<ExamPaper> getStudentPage(Integer id,ExamPaperStudentPageRequest model) {
+        try {
+            Page<ExamPaper> page = new Page<>(model.getPage(), model.getLimit());
+            QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
+            List<Integer> paperIds = examPaperMapper.getPaperIdsToStudent(id);
+            queryWrapper.eq("status", StatusEnum.OK.getCode());
+            if(model.getPaperType()!=null){
+                queryWrapper.eq("paper_type",model.getPaperType());
+            }
+            if(model.getSubjectId()!=null){
+                queryWrapper.eq("subject_id", model.getSubjectId());
+            }
+            if(paperIds!=null){
+                queryWrapper.or().in("id", paperIds);
+            }
+            return examPaperMapper.selectPage(page,queryWrapper);
+        } catch (Exception e){
+            return null;
+        }
+    }
+
     private List<ExamPaperTitleItemObject> frameTextContentFromModel(List<ExamPaperTitleItem> titleItems){
         AtomicInteger index = new AtomicInteger(1);
         return titleItems.stream().map(t -> {

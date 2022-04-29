@@ -1,6 +1,8 @@
 package com.polaris.exam.controller.student;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
+import com.polaris.exam.dto.paper.ExamPaperStudentPageRequest;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
 import com.polaris.exam.pojo.ExamPaper;
 import com.polaris.exam.pojo.User;
@@ -9,9 +11,12 @@ import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import oshi.jna.platform.mac.SystemB;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author CNPolaris
@@ -59,6 +64,21 @@ public class ExamPaperController {
         List<ExamPaper> userPaper = examPaperService.getUserPaper(user.getId());
         return RespBean.success("获取成功",userPaper);
     }
+
+    @ApiOperation("试卷中心")
+    @PostMapping("/paper/page")
+    public RespBean getStudentPaperPage(Principal principal, @RequestBody ExamPaperStudentPageRequest model){
+        User user = userService.getUserByUsername(principal.getName());
+        Page<ExamPaper> studentPage = examPaperService.getStudentPage(user.getId(), model);
+        if(studentPage==null){
+            return RespBean.error("查询结果为空");
+        }
+        Map<String, Object> response = new HashMap<>(2);
+        response.put("list", studentPage.getRecords());
+        response.put("total", studentPage.getTotal());
+        return RespBean.success(response);
+    }
+
     @ApiOperation(value = "选择试卷")
     @GetMapping("/select/{id}")
     public RespBean selectExamPaper(@PathVariable Integer id) {

@@ -55,4 +55,11 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
      */
     @Select("SELECT class_id FROM exam_class WHERE exam_id = #{paperId}")
     List<Integer> getClassIdsByPaperId(Integer paperId);
+
+    /**
+     * 根据学生id获取班级试卷ids
+     * @param id 学生id
+     * @return List<Integer> 试卷ids
+     */
+    List<Integer> getPaperIdsToStudent(Integer id);
 }

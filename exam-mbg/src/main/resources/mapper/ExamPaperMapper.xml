@@ -26,4 +26,9 @@
         id, name, subject_id, paper_type, grade_level, score, question_count, suggest_time, limit_start_time, limit_end_time, frame_text_content_id, create_user, create_time, task_exam_id, status
     </sql>
 
+    <select id="getPaperIdsToStudent" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT exam_id FROM exam_class WHERE class_id = (
+            SELECT class_id FROM class_user WHERE user_id = #{id}
+        );
+    </select>
 </mapper>

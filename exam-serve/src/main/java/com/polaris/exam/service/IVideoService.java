@@ -3,6 +3,7 @@ package com.polaris.exam.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.dto.video.VideoPageRequest;
+import com.polaris.exam.dto.video.VideoResponse;
 import com.polaris.exam.pojo.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -43,5 +44,5 @@ public interface IVideoService extends IService<Video> {
      * @param level Integer
      * @return List<Video>
      */
-    List<Video> getLevelVideo(Integer level);
+    List<VideoResponse> getLevelVideo(Integer level);
 }

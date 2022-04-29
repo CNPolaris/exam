@@ -1,15 +1,19 @@
 package com.polaris.exam.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.video.VideoEditRequest;
 import com.polaris.exam.dto.video.VideoPageRequest;
+import com.polaris.exam.dto.video.VideoResponse;
 import com.polaris.exam.pojo.Video;
 import com.polaris.exam.mapper.VideoMapper;
+import com.polaris.exam.service.ISubjectService;
 import com.polaris.exam.service.IVideoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +29,10 @@ import java.util.List;
 public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements IVideoService {
 
     private final VideoMapper videoMapper;
-
-    public VideoServiceImpl(VideoMapper videoMapper) {
+    private final ISubjectService subjectService;
+    public VideoServiceImpl(VideoMapper videoMapper, ISubjectService subjectService) {
         this.videoMapper = videoMapper;
+        this.subjectService = subjectService;
     }
 
     /**
@@ -91,7 +96,14 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     }
 
     @Override
-    public List<Video> getLevelVideo(Integer level) {
-        return videoMapper.getLevelVideo(level);
+    public List<VideoResponse> getLevelVideo(Integer level) {
+        List<Video> levelVideo = videoMapper.getLevelVideo(level);
+        List<VideoResponse> objects = new ArrayList<>();
+        levelVideo.forEach(video -> {
+            VideoResponse videoResponse = BeanUtil.copyProperties(video, VideoResponse.class);
+            videoResponse.setSubject(subjectService.getById(video.getSubjectId()).getName());
+            objects.add(videoResponse);
+        });
+        return objects;
     }
 }

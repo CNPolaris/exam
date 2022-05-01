@@ -62,4 +62,12 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
      * @return List<Integer> 试卷ids
      */
     List<Integer> getPaperIdsToStudent(Integer id);
+
+    /**
+     * 获取学生已经提交的试卷id
+     * @param id Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT exam_paper_id FROM exam_paper_answer WHERE create_user = #{id}")
+    List<Integer> getAnswerIdsById(Integer id);
 }

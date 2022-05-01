@@ -268,6 +268,10 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
             List<Integer> paperIds = examPaperMapper.getPaperIdsToStudent(id);
             queryWrapper.eq("status", StatusEnum.OK.getCode());
+            List<Integer> answerIds = examPaperMapper.getAnswerIdsById(id);
+            if(answerIds != null && answerIds.size() !=0){
+                queryWrapper.notIn("id",answerIds);
+            }
             if(model.getPaperType()!=null){
                 queryWrapper.eq("paper_type",model.getPaperType());
             }

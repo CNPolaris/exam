@@ -2,6 +2,8 @@ package com.polaris.exam.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.polaris.exam.dto.user.LoginParam;
+import com.polaris.exam.dto.user.UpdatePassword;
+import com.polaris.exam.dto.user.UpdateUserInfo;
 import com.polaris.exam.dto.user.UserInfoResponse;
 import com.polaris.exam.enums.LevelEnum;
 import com.polaris.exam.enums.SexTypeEnum;
@@ -14,10 +16,12 @@ import com.polaris.exam.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
@@ -40,12 +44,16 @@ public class CommonController {
     private final AdminCacheService adminCacheService;
     private final IClassService classService;
     private final OssAdminService ossAdminService;
-    public CommonController(LoginService loginService, IUserService userService, IRoleService roleService, AdminCacheService adminCacheService, IClassService classService, OssAdminService ossAdminService) {
+    private final AdminCacheService cacheService;
+    private final PasswordEncoder passwordEncoder;
+    public CommonController(LoginService loginService, IUserService userService, IRoleService roleService, AdminCacheService adminCacheService, IClassService classService, OssAdminService ossAdminService, AdminCacheService cacheService, PasswordEncoder passwordEncoder) {
         this.loginService = loginService;
         this.userService = userService;
         this.adminCacheService = adminCacheService;
         this.classService = classService;
         this.ossAdminService = ossAdminService;
+        this.cacheService = cacheService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @ApiOperation(value = "登录")
@@ -120,35 +128,49 @@ public class CommonController {
         }
         return RespBean.error("上传失败");
     }
-//    @ApiOperation(value = "面板数据")
-//    @GetMapping("/dash/info")
-//    public RespBean dashInfo(Principal principal){
-//        Map<String, Object> response = new HashMap<>();
-//
-//        User user = userService.getUserByUsername(principal.getName());
-//
-//        if(adminCacheService.getDashInfo(user.getUserName())!=null){
-//            response = adminCacheService.getDashInfo(user.getUserName());
-//            if(!response.isEmpty()){
-//                return RespBean.success("成功",response);
-//            }
-//        }
-//
-//        int questionCount = questionService.selectQuestionCountByUser(user.getId());
-//        int classCount = classService.selectClassCount();
-//        int examPaperCount = examPaperService.selectCountByUser(user.getId());
-//        int classUserCount = 0;
-//        if(user.getRoleId().equals(UserTypeEnum.Teacher.getCode())){
-//            Integer classId = classTeacherService.getClassIdByTeacher(user.getId());
-//            classUserCount = classUserService.selectStudentCount(classId);
-//        }
-//        response.put("questionCount",questionCount);
-//        response.put("classCount",classCount);
-//        response.put("examPaperCount",examPaperCount);
-//        response.put("classUserCount",classUserCount);
-//        adminCacheService.setDashInfo(user.getUserName(), response);
-//        return RespBean.success("成功",response);
-//    }
+    @ApiOperation("更新头像")
+    @PostMapping("/user/avatar/save")
+    public RespBean uploadAvatar(Principal principal, @RequestBody String url){
+        User user = userService.getUserByUsername(principal.getName());
+
+        if(url.isEmpty()){
+            return RespBean.error("保存头像失败", user.getAvatar());
+        }
+
+        user.setAvatar(url);
+        userService.updateById(user);
+        cacheService.setUser(user);
+        return RespBean.success("更新头像成功",url);
+    }
+
+    @ApiOperation(value = "更新密码")
+    @PostMapping("/user/password/edit")
+    public RespBean updatePassword(Principal principal,@RequestBody @Valid UpdatePassword param){
+        if(param.equals(null)){
+            return RespBean.error("不能为空");
+        }
+        User user = userService.getUserByUsername(principal.getName());
+        if(passwordEncoder.matches(param.getOldPassword(), user.getPassword())) {
+            if (param.getNewPassword().equals(param.getAgainPassword())) {
+                user.setPassword(passwordEncoder.encode(param.getNewPassword()));
+                userService.updateById(user);
+                cacheService.setUser(user);
+                return RespBean.success("更新密码成功");
+            }
+        }
+        return RespBean.error("两次输入不相同");
+    }
+
+    @ApiOperation(value = "更新用户信息")
+    @PostMapping("/user/update")
+    public RespBean updateUserInfo(Principal principal, @RequestBody @Valid UpdateUserInfo info){
+        if(info.equals(null)){
+            return RespBean.error("内容不能为空");
+        }
+        User user = userService.updateUserInfo(principal.getName(),info);
+        return RespBean.success("更新成功",user);
+    }
+
 //
 //    @ApiOperation(value = "用户注册")
 //    @PostMapping("/register")

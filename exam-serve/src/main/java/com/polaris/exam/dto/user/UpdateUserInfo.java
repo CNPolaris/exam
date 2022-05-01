@@ -1,5 +1,7 @@
 package com.polaris.exam.dto.user;
 
+import java.util.Date;
+
 /**
  * @author CNPolaris
  * @version 1.0
@@ -9,7 +11,7 @@ public class UpdateUserInfo {
     private String realName;
     private Integer age;
     private Integer sex;
-    private String birthDay;
+    private Date birthDay;
     private Integer userLevel;
     private Integer phone;
     private Integer roleId;
@@ -54,11 +56,11 @@ public class UpdateUserInfo {
         this.sex = sex;
     }
 
-    public String getBirthDay() {
+    public Date getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(String birthDay) {
+    public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
 

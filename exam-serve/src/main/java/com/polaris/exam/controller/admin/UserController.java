@@ -99,47 +99,7 @@ public class UserController {
             return RespBean.success("成功",userResponse);
         }
     }
-    @PostMapping("/avatar/save")
-    public RespBean uploadAvatar(Principal principal, @RequestBody String url){
-        User user = userService.getUserByUsername(principal.getName());
 
-        if(url.isEmpty()){
-            return RespBean.error("保存头像失败", user.getAvatar());
-        }
-
-        user.setAvatar(url);
-        userService.updateById(user);
-        cacheService.setUser(user);
-        return RespBean.success("更新头像成功",url);
-    }
-
-    @ApiOperation(value = "更新密码")
-    @PostMapping("/password/edit")
-    public RespBean updatePassword(Principal principal,@RequestBody @Valid UpdatePassword param){
-        if(param.equals(null)){
-            return RespBean.error("不能为空");
-        }
-        User user = userService.getUserByUsername(principal.getName());
-        if(passwordEncoder.matches(param.getOldPassword(), user.getPassword())) {
-            if (param.getNewPassword().equals(param.getAgainPassword())) {
-                user.setPassword(passwordEncoder.encode(param.getNewPassword()));
-                userService.updateById(user);
-                cacheService.setUser(user);
-                return RespBean.success("更新密码成功");
-            }
-        }
-        return RespBean.error("两次输入不相同");
-    }
-
-    @ApiOperation(value = "更新用户信息")
-    @PostMapping("/update")
-    public RespBean updateUserInfo(Principal principal, @RequestBody @Valid UpdateUserInfo info){
-        if(info.equals(null)){
-            return RespBean.error("内容不能为空");
-        }
-        User user = userService.updateUserInfo(principal.getName(),info);
-        return RespBean.success("更新成功",user);
-    }
 
     @ApiOperation(value = "更新用户有效状态")
     @GetMapping("/status/{id}")

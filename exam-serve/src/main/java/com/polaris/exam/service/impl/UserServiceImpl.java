@@ -225,6 +225,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setRealName(info.getRealName());
         user.setAge(info.getAge());
         user.setPhone(info.getPhone());
+        user.setBirthDay(info.getBirthDay());
         user.setModifyTime(new Date());
         updateById(user);
         cacheService.setUser(user);

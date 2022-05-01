@@ -69,6 +69,20 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
             token = jwtTokenUtil.generatorToken(userDetails);
             //更新最后登录时间
             User user = userService.getUserByUsername(username);
+            switch (user.getRoleId()){
+                case 1:
+                    System.setProperty("org.apache.catalina.SESSION_COOKIE_NAME", "admin");
+                    break;
+                case 2:
+                    System.setProperty("org.apache.catalina.SESSION_COOKIE_NAME", "teacher");
+                    break;
+                case 3:
+                    System.setProperty("org.apache.catalina.SESSION_COOKIE_NAME", "student");
+                    break;
+                default:
+                    System.setProperty("org.apache.catalina.SESSION_COOKIE_NAME", "visitor");
+                    break;
+            }
             user.setLastActiveTime(new Date());
             userService.updateById(user);
             loginLogService.insertLoginLog(username);

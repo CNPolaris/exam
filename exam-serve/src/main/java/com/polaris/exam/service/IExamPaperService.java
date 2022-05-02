@@ -39,7 +39,7 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * 获取试卷数量
      * @return int
      */
-    int selectCount();
+    int getPaperCount();
 
     /**
      * 统计教师创建的试卷数量

@@ -88,7 +88,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
      * @return int
      */
     @Override
-    public int selectCount() {
+    public int getPaperCount() {
         return examPaperMapper.selectCount(new QueryWrapper<ExamPaper>());
     }
 

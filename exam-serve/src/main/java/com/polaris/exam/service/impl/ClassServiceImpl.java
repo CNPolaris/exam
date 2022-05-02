@@ -45,8 +45,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
      * @return int
      */
     @Override
-    public int selectClassCount() {
+    public int getClassCount() {
         return classMapper.selectCount(new QueryWrapper<Class>());
+    }
+
+    @Override
+    public Integer getStudentCount() {
+        return classMapper.getStudentCount();
     }
 
     /**

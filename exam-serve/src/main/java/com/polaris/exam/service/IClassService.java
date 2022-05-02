@@ -21,8 +21,13 @@ public interface IClassService extends IService<Class> {
      * 获取班级总数
      * @return int
      */
-    int selectClassCount();
+    int getClassCount();
 
+    /**
+     * 获取学生数量
+     * @return Integer
+     */
+    Integer getStudentCount();
     /**
      * 获取班级列表
      * @param page Page<Class>

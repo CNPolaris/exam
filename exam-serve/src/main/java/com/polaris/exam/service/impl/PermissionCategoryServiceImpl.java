@@ -43,7 +43,7 @@ public class PermissionCategoryServiceImpl extends ServiceImpl<PermissionCategor
     @Override
     public PermissionCategory createPermissionCategory(PermissionCategory model) {
         PermissionCategory category = new PermissionCategory();
-        category.setSort(model.getId());
+        category.setSort(model.getSort());
         category.setName(model.getName());
         category.setCreateTime(new Date());
         save(category);

@@ -3,6 +3,7 @@ package com.polaris.exam.controller.admin;
 import com.polaris.exam.dto.dashboard.AdminDashboard;
 import com.polaris.exam.service.IClassService;
 import com.polaris.exam.service.IExamPaperService;
+import com.polaris.exam.service.ILoginLogService;
 import com.polaris.exam.service.IQuestionService;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
@@ -25,10 +26,12 @@ public class DashboardController {
     private final IQuestionService questionService;
     private final IExamPaperService examPaperService;
     private final IClassService classService;
-    public DashboardController(IQuestionService questionService, IExamPaperService examPaperService, IClassService classService) {
+    private final ILoginLogService loginLogService;
+    public DashboardController(IQuestionService questionService, IExamPaperService examPaperService, IClassService classService, ILoginLogService loginLogService) {
         this.questionService = questionService;
         this.examPaperService = examPaperService;
         this.classService = classService;
+        this.loginLogService = loginLogService;
     }
 
 
@@ -42,4 +45,14 @@ public class DashboardController {
         dashboard.setQuestionCount(questionService.selectQuestionCount());
         return RespBean.success("管理员端首页信息获取成功",dashboard);
     }
+
+    @ApiOperation("登录日志统计分析")
+    @GetMapping("/log")
+    public RespBean getLoginLogStatistic(){
+        return RespBean.success(loginLogService.getLoginLogStatistic());
+    }
+
+    @ApiOperation("近期新建题目数量")
+    @GetMapping("/question")
+    public RespBean getQuestionCreateStatistic() { return RespBean.success(questionService.getQuestionCreateStatistic()); }
 }

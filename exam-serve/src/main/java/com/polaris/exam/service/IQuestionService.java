@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.StatisticParam;
 import com.polaris.exam.dto.question.QuestionEditRequest;
 import com.polaris.exam.dto.question.QuestionPageParam;
 import com.polaris.exam.pojo.Question;
@@ -78,4 +79,9 @@ public interface IQuestionService extends IService<Question> {
      * @return List<Question>
      */
     List<Question> selectQuestionList(List<Integer> questionIds);
+    /**
+     * 获取最近每天创建的题目数量
+     * @return List<StatisticParam>
+     */
+    List<StatisticParam> getQuestionCreateStatistic();
 }

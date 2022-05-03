@@ -22,4 +22,10 @@
         id, question_type, subject_id, score, grade_level, difficult, correct, info_text_content_id, create_user, status, create_time
     </sql>
 
+    <select id="getQuestionCreateStatistic" resultType="com.polaris.exam.dto.StatisticParam">
+        SELECT DATE_FORMAT(create_time,"%Y-%m-%d") AS date,COUNT(*) AS count
+        FROM question
+        GROUP BY DATE_FORMAT(create_time,"%Y-%m-%d")
+        LIMIT 31;
+    </select>
 </mapper>

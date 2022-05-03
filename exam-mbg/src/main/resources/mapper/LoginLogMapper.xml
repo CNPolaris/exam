@@ -17,4 +17,10 @@
         id, user_name, ip, address, browser, login_time
     </sql>
 
+    <select id="getLoginLogStatistic" resultType="com.polaris.exam.dto.StatisticParam">
+        SELECT DATE_FORMAT(login_time,"%Y-%m-%d") AS date,COUNT(*) AS count
+        FROM login_log
+        GROUP BY DATE_FORMAT(login_time,"%Y-%m-%d")
+        LIMIT 31;
+    </select>
 </mapper>

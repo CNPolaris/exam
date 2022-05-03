@@ -106,7 +106,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             }
             permission.setStatus(StatusEnum.OK.getCode());
             permission.setCreateTime(new Date());
-            permissionMapper.insert(permission);
+            save(permission);
             return RespBean.success("添加权限成功",permission);
         }catch (Exception e){
             return RespBean.error("添加权限失败",e);
@@ -187,7 +187,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public Permission updatePermissionStatus(Integer id, Integer status) {
         Permission permission = getById(id);
         permission.setStatus(status);
-        save(permission);
+        update(permission);
         return permission;
     }
 

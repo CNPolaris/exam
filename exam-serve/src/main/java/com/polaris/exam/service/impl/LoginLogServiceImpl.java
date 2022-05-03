@@ -2,6 +2,7 @@ package com.polaris.exam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.StatisticParam;
 import com.polaris.exam.pojo.LoginLog;
 import com.polaris.exam.mapper.LoginLogMapper;
 import com.polaris.exam.service.ILoginLogService;
@@ -80,5 +81,10 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         QueryWrapper<LoginLog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", username).orderByDesc("id");
         return loginLogMapper.selectList(queryWrapper).subList(0,4);
+    }
+
+    @Override
+    public List<StatisticParam> getLoginLogStatistic() {
+        return loginLogMapper.getLoginLogStatistic();
     }
 }

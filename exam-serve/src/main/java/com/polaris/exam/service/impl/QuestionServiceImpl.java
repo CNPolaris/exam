@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.StatisticParam;
 import com.polaris.exam.dto.question.*;
 import com.polaris.exam.enums.QuestionTypeEnum;
 import com.polaris.exam.mapper.TextContentMapper;
@@ -229,5 +230,10 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         questionObject.setTitleContent(model.getTitle());
         questionObject.setCorrect(model.getCorrect());
         infoTextContent.setContent(JSONUtil.toJsonStr(questionObject));
+    }
+
+    @Override
+    public List<StatisticParam> getQuestionCreateStatistic(){
+        return questionMapper.getQuestionCreateStatistic();
     }
 }

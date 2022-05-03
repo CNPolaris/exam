@@ -1,6 +1,7 @@
 package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.StatisticParam;
 import com.polaris.exam.pojo.LoginLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -35,4 +36,10 @@ public interface ILoginLogService extends IService<LoginLog> {
      * @return List<LoginLog>
      */
     List<LoginLog> selectUserLastLog(String username);
+
+    /**
+     * 登陆情况统计
+     * @return List<LoginLogStatistic>
+     */
+    List<StatisticParam> getLoginLogStatistic();
 }

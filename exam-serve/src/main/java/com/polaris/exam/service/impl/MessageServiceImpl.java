@@ -50,7 +50,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if(send.isEmpty()){
             return messageMapper.selectPage(page,new QueryWrapper<Message>());
         }
-        return messageMapper.selectPage(page,new QueryWrapper<Message>().eq("send_user_name",send));
+        return messageMapper.selectPage(page,new QueryWrapper<Message>());
     }
 
     @Override

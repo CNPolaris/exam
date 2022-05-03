@@ -1,6 +1,8 @@
 package com.polaris.exam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.category.CategoryRequest;
 import com.polaris.exam.pojo.PermissionCategory;
 import com.polaris.exam.mapper.PermissionCategoryMapper;
 import com.polaris.exam.service.IPermissionCategoryService;
@@ -29,6 +31,16 @@ public class PermissionCategoryServiceImpl extends ServiceImpl<PermissionCategor
     @Override
     public List<PermissionCategory> getAllPermissionCategory() {
         return permissionCategoryMapper.selectList(new QueryWrapper<>());
+    }
+
+    @Override
+    public Page<PermissionCategory> getPermissionCategoryPage(CategoryRequest model) {
+        Page<PermissionCategory> page = new Page<>(model.getPage(), model.getLimit());
+        QueryWrapper<PermissionCategory> queryWrapper = new QueryWrapper<>();
+        if(model.getName() !=null){
+            queryWrapper.eq("name", model.getName());
+        }
+        return permissionCategoryMapper.selectPage(page,queryWrapper);
     }
 
     @Override

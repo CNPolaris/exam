@@ -1,11 +1,16 @@
 package com.polaris.exam.controller.admin;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.category.CategoryRequest;
 import com.polaris.exam.pojo.PermissionCategory;
 import com.polaris.exam.service.IPermissionCategoryService;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,6 +33,16 @@ public class PermissionCategoryController {
     @GetMapping("/list")
     public RespBean getAllCategoryList(){
         return RespBean.success("成功",permissionCategoryService.getAllPermissionCategory());
+    }
+
+    @ApiOperation("分页获取资源类别")
+    @PostMapping("/page")
+    public RespBean getCategoryPage(@RequestBody CategoryRequest model){
+        Map<String, Object> response = new HashMap<>(2);
+        Page<PermissionCategory> page = permissionCategoryService.getPermissionCategoryPage(model);
+        response.put("total", page.getTotal());
+        response.put("list", page.getRecords());
+        return RespBean.success(response);
     }
 
     @ApiOperation(value = "添加权限目录")

@@ -1,5 +1,7 @@
 package com.polaris.exam.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.category.CategoryRequest;
 import com.polaris.exam.pojo.PermissionCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,6 +21,13 @@ public interface IPermissionCategoryService extends IService<PermissionCategory>
      * @return List<PermissionCategory>
      */
     List<PermissionCategory> getAllPermissionCategory();
+
+    /**
+     * 分页查询权限分类
+     * @param model CategoryRequest
+     * @return Page<PermissionCategory>
+     */
+    Page<PermissionCategory> getPermissionCategoryPage(CategoryRequest model);
 
     /**
      * 更新权限目录

@@ -3,6 +3,7 @@ package com.polaris.exam.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.message.MessagePageRequest;
+import com.polaris.exam.dto.message.MessageRequest;
 import com.polaris.exam.mapper.MessageUserMapper;
 import com.polaris.exam.pojo.Message;
 import com.polaris.exam.mapper.MessageMapper;
@@ -124,5 +125,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     public Page<Message> getSendHistoryPage(Integer userId, MessagePageRequest model) {
         Page<Message> objectPage = new Page<>(model.getPage(), model.getLimit());
         return messageMapper.selectPage(objectPage, new QueryWrapper<Message>().eq("send_user_id",userId));
+    }
+
+    @Override
+    public Integer getMessageCountUnRead(Integer receiveId) {
+        return messageMapper.getMessageCountUnRead(receiveId);
     }
 }

@@ -46,7 +46,8 @@ public class CommonController {
     private final OssAdminService ossAdminService;
     private final AdminCacheService cacheService;
     private final PasswordEncoder passwordEncoder;
-    public CommonController(LoginService loginService, IUserService userService, IRoleService roleService, AdminCacheService adminCacheService, IClassService classService, OssAdminService ossAdminService, AdminCacheService cacheService, PasswordEncoder passwordEncoder) {
+    private final IMessageService messageService;
+    public CommonController(LoginService loginService, IUserService userService, IRoleService roleService, AdminCacheService adminCacheService, IClassService classService, OssAdminService ossAdminService, AdminCacheService cacheService, PasswordEncoder passwordEncoder, IMessageService messageService) {
         this.loginService = loginService;
         this.userService = userService;
         this.adminCacheService = adminCacheService;
@@ -54,6 +55,7 @@ public class CommonController {
         this.ossAdminService = ossAdminService;
         this.cacheService = cacheService;
         this.passwordEncoder = passwordEncoder;
+        this.messageService = messageService;
     }
 
     @ApiOperation(value = "登录")
@@ -81,6 +83,7 @@ public class CommonController {
         UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
         userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
         userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
+        userInfoResponse.setMessageCount(messageService.getMessageCountUnRead(user.getId()));
         if(user.getRoleId()==UserTypeEnum.Student.getCode()){
             userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
             Class aClass = classService.getClassByUserId(user.getId());

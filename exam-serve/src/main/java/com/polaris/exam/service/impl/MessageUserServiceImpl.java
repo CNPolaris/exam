@@ -1,6 +1,8 @@
 package com.polaris.exam.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.message.MessageRequest;
 import com.polaris.exam.pojo.MessageUser;
 import com.polaris.exam.mapper.MessageUserMapper;
 import com.polaris.exam.service.IMessageUserService;
@@ -39,5 +41,19 @@ public class MessageUserServiceImpl extends ServiceImpl<MessageUserMapper, Messa
             messageUserList.add(messageUserMapper.selectOne(new QueryWrapper<MessageUser>().eq("message_id",id)));
         }
         return messageUserList;
+    }
+
+    @Override
+    public Page<MessageUser> getMessageUserPage(MessageRequest model) {
+        Page<MessageUser> page = new Page<>(model.getPage(), model.getLimit());
+        QueryWrapper<MessageUser> queryWrapper = new QueryWrapper<>();
+        return messageUserMapper.selectPage(page, queryWrapper.eq("receive_user_id",model.getReceiveUserId()));
+    }
+
+    @Override
+    public void readMessage(Integer id) {
+        MessageUser messageUser = getById(id);
+        messageUser.setReaded(true);
+        updateById(messageUser);
     }
 }

@@ -2,6 +2,7 @@ package com.polaris.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.message.MessagePageRequest;
+import com.polaris.exam.dto.message.MessageRequest;
 import com.polaris.exam.pojo.Message;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.polaris.exam.pojo.MessageUser;
@@ -81,4 +82,11 @@ public interface IMessageService extends IService<Message> {
      * @return Page<Message>
      */
     Page<Message> getSendHistoryPage(Integer userId, MessagePageRequest model);
+
+    /**
+     * 根据用户id获取未读消息数量
+     * @param receiveId Integer
+     * @return Integer
+     */
+    Integer getMessageCountUnRead(Integer receiveId);
 }

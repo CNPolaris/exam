@@ -21,6 +21,8 @@ public class MessageResponse {
 
     private String createTime;
 
+    private Boolean readed;
+
     public Integer getId() {
         return id;
     }
@@ -83,5 +85,13 @@ public class MessageResponse {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public Boolean getReaded() {
+        return readed;
+    }
+
+    public void setReaded(Boolean readed) {
+        this.readed = readed;
     }
 }

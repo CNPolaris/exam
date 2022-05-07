@@ -23,4 +23,11 @@ public interface MessageMapper extends BaseMapper<Message> {
      */
     @Select("SELECT message_id FROM message_user WHERE receive_user_id = #{userId}")
     List<Integer> getMessageIdsByReceiveUser(Integer userId);
+    /**
+     * 根据用户id获取未读消息数量
+     * @param receiveId Integer
+     * @return Integer
+     */
+    @Select("SELECT COUNT(*) FROM message_user WHERE  receive_user_id=#{receiveId} AND readed = 0")
+    Integer getMessageCountUnRead(Integer receiveId);
 }

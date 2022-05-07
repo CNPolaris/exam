@@ -30,4 +30,5 @@ public class UserInfoResponse {
     private Date createTime;
     private Date modifyTime;
     private Date lastActiveTime;
+    private Integer messageCount;
 }

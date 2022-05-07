@@ -186,6 +186,9 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         if(model.getStatus() != null){
             queryWrapper.eq("status", model.getStatus());
         }
+        if(model.getCreateUser() != null){
+            queryWrapper.eq("create_user", model.getCreateUser());
+        }
         return examPaperAnswerMapper.selectPage(page,queryWrapper);
     }
 

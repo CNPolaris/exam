@@ -221,7 +221,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User updateUserInfo(String username, UpdateUserInfo info) {
         User user = getUserByUsername(username);
-        user.setUserLevel(info.getUserLevel());
+//        user.setUserLevel(info.getUserLevel());
         user.setRealName(info.getRealName());
         user.setAge(info.getAge());
         user.setPhone(info.getPhone());
@@ -319,7 +319,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             user.setRealName(item.getRealName());
             user.setPhone(item.getPhone());
             user.setStatus(StatusEnum.OK.getCode());
-            user.setUserLevel(item.getUserLevel());
+//            user.setUserLevel(item.getUserLevel());
             user.setBirthDay(item.getBirthDay());
             user.setCreateTime(new Date());
             user.setModifyTime(new Date());

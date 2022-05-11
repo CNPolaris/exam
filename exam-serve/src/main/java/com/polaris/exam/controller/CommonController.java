@@ -84,14 +84,23 @@ public class CommonController {
         userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
         userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
         userInfoResponse.setMessageCount(messageService.getMessageCountUnRead(user.getId()));
+        // 班级信息
         if(user.getRoleId()==UserTypeEnum.Student.getCode()){
-            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
-            Class aClass = classService.getClassByUserId(user.getId());
-            if(aClass!=null){
-                userInfoResponse.setClassName(aClass.getClassName());
-                userInfoResponse.setClassId(aClass.getId());
+            Class classByUserId = classService.getClassByUserId(user.getId());
+            if(classByUserId!=null){
+                userInfoResponse.setUserLevelStr(LevelEnum.fromCode(classByUserId.getLevel()).getName());
+                userInfoResponse.setClassName(classByUserId.getClassName());
+                userInfoResponse.setClassId(classByUserId.getId());
             }
         }
+//        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
+//            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+//            Class aClass = classService.getClassByUserId(user.getId());
+//            if(aClass!=null){
+//                userInfoResponse.setClassName(aClass.getClassName());
+//                userInfoResponse.setClassId(aClass.getId());
+//            }
+//        }
         return RespBean.success("获取用户信息成功", userInfoResponse);
     }
 
@@ -102,14 +111,21 @@ public class CommonController {
         UserInfoResponse userInfoResponse = BeanUtil.copyProperties(user, UserInfoResponse.class);
         userInfoResponse.setRoles(UserTypeEnum.fromCode(user.getRoleId()).getName());
         userInfoResponse.setSexStr(SexTypeEnum.fromCode(user.getSex()).getName());
-        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
-            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
-            Class aClass = classService.getClassByUserId(user.getId());
-            if(aClass!=null){
-                userInfoResponse.setClassName(aClass.getClassName());
-                userInfoResponse.setClassId(aClass.getId());
-            }
+        // 班级信息
+        Class classByUserId = classService.getClassByUserId(user.getId());
+        if(classByUserId!=null){
+            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(classByUserId.getLevel()).getName());
+            userInfoResponse.setClassName(classByUserId.getClassName());
+            userInfoResponse.setClassId(classByUserId.getId());
         }
+//        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
+//            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
+//            Class aClass = classService.getClassByUserId(user.getId());
+//            if(aClass!=null){
+//                userInfoResponse.setClassName(aClass.getClassName());
+//                userInfoResponse.setClassId(aClass.getId());
+//            }
+//        }
         return RespBean.success("获取用户信息成功", userInfoResponse);
     }
 

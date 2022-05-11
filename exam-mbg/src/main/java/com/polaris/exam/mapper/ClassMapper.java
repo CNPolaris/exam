@@ -70,4 +70,5 @@ public interface ClassMapper extends BaseMapper<Class> {
      */
     @Select("SELECT COUNT(user_id) FROM class_user")
     Integer getStudentCount();
+
 }

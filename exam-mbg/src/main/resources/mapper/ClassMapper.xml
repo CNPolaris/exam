@@ -8,13 +8,13 @@
         <result column="class_code" property="classCode" />
         <result column="class_count" property="classCount" />
         <result column="class_name" property="className" />
+        <result column="level" property="level" />
         <result column="create_time" property="createTime" />
         <result column="status" property="status" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, class_code, class_count, class_name, create_time, status
+        id, class_code, class_count, class_name, level, create_time, status
     </sql>
-
 </mapper>

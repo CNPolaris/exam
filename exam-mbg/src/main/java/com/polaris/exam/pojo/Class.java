@@ -41,6 +41,8 @@ public class Class implements Serializable {
     @ApiModelProperty(value = "班级名称")
     private String className;
 
+    private Integer level;
+
     private Date createTime;
 
     private Integer status;

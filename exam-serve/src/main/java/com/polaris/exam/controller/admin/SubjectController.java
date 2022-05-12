@@ -4,6 +4,7 @@ package com.polaris.exam.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.pojo.Subject;
 import com.polaris.exam.service.ISubjectService;
+import com.polaris.exam.service.IUserService;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,10 +26,11 @@ import java.security.Principal;
 @RequestMapping("/api/admin/subject")
 public class SubjectController {
     private final ISubjectService subjectService;
-
+    private final IUserService userService;
     @Autowired
-    public SubjectController(ISubjectService subjectService) {
+    public SubjectController(ISubjectService subjectService, IUserService userService) {
         this.subjectService = subjectService;
+        this.userService = userService;
     }
     @ApiOperation(value = "获取学科列表")
     @PostMapping("/list")
@@ -76,5 +78,12 @@ public class SubjectController {
     @GetMapping("/all")
     public RespBean allSubjectList() {
         return RespBean.success("成功", subjectService.allSubjectList());
+    }
+
+    @ApiOperation(value = "获取教师教授学科")
+    @GetMapping("/teacher/all")
+    public RespBean getTeacherAllSubject(Principal principal) {
+        Integer teacherId = userService.getUserByUsername(principal.getName()).getId();
+        return RespBean.success(subjectService.getTeacherAllSubject(teacherId));
     }
 }

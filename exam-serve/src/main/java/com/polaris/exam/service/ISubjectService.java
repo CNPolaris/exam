@@ -86,4 +86,11 @@ public interface ISubjectService extends IService<Subject> {
      * @return List<Subject>
      */
     List<Subject> allSubjectList();
+
+    /**
+     * 获取教师所属学科
+     * @param teacherId Integer
+     * @return List<Subject>
+     */
+    List<Subject> getTeacherAllSubject(Integer teacherId);
 }

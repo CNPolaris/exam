@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.pojo.Subject;
 import com.polaris.exam.mapper.SubjectMapper;
+import com.polaris.exam.service.IClassService;
 import com.polaris.exam.service.ISubjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.polaris.exam.utils.RespBean;
@@ -29,10 +30,11 @@ import java.util.Map;
 @Service
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements ISubjectService {
     private final SubjectMapper subjectMapper;
-
+    private final IClassService classService;
     @Autowired
-    public SubjectServiceImpl(SubjectMapper subjectMapper) {
+    public SubjectServiceImpl(SubjectMapper subjectMapper, IClassService classService) {
         this.subjectMapper = subjectMapper;
+        this.classService = classService;
     }
 
     /**
@@ -186,5 +188,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
     @Override
     public List<Subject> allSubjectList() {
         return subjectMapper.selectList(new QueryWrapper<>());
+    }
+
+    @Override
+    public List<Subject> getTeacherAllSubject(Integer teacherId) {
+        return subjectMapper.selectList(new QueryWrapper<Subject>().in("id", classService.getTeacherSubjectIds(teacherId)));
     }
 }

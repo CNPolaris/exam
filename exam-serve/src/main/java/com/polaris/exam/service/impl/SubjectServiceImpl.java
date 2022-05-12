@@ -161,7 +161,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
     public Subject updateSubjectStatus(Integer id, Integer status) {
         Subject subject = getById(id);
         subject.setStatus(status);
-        save(subject);
+        updateById(subject);
         return subject;
     }
 

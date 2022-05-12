@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class QuestionPageParam {
     private Integer id;
-    private Integer level;
+    private Integer gradeLevel;
     private Integer subjectId;
     private Integer questionType;
 }

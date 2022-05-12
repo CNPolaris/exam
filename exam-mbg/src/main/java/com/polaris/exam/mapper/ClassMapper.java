@@ -84,4 +84,12 @@ public interface ClassMapper extends BaseMapper<Class> {
      * @return Class
      */
     Class getTeacherOneClass(Integer teacherId);
+
+    /**
+     * 获取教师管理的学科ids
+     * @param teacherId Integer
+     * @return List<Integer>
+     */
+    @Select("SELECT subject_id FROM class_teacher WHERE teacher_id = #{teacherId} AND `status`=1")
+    List<Integer> getTeacherSubjectIds(Integer teacherId);
 }

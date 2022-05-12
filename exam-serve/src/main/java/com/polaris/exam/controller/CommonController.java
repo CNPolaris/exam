@@ -93,6 +93,11 @@ public class CommonController {
                 userInfoResponse.setClassId(classByUserId.getId());
             }
         }
+        // 如果是教师
+        if(user.getRoleId() == UserTypeEnum.Teacher.getCode()){
+            userInfoResponse.setClasses(classService.getClassIdsByTeacherId(user.getId()));
+            userInfoResponse.setSubjectIds(classService.getTeacherSubjectIds(user.getId()));
+        }
 //        if(user.getRoleId()==UserTypeEnum.Student.getCode()){
 //            userInfoResponse.setUserLevelStr(LevelEnum.fromCode(user.getUserLevel()).getName());
 //            Class aClass = classService.getClassByUserId(user.getId());

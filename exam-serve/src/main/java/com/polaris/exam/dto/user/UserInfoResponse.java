@@ -3,6 +3,7 @@ package com.polaris.exam.dto.user;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author CNPolaris
@@ -31,4 +32,6 @@ public class UserInfoResponse {
     private Date modifyTime;
     private Date lastActiveTime;
     private Integer messageCount;
+    private List<Integer> classes;
+    private List<Integer> subjectIds;
 }

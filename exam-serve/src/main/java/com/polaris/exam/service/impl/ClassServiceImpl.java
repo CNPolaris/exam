@@ -216,4 +216,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     public Class getTeacherOneClass(Integer teacherId) {
         return classMapper.getTeacherOneClass(teacherId);
     }
+
+    @Override
+    public List<Integer> getTeacherSubjectIds(Integer teacherId) {
+        return classMapper.getTeacherSubjectIds(teacherId);
+    }
 }

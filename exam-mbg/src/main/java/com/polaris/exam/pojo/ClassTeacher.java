@@ -36,6 +36,8 @@ public class ClassTeacher implements Serializable {
     @ApiModelProperty(value = "教师表")
     private Integer teacherId;
 
+    private Integer subjectId;
+
     @ApiModelProperty(value = "状态")
     private Integer status;
 

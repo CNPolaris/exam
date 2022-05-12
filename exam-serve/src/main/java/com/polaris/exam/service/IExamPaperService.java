@@ -3,6 +3,7 @@ package com.polaris.exam.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.ExamPageParam;
 import com.polaris.exam.dto.paper.ExamPaperEditRequest;
+import com.polaris.exam.dto.paper.ExamPaperPageRequest;
 import com.polaris.exam.dto.paper.ExamPaperStudentPageRequest;
 import com.polaris.exam.pojo.ExamPaper;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -131,4 +132,11 @@ public interface IExamPaperService extends IService<ExamPaper> {
      * @return Page<ExamPaper>
      */
     Page<ExamPaper> getStudentPage(Integer id,ExamPaperStudentPageRequest model);
+
+    /**
+     * 教师端获取试卷列表
+     * @param model ExamPaperPageRequest
+     * @return Page<ExamPaper>
+     */
+    Page<ExamPaper> teacherGetPaperList(ExamPaperPageRequest model);
 }

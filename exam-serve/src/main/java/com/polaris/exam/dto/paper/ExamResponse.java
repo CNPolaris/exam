@@ -21,7 +21,7 @@ public class ExamResponse {
 
     private String subjectStr;
 
-    private Integer level;
+    private Integer gradeLevel;
 
     private Integer paperType;
 
@@ -91,12 +91,12 @@ public class ExamResponse {
         this.subjectStr = subjectStr;
     }
 
-    public Integer getLevel() {
-        return level;
+    public Integer getGradeLevel() {
+        return gradeLevel;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setGradeLevel(Integer gradeLevel) {
+        this.gradeLevel = gradeLevel;
     }
 
     public Integer getPaperType() {

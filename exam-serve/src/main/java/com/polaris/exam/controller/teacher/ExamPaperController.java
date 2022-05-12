@@ -3,15 +3,8 @@ package com.polaris.exam.controller.teacher;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.*;
-import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
-import com.polaris.exam.enums.ExamPaperTypeEnum;
-import com.polaris.exam.event.UserEvent;
 import com.polaris.exam.pojo.ExamPaper;
-import com.polaris.exam.pojo.ExamPaperAnswer;
-import com.polaris.exam.pojo.User;
-import com.polaris.exam.pojo.UserEventLog;
 import com.polaris.exam.service.*;
-import com.polaris.exam.utils.ExamUtil;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -75,6 +68,24 @@ public class ExamPaperController {
         response.put("data", paperList);
         return RespBean.success("成功", response);
     }
+
+    @ApiOperation(value = "教师端获取试卷列表")
+    @PostMapping("/list")
+    public RespBean teacherGetPaperList(Principal principal, @RequestBody ExamPaperPageRequest model){
+        model.setUserId(userService.getUserByUsername(principal.getName()).getId());
+        Page<ExamPaper> page = examPaperService.teacherGetPaperList(model);
+        HashMap<String, Object> response = new HashMap<>(2);
+        response.put("total", page.getTotal());
+        ArrayList<ExamResponse> paperList = new ArrayList<>(model.getLimit());
+        page.getRecords().forEach(paper->{
+            ExamResponse examResponse = BeanUtil.toBean(paper, ExamResponse.class);
+            examResponse.setCreateUser(userService.getUsernameById(paper.getCreateUser()));
+            paperList.add(examResponse);
+        });
+        response.put("list", paperList);
+        return RespBean.success(response);
+    }
+
     @ApiOperation(value = "教师创建试卷")
     @PostMapping("/create")
     public RespBean createExamPaper(Principal principal, @RequestBody @Valid ExamPaperEditRequest model) {
@@ -127,7 +138,7 @@ public class ExamPaperController {
             examResponse.setCreateUser(userService.getUsernameById(paper.getCreateUser()));
             examResponse.setSubjectId(paper.getSubjectId());
             examResponse.setSubjectStr(subjectService.getById(paper.getSubjectId()).getName());
-            examResponse.setLevel(paper.getGradeLevel());
+            examResponse.setGradeLevel(paper.getGradeLevel());
             paperList.add(examResponse);
         });
         re.put("total", resultPage.getTotal());

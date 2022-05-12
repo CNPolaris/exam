@@ -12,6 +12,7 @@ import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.mapper.QuestionMapper;
 import com.polaris.exam.pojo.*;
 import com.polaris.exam.mapper.ExamPaperMapper;
+import com.polaris.exam.pojo.Class;
 import com.polaris.exam.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.polaris.exam.utils.ExamUtil;
@@ -285,6 +286,27 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         } catch (Exception e){
             return null;
         }
+    }
+
+    @Override
+    public Page<ExamPaper> teacherGetPaperList(ExamPaperPageRequest model) {
+        QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
+        // 如果年级level不空
+        if(model.getLevel()!=null){
+            queryWrapper.eq("grade_level",model.getLevel());
+        }
+        // 如果空
+        Class teacherOneClass = classService.getTeacherOneClass(model.getUserId());
+        // 如果subjectId不为空
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id",model.getSubjectId());
+        }
+        // 查询一个学科
+        Integer subjectId = classService.getOneTeacherSubject(teacherOneClass.getId());
+        queryWrapper.eq("subject_id", subjectId);
+
+        Page<ExamPaper> page = new Page<>(model.getPage(), model.getLimit());
+        return examPaperMapper.selectPage(page,queryWrapper);
     }
 
     private List<ExamPaperTitleItemObject> frameTextContentFromModel(List<ExamPaperTitleItem> titleItems){

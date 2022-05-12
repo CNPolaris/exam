@@ -135,4 +135,16 @@ public interface IClassService extends IService<Class> {
      * @return List<Integer>
      */
     List<Integer> getStudentIdsByClassId(Integer classId);
+    /**
+     * 获取教师教授的一个班级
+     * @param teacherId Integer
+     * @return Class
+     */
+    Class getTeacherOneClass(Integer teacherId);
+    /**
+     * 获取教师教授的一个学科id
+     * @param classId Integer
+     * @return Integer
+     */
+    Integer getOneTeacherSubject(Integer classId);
 }

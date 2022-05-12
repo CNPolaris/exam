@@ -17,4 +17,15 @@
     <sql id="Base_Column_List">
         id, class_code, class_count, class_name, level, create_time, status
     </sql>
+
+    <select id="getOneTeacherSubject" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT subject_id  FROM class_teacher WHERE class_id=#{classId} AND `status`=1 LIMIT 1
+    </select>
+
+    <select id="getTeacherOneClass" parameterType="java.lang.Integer" resultType="com.polaris.exam.pojo.Class">
+        SELECT * FROM class
+        WHERE id = (
+            SELECT class_id FROM class_teacher WHERE teacher_id = #{teacherId} AND `status` = 1 LIMIT 1
+            )
+    </select>
 </mapper>

@@ -7,12 +7,13 @@
         <id column="id" property="id" />
         <result column="class_id" property="classId" />
         <result column="teacher_id" property="teacherId" />
+        <result column="subject_id" property="subjectId" />
         <result column="status" property="status" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, class_id, teacher_id, status
+        id, class_id, teacher_id, subject_id, status
     </sql>
 
 </mapper>

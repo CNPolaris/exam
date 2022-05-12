@@ -75,7 +75,7 @@ public class ExamPaperController {
             ExamResponse examResponse = BeanUtil.toBean(paper, ExamResponse.class);
             examResponse.setCreateUser(userService.getUsernameById(paper.getCreateUser()));
             examResponse.setSubjectId(paper.getSubjectId());
-            examResponse.setLevel(paper.getGradeLevel());
+            examResponse.setGradeLevel(paper.getGradeLevel());
             paperList.add(examResponse);
         }
         response.put("data", paperList);

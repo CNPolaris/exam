@@ -206,4 +206,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     public List<Integer> getStudentIdsByClassId(Integer classId) {
         return classMapper.getStudentIdsByClassId(classId);
     }
+
+    @Override
+    public Integer getOneTeacherSubject(Integer classId) {
+        return classMapper.getOneTeacherSubject(classId);
+    }
+
+    @Override
+    public Class getTeacherOneClass(Integer teacherId) {
+        return classMapper.getTeacherOneClass(teacherId);
+    }
 }

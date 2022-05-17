@@ -179,7 +179,7 @@ public interface IUserService extends IService<User> {
 
     /**
      * 批量上传用户
-     * @param form
+     * @param form List<UploadUserParam>
      */
     void uploadUser(List<UploadUserParam> form);
 }

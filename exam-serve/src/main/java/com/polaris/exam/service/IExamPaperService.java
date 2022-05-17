@@ -30,9 +30,9 @@ public interface IExamPaperService extends IService<ExamPaper> {
 
     /**
      * 获取试卷列表于成绩分析
-     * @param userId
-     * @param model
-     * @return
+     * @param userId Integer
+     * @param model ExamPageParam
+     * @return Page<ExamPaper>
      */
     Page<ExamPaper> getResultPage(Integer userId, ExamPageParam model);
 

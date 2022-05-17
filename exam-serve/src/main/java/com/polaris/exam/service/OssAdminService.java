@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public interface OssAdminService {
     /**
-     *
+     * 七牛云上传图片
      * @param file FileInputStream
      * @param key String
      * @return String

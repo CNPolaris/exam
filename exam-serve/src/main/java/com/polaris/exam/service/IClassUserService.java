@@ -50,5 +50,10 @@ public interface IClassUserService extends IService<ClassUser> {
      */
     void deleteClassUserByClass(Integer classId);
 
+    /**
+     * 通过班级获取学生列表
+     * @param model StatisticsRequest
+     * @return Page<ClassUser>
+     */
     Page<ClassUser> getStudentIdsByClass(StatisticsRequest model);
 }

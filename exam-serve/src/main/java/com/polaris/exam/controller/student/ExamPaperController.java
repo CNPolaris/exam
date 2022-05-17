@@ -79,16 +79,16 @@ public class ExamPaperController {
         return RespBean.success(response);
     }
 
-    @ApiOperation("任务试卷中心")
-    @PostMapping("/paper/task")
-    public RespBean getStudentTaskPaperPage(@RequestBody ExamPaperStudentPageRequest model) {
-        model.setPaperType(ExamPaperTypeEnum.Task.getCode());
-        Page<ExamPaper> studentTaskPaper = examPaperService.getStudentTaskPaper(model);
-        Map<String, Object> response = new HashMap<>(2);
-        response.put("total", studentTaskPaper.getTotal());
-        response.put("list", studentTaskPaper.getRecords());
-        return RespBean.success(response);
-    }
+//    @ApiOperation("任务试卷中心")
+//    @PostMapping("/paper/task")
+//    public RespBean getStudentTaskPaperPage(@RequestBody ExamPaperStudentPageRequest model) {
+//        model.setPaperType(ExamPaperTypeEnum.Task.getCode());
+//        Page<ExamPaper> studentTaskPaper = examPaperService.getStudentTaskPaper(model);
+//        Map<String, Object> response = new HashMap<>(2);
+//        response.put("total", studentTaskPaper.getTotal());
+//        response.put("list", studentTaskPaper.getRecords());
+//        return RespBean.success(response);
+//    }
 
     @ApiOperation(value = "选择试卷")
     @GetMapping("/select/{id}")

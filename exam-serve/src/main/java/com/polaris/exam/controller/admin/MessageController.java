@@ -4,6 +4,7 @@ package com.polaris.exam.controller.admin;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.message.MessagePageRequest;
 import com.polaris.exam.dto.message.MessageResponse;
 import com.polaris.exam.dto.message.MessageSend;
 import com.polaris.exam.pojo.Message;
@@ -41,10 +42,10 @@ public class MessageController {
     }
 
     @ApiOperation(value = "管理员消息列表")
-    @GetMapping("/admin/list")
-    public RespBean pageList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10")Integer limit, @RequestParam(required = false)String send){
-        Page<Message> objectPage = new Page<>(page, limit);
-        Page<Message> resultPage = messageService.pageList(objectPage,send);
+    @PostMapping("/admin/list")
+    public RespBean pageList(@RequestBody MessagePageRequest model){
+        Page<Message> objectPage = new Page<>(model.getPage(), model.getLimit());
+        Page<Message> resultPage = messageService.pageList(objectPage,model);
         Map<String, Object> result = new HashMap<>();
 
         List<Integer> ids = resultPage.getRecords().stream().map(d -> d.getId()).collect(Collectors.toList());
@@ -57,7 +58,7 @@ public class MessageController {
             String receives = messageUsers.stream().filter(d -> d.getMessageId().equals(m.getId())).map(d -> d.getReceiveUserName())
                     .collect(Collectors.joining(","));
             messageResponse.setReceives(receives);
-            messageResponse.setCreateTime(DateUtil.formatTime(m.getCreateTime()));
+            messageResponse.setCreateTime(m.getCreateTime().toString());
             messageResponses.add(messageResponse);
         });
 

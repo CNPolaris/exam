@@ -28,10 +28,10 @@ public interface IMessageService extends IService<Message> {
     /**
      * 分页
      * @param page Page<Message>
-     * @param send String
+     * @param model MessagePageRequest
      * @return Page<Message>
      */
-    Page<Message> pageList(Page<Message> page, String send);
+    Page<Message> pageList(Page<Message> page, MessagePageRequest model);
 
     /**
      * 发送消息

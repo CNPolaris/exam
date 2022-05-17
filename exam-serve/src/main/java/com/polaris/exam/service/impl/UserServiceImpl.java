@@ -251,7 +251,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public User updateUserStatus(Integer id, Integer status) {
         User user = selectById(id);
         user.setStatus(status);
-        save(user);
+        updateById(user);
         cacheService.setUser(user);
         return user;
     }

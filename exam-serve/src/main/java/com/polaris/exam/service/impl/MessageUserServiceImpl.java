@@ -36,11 +36,7 @@ public class MessageUserServiceImpl extends ServiceImpl<MessageUserMapper, Messa
      */
     @Override
     public List<MessageUser> selectByMessageIds(List<Integer> ids) {
-        List<MessageUser> messageUserList = new ArrayList<>();
-        for(Integer id:ids){
-            messageUserList.add(messageUserMapper.selectOne(new QueryWrapper<MessageUser>().eq("message_id",id)));
-        }
-        return messageUserList;
+        return messageUserMapper.selectList(new QueryWrapper<MessageUser>().in("message_id", ids));
     }
 
     @Override

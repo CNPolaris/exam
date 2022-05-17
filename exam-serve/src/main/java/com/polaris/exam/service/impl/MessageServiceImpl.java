@@ -47,11 +47,12 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     }
 
     @Override
-    public Page<Message> pageList(Page<Message> page, String send) {
-        if(send.isEmpty()){
-            return messageMapper.selectPage(page,new QueryWrapper<Message>());
+    public Page<Message> pageList(Page<Message> page, MessagePageRequest model) {
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+        if(!model.getSendUserName().isEmpty() && model.getSendUserName()!=null){
+            queryWrapper.eq("send_user_name", model.getSendUserName());
         }
-        return messageMapper.selectPage(page,new QueryWrapper<Message>());
+        return messageMapper.selectPage(page,queryWrapper);
     }
 
     @Override

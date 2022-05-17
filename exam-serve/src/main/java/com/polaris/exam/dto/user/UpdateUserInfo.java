@@ -15,6 +15,7 @@ public class UpdateUserInfo {
     private Integer userLevel;
     private Integer phone;
     private Integer roleId;
+    private String password;
 
     public Integer getRoleId() {
         return roleId;
@@ -78,5 +79,13 @@ public class UpdateUserInfo {
 
     public void setPhone(Integer phone) {
         this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

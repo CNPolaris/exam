@@ -134,6 +134,13 @@ public interface IExamPaperService extends IService<ExamPaper> {
     Page<ExamPaper> getStudentPage(Integer id,ExamPaperStudentPageRequest model);
 
     /**
+     * 获取任务试卷中心
+     * @param model ExamPaperStudentPageRequest
+     * @return Page<ExamPaper>
+     */
+    Page<ExamPaper> getStudentTaskPaper(ExamPaperStudentPageRequest model);
+
+    /**
      * 教师端获取试卷列表
      * @param model ExamPaperPageRequest
      * @return Page<ExamPaper>

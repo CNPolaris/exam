@@ -232,6 +232,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return user;
     }
 
+    @Override
+    public User updateUserPassword(Integer id, UpdateUserInfo model) {
+        User user = getById(id);
+        user.setPassword(passwordEncoder.encode(model.getPassword()));
+        updateById(user);
+        return user;
+    }
+
     /**
      * 更新用户状态
      *

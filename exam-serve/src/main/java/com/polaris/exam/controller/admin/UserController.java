@@ -107,6 +107,19 @@ public class UserController {
         return RespBean.success("禁用用户成功",userService.updateUserStatus(id, status));
     }
 
+    @ApiOperation("管理员修改其他用户密码")
+    @PostMapping("/password/{id}")
+    public RespBean updateUserPassword(@PathVariable Integer id, @RequestBody UpdateUserInfo model) {
+        if(model.getPassword().isEmpty() || model.getPassword()==null){
+            return RespBean.error("密码不能为空");
+        }
+        User user = userService.updateUserPassword(id, model);
+        if(user==null){
+            return RespBean.error("用户不存在");
+        }
+        return RespBean.success("密码更新成功");
+    }
+
     @ApiOperation(value = "获取学生列表")
     @PostMapping("/student/list")
     public RespBean getStudentList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit, @RequestParam(required = false) String username){

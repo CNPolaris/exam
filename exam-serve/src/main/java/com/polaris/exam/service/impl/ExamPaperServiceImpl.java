@@ -289,6 +289,18 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     }
 
     @Override
+    public Page<ExamPaper> getStudentTaskPaper(ExamPaperStudentPageRequest model) {
+        Page<ExamPaper> page = new Page<>(model.getPage(), model.getLimit());
+        QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status", StatusEnum.OK.getCode());
+        if(model.getSubjectId()!=null){
+            queryWrapper.eq("subject_id", model.getSubjectId());
+        }
+        queryWrapper.eq("paper_type", model.getPaperType());
+        return examPaperMapper.selectPage(page, queryWrapper);
+    }
+
+    @Override
     public Page<ExamPaper> teacherGetPaperList(ExamPaperPageRequest model) {
         QueryWrapper<ExamPaper> queryWrapper = new QueryWrapper<>();
         // 如果年级level不空

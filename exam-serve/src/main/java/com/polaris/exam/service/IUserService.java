@@ -139,6 +139,14 @@ public interface IUserService extends IService<User> {
     User updateUserInfo(String username, UpdateUserInfo info);
 
     /**
+     * 管理员修改用户密码
+     * @param id Integer
+     * @param model UpdateUserInfo
+     * @return User
+     */
+    User updateUserPassword(Integer id, UpdateUserInfo model);
+
+    /**
      * 更新用户状态
      * @param id Integer
      * @param status Integer

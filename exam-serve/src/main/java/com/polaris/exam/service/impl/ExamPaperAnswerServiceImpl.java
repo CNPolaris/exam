@@ -204,6 +204,7 @@ public class ExamPaperAnswerServiceImpl extends ServiceImpl<ExamPaperAnswerMappe
         if(model.getCreateUser()!=null){
             queryWrapper.eq("create_user",model.getCreateUser());
         }
+        queryWrapper.eq("status", model.getStatus());
         return examPaperAnswerMapper.selectPage(page,queryWrapper);
     }
 

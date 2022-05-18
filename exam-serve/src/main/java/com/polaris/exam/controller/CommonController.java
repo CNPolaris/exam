@@ -109,6 +109,13 @@ public class CommonController {
         return RespBean.success("获取用户信息成功", userInfoResponse);
     }
 
+    @ApiOperation("用户获取收到的消息数量")
+    @GetMapping("/message/count")
+    public RespBean getMessageCount(Principal principal){
+        User user = userService.getUserByUsername(principal.getName());
+        return RespBean.success(messageService.getMessageCountUnRead(user.getId()));
+    }
+
     @ApiOperation("根据id获取用户信息")
     @GetMapping("/user/info/{id}")
     public RespBean getUserInfoById(@PathVariable Integer id){

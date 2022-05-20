@@ -80,14 +80,17 @@ public class ExamPaperAnswerController {
     }
 
     @ApiOperation(value = "考试期间设置答案缓存")
-    @PostMapping("/set")
-    public RespBean setAnswer(Principal principal,@RequestBody ExamPaperSubmit submit){
-        cacheService.setAnswer(principal.getName(), submit.getId(),submit);
+    @PostMapping("/set/{id}")
+    public RespBean setAnswer(Principal principal,@PathVariable Integer id,@RequestBody ExamPaperSubmit submit){
+        cacheService.setAnswer(principal.getName(), id,submit);
         return RespBean.success("保存成功");
     }
     @ApiOperation(value = "考试期间获取答案缓存")
     @GetMapping("/get/{id}")
     public RespBean getAnswer(Principal principal,@PathVariable Integer id){
+        if(!cacheService.hasAnswer(principal.getName(), id)){
+            return RespBean.error("获取答案缓存失败");
+        }
         return RespBean.success("获取成功",cacheService.getAnswer(principal.getName(), id));
     }
     @ApiOperation(value = "学生查看试卷详情")

@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "首页api", tags = "教师端")
+@Api(value = "首页api", tags = "教师端首页模块")
 @RestController("TeacherDashController")
 @RequestMapping("/api/teacher/dash")
 public class DashController {

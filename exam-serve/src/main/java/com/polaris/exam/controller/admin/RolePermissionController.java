@@ -26,7 +26,7 @@ import java.util.List;
  * @author polaris
  * @since 2022-01-07
  */
-@Api(value = "角色权限关联管理模块",tags="RolePermissionController")
+@Api(value = "角色权限关联管理模块",tags="管理员端角色权限关联模块")
 @RestController("AdminRPController")
 @RequestMapping("/api/admin/rp")
 public class RolePermissionController {

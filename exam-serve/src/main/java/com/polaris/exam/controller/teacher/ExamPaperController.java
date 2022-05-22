@@ -19,7 +19,7 @@ import java.util.*;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "试卷管理模块", tags = "教师端")
+@Api(value = "试卷管理模块", tags = "教师端试卷管理模块")
 @RestController("TeacherExamPaperController")
 @RequestMapping("/api/teacher/exam")
 public class ExamPaperController {

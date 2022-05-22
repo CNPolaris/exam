@@ -31,7 +31,7 @@ import java.util.*;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "试卷管理模块", tags = "管理员端")
+@Api(value = "试卷管理模块", tags = "管理员端试卷管理模块")
 @RestController("AdminExamPaperController")
 @RequestMapping("/api/admin/exam")
 public class ExamPaperController {

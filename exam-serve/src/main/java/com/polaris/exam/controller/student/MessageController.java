@@ -22,7 +22,7 @@ import java.util.Map;
  * @author CNPolaris
  * @version 1.0
  */
-@Api("通用消息管理")
+@Api(tags="学生端消息管理模块")
 @RestController("StudentMessageController")
 @RequestMapping("/api/message")
 public class MessageController {

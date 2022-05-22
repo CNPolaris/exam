@@ -27,7 +27,7 @@ import java.util.*;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "试卷答案管理模块",tags = "学生端")
+@Api(value = "试卷答案管理模块",tags = "学生端试卷答案管理模块")
 @RestController("StudentAnswerController")
 @RequestMapping("/api/student/exam/answer")
 public class ExamPaperAnswerController {

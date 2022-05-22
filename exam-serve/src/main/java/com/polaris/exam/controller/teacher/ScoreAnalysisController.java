@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author CNPolaris
  * @version 1.0
  */
-@Api("成绩分析模块")
+@Api(tags="教师端成绩分析模块")
 @RestController("TeacherScoreAnalysisController")
 @RequestMapping("/api/exam/analysis")
 public class ScoreAnalysisController {

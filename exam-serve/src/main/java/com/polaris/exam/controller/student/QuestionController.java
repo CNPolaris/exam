@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.polaris.exam.dto.QuestionFalseType;
 import com.polaris.exam.dto.paper.ExamPaperSubmitItem;
 import com.polaris.exam.dto.question.*;
 import com.polaris.exam.enums.QuestionTypeEnum;
@@ -27,7 +26,7 @@ import java.util.List;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "题目管理模块",tags = "学生端")
+@Api(value = "题目管理模块",tags = "学生端题目管理模块")
 @RestController("StudentQuestionController")
 @RequestMapping("/api/student/question")
 public class QuestionController {

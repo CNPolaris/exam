@@ -31,7 +31,7 @@ import java.util.Map;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "登录管理模块",tags = "登录管理模块")
+@Api(tags = "通用模块")
 @RestController("CommonController")
 @RequestMapping("/api")
 public class CommonController {

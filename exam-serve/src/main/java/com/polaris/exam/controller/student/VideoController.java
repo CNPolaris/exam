@@ -32,7 +32,7 @@ import java.util.HashMap;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "视频管理", tags = "学生端")
+@Api(value = "视频管理", tags = "学生端视频管理模块")
 @RestController("StudentVideoController")
 @RequestMapping("/api/student/video")
 public class VideoController {

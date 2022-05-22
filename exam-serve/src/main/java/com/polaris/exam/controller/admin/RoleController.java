@@ -21,7 +21,7 @@ import java.security.Principal;
  * @author polaris
  * @since 2022-01-07
  */
-@Api(value = "角色管理模块",tags="RoleController")
+@Api(value = "角色管理模块",tags="管理员端角色管理模块")
 @RestController("AdminRoleController")
 @RequestMapping("/api/admin/role")
 public class RoleController {

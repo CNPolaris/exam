@@ -1,10 +1,7 @@
 package com.polaris.exam.controller.teacher;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.message.MessagePageRequest;
-import com.polaris.exam.dto.message.MessageResponse;
 import com.polaris.exam.dto.message.MessageSend;
 import com.polaris.exam.pojo.Message;
 import com.polaris.exam.pojo.MessageUser;
@@ -12,6 +9,7 @@ import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.IMessageService;
 import com.polaris.exam.service.IUserService;
 import com.polaris.exam.utils.RespBean;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +27,7 @@ import java.util.stream.Collectors;
  * @author CNPolaris
  * @version 1.0
  */
-@ApiOperation(value = "消息管理", tags = "教师端")
+@Api(value = "消息管理", tags = "教师端消息管理模块")
 @RestController("TeacherMessageController")
 @RequestMapping("/api/teacher/message")
 public class MessageController {

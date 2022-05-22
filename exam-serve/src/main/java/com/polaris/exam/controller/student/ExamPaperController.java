@@ -11,7 +11,6 @@ import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import oshi.jna.platform.mac.SystemB;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ import java.util.Map;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "试卷管理模块", tags = "学生端")
+@Api(value = "试卷管理模块", tags = "学生端试卷管理模块")
 @RestController("StudentExamPaperController")
 @RequestMapping("/api/student/exam")
 public class ExamPaperController {

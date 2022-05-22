@@ -23,7 +23,7 @@ import java.util.List;
  * @author polaris
  * @since 2022-01-07
  */
-@Api(value = "权限管理模块",tags = "PermissionController")
+@Api(value = "权限管理模块",tags = "管理员端权限管理模块")
 @RestController("AdminPermissionController")
 @RequestMapping("/api/admin/permission")
 public class PermissionController {

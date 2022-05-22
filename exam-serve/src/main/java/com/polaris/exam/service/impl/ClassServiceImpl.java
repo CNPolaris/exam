@@ -46,7 +46,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
      */
     @Override
     public int getClassCount() {
-        return classMapper.selectCount(new QueryWrapper<Class>());
+        return classMapper.selectCount(new QueryWrapper<Class>().eq("status",StatusEnum.OK.getCode()));
     }
 
     @Override
@@ -65,8 +65,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class> implements
     public Page<Class> classPage(Page<Class> page, String name) {
         QueryWrapper<Class> queryWrapper = new QueryWrapper<>();
         if(!name.isEmpty()){
-            queryWrapper.eq("class_name",name);
+            queryWrapper.eq("class_name",name).eq("status", StatusEnum.OK.getCode());
         }
+        queryWrapper.eq("status", StatusEnum.OK.getCode());
         return classMapper.selectPage(page,queryWrapper);
     }
 

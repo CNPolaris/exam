@@ -68,7 +68,7 @@ public interface ClassMapper extends BaseMapper<Class> {
      * 查询学生数量
      * @return Integer
      */
-    @Select("SELECT COUNT(user_id) FROM class_user")
+    @Select("SELECT COUNT(user_id) FROM class_user WHERE `status`=1")
     Integer getStudentCount();
 
     /**

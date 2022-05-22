@@ -43,7 +43,7 @@ import java.util.List;
  * @author polaris
  * @since 2022-02-15
  */
-@Api(tags = "视频管理")
+@Api(tags = "管理员端视频管理模块")
 @RestController("AdminVideoController")
 @RequestMapping("/api/video")
 public class VideoController {

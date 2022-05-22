@@ -19,7 +19,7 @@ import java.security.Principal;
  * @version 1.0
  */
 
-@Api(value = "管理员首页" ,tags="管理员端")
+@Api(value = "管理员首页" ,tags="管理员端首页模块")
 @RestController("AdminDashboardController")
 @RequestMapping("/api/admin/dash")
 public class DashboardController {

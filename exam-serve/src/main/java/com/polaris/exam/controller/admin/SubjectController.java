@@ -21,7 +21,7 @@ import java.security.Principal;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "学科管理模块",tags = "SubjectController")
+@Api(value = "学科管理模块",tags = "管理员端学科管理模块")
 @RestController("AdminSubjectController")
 @RequestMapping("/api/admin/subject")
 public class SubjectController {

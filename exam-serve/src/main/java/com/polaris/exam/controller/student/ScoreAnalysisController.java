@@ -17,7 +17,7 @@ import java.util.List;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "成绩分析模块", tags = "学生端")
+@Api(value = "成绩分析模块", tags = "学生端成绩分析模块")
 @RestController("StudentScoreAnalysisController")
 @RequestMapping("/api/student/analysis")
 public class ScoreAnalysisController {

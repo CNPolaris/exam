@@ -33,7 +33,7 @@ import java.util.List;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "题目管理模块",tags = "管理员、教师通用")
+@Api(value = "题目管理模块",tags = "管理员、教师通用题目管理模块")
 @RestController("AdminQuestionController")
 @RequestMapping("/api/admin/question")
 public class QuestionController {

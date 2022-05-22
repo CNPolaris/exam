@@ -25,7 +25,7 @@ import java.util.Map;
  * @author polaris
  * @since 2022-02-05
  */
-@Api(tags = "登录日志")
+@Api(tags = "管理员端登录日志管理模块")
 @RestController("AdminLogController")
 @RequestMapping("/api/admin/log")
 public class LoginLogController {

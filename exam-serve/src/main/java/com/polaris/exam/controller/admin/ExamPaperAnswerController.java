@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.paper.*;
 import com.polaris.exam.enums.ExamPaperAnswerStatusEnum;
 import com.polaris.exam.enums.ExamPaperTypeEnum;
-import com.polaris.exam.event.CalculateExamPaperAnswerCompleteEvent;
 import com.polaris.exam.event.UserEvent;
 import com.polaris.exam.pojo.ExamPaperAnswer;
 import com.polaris.exam.pojo.Subject;
@@ -32,7 +31,7 @@ import java.util.*;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "试卷答案管理模块",tags = "ExamPaperAnswerController")
+@Api(value = "试卷答案管理模块",tags = "管理员端考试答案管理模块")
 @RestController("AdminExamAnswerController")
 @RequestMapping("/api/admin/exam/answer")
 public class ExamPaperAnswerController {

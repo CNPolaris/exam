@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @author polaris
  * @since 2022-01-17
  */
-@Api(value = "班级管理模块", tags = "管理员端")
+@Api(value = "班级管理模块", tags = "管理员端班级班级模块")
 @RestController("AdminClassController")
 @RequestMapping("/api/admin/class")
 public class ClassController {

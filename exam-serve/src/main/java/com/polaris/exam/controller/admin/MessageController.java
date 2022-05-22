@@ -2,7 +2,6 @@ package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polaris.exam.dto.message.MessagePageRequest;
 import com.polaris.exam.dto.message.MessageResponse;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(value = "消息管理模块")
+@Api(value = "消息管理模块", tags = "管理员端消息管理模块")
 @RestController("AdminMessageController")
 @RequestMapping("/api/admin/message")
 public class MessageController {

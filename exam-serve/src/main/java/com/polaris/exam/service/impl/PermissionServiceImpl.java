@@ -4,20 +4,19 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.polaris.exam.dto.permission.PermissionResponse;
 import com.polaris.exam.enums.StatusEnum;
 import com.polaris.exam.pojo.Permission;
 import com.polaris.exam.mapper.PermissionMapper;
 import com.polaris.exam.service.AdminCacheService;
+import com.polaris.exam.service.IPermissionCategoryService;
 import com.polaris.exam.service.IPermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.polaris.exam.utils.RespBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -30,10 +29,12 @@ import java.util.Map;
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
     private final PermissionMapper permissionMapper;
+    private final IPermissionCategoryService categoryService;
     private final AdminCacheService adminCacheService;
     @Autowired
-    public PermissionServiceImpl(PermissionMapper permissionMapper, AdminCacheService adminCacheService) {
+    public PermissionServiceImpl(PermissionMapper permissionMapper, IPermissionCategoryService categoryService, AdminCacheService adminCacheService) {
         this.permissionMapper = permissionMapper;
+        this.categoryService = categoryService;
         this.adminCacheService = adminCacheService;
     }
 
@@ -64,7 +65,13 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         Map<String, Object> returnMap = new HashMap<>();
         IPage<Permission> data = permissionMapper.selectPage(page,null);
         returnMap.put("total",data.getTotal());
-        returnMap.put("data",data.getRecords());
+        ArrayList<PermissionResponse> permissionList = new ArrayList<>();
+        data.getRecords().forEach(permission -> {
+            PermissionResponse permissionResponse = BeanUtil.copyProperties(permission, PermissionResponse.class);
+            permissionResponse.setCategoryName(categoryService.getById(permission.getCategoryId()).getName());
+            permissionList.add(permissionResponse);
+        });
+        returnMap.put("data",permissionList);
         return RespBean.success("查询成功",returnMap);
     }
 
@@ -82,8 +89,15 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         queryWrapper.allEq(beanToMap,false);
         IPage<Permission> data = permissionMapper.selectPage(page,queryWrapper);
-        returnMap.put("total",data.getTotal());
-        returnMap.put("data",data.getRecords());
+        returnMap.put("total", data.getTotal());
+
+        ArrayList<PermissionResponse> permissionList = new ArrayList<>();
+        data.getRecords().forEach(permission -> {
+            PermissionResponse permissionResponse = BeanUtil.copyProperties(permission, PermissionResponse.class);
+            permissionResponse.setCategoryName(categoryService.getById(permission.getCategoryId()).getName());
+            permissionList.add(permissionResponse);
+        });
+        returnMap.put("data",permissionList);
         return RespBean.success("查询成功",returnMap);
     }
 
@@ -153,6 +167,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             permission.setDescription(param.getDescription());
             permission.setUrl(param.getUrl());
             permission.setStatus(param.getStatus());
+            permission.setCategoryId(param.getCategoryId());
             permissionMapper.updateById(permission);
             return RespBean.success("更新权限成功",permission);
         }catch (Exception e){

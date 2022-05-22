@@ -2,8 +2,6 @@ package com.polaris.exam.controller.admin;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.codec.Base64;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,18 +13,14 @@ import com.polaris.exam.enums.UserTypeEnum;
 import com.polaris.exam.pojo.User;
 import com.polaris.exam.service.AdminCacheService;
 import com.polaris.exam.service.IUserService;
-import com.polaris.exam.utils.CreateUuid;
 import com.polaris.exam.utils.RespBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,7 +32,7 @@ import java.util.List;
  * @author polaris
  * @since 2022-01-07
  */
-@Api(value = "用户管理模块",tags="UserController")
+@Api(value = "用户管理模块",tags="管理员端用户管理模块")
 @RestController("AdminUserController")
 @RequestMapping("/api/admin/user")
 public class UserController {

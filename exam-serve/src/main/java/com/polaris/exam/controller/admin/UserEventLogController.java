@@ -23,7 +23,7 @@ import java.util.HashMap;
  * @author polaris
  * @since 2022-01-08
  */
-@Api(tags = "用户操作日志")
+@Api(tags = "管理员端用户操作日志")
 @RestController("AdminEventLogController")
 @RequestMapping("/api/admin/user/event/log")
 public class UserEventLogController {

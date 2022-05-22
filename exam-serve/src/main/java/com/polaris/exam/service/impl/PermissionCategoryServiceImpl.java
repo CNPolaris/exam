@@ -40,6 +40,7 @@ public class PermissionCategoryServiceImpl extends ServiceImpl<PermissionCategor
         if(model.getName() !=null){
             queryWrapper.eq("name", model.getName());
         }
+        queryWrapper.orderByAsc("sort");
         return permissionCategoryMapper.selectPage(page,queryWrapper);
     }
 

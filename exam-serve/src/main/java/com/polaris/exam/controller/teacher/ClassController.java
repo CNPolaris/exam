@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @author CNPolaris
  * @version 1.0
  */
-@Api(value = "班级管理模块", tags = "教师端")
+@Api(value = "班级管理模块", tags = "教师端班级管理模块")
 @RestController("TeacherClassController")
 @RequestMapping("/api/teacher/class")
 public class ClassController {

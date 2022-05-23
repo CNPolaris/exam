@@ -327,11 +327,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             user.setRealName(item.getRealName());
             user.setPhone(item.getPhone());
             user.setStatus(StatusEnum.OK.getCode());
-//            user.setUserLevel(item.getUserLevel());
+            user.setUserLevel(item.getUserLevel());
             user.setBirthDay(item.getBirthDay());
             user.setCreateTime(new Date());
             user.setModifyTime(new Date());
-            user.setAvatar("https://gitee.com/cnpolaris-tian/giteePagesImages/raw/master/image_path/1644288003796af36811f-5dac-4054-a6fc-37d82565bd4d.jpg");
+            user.setAvatar("https://static01.imgkr.com/temp/23cf94d1cb6145298bc169c23c3c84c8.jpg");
             save(user);
 
             ClassUser classUser = new ClassUser();

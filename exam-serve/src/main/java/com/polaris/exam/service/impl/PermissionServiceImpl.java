@@ -46,7 +46,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public List<Permission> queryAll() {
         List<Permission> permissionAll = adminCacheService.getPermissionAll();
         if(permissionAll==null){
-            permissionAll = permissionMapper.selectList(new QueryWrapper<Permission>());
+            permissionAll = permissionMapper.selectList(new QueryWrapper<Permission>().eq("status",StatusEnum.OK.getCode()));
             if(permissionAll!=null){
                 adminCacheService.setPermissionAll(permissionAll);
             }
@@ -87,7 +87,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         Map<String, Object> returnMap = new HashMap<>();
         Map<String, Object> beanToMap = BeanUtil.beanToMap(param,true,false);
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
-        queryWrapper.allEq(beanToMap,false);
+        queryWrapper.allEq(beanToMap,false).eq("status",StatusEnum.OK.getCode());
         IPage<Permission> data = permissionMapper.selectPage(page,queryWrapper);
         returnMap.put("total", data.getTotal());
 

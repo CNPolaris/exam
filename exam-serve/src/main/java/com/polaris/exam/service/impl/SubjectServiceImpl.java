@@ -46,7 +46,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
     @Override
     public RespBean getAllSubjectList(Page<Subject> page) {
         HashMap<String, Object> returnMap = new HashMap<>();
-        IPage<Subject> data = subjectMapper.selectPage(page, null);
+        IPage<Subject> data = subjectMapper.selectPage(page, new QueryWrapper<Subject>().eq("status", StatusEnum.OK.getCode()));
         returnMap.put("total",data.getTotal());
         returnMap.put("data",data.getRecords());
         return RespBean.success("查询成功",returnMap);
@@ -187,11 +187,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      */
     @Override
     public List<Subject> allSubjectList() {
-        return subjectMapper.selectList(new QueryWrapper<>());
+        return subjectMapper.selectList(new QueryWrapper<Subject>().eq("status", StatusEnum.OK.getCode()));
     }
 
     @Override
     public List<Subject> getTeacherAllSubject(Integer teacherId) {
-        return subjectMapper.selectList(new QueryWrapper<Subject>().in("id", classService.getTeacherSubjectIds(teacherId)));
+        return subjectMapper.selectList(new QueryWrapper<Subject>().in("id", classService.getTeacherSubjectIds(teacherId)).eq("status", StatusEnum.OK.getCode()));
     }
 }

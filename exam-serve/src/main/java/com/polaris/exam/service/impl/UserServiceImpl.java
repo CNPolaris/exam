@@ -337,6 +337,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             ClassUser classUser = new ClassUser();
             classUser.setUserId(user.getId());
             classUser.setClassId(item.getClassId());
+            classUser.setStatus(StatusEnum.OK.getCode());
             classUserService.save(classUser);
 
         }

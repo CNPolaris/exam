@@ -16,4 +16,5 @@ public class QuestionPageParam {
     private Integer gradeLevel;
     private Integer subjectId;
     private Integer questionType;
+    private Integer difficult;
 }
